@@ -19,7 +19,7 @@ public final class SimpleLoginService implements LoginService {
     public User loginUser(String email, String password) throws SQLException, ServiceException {
         try {
             User user = userDao.findByEmail(email);
-            if (user == null || !user.getPassword().equals(password)) {
+            if (user == null || !user.getUserPassword().equals(password)) {
                 throw new ServiceException("Bad login");
             }
             return user;
