@@ -1,4 +1,4 @@
-package com.codecool.web.dao;
+package com.codecool.web.service;
 
 import com.codecool.web.model.Activity;
 import com.codecool.web.model.Role;
@@ -7,7 +7,7 @@ import com.codecool.web.model.User;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface UserDao {
+public interface UserService {
 
     List<User> findAll() throws SQLException;
 
