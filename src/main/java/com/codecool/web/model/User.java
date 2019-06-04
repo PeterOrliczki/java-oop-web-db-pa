@@ -4,21 +4,42 @@ import java.util.Objects;
 
 public final class User extends AbstractModel {
 
-    private final String email;
-    private final String password;
+    private String userName;
+    private String userEmail;
+    private String userPassword;
+    private Role userRole;
+    private int userBalance;
 
-    public User(int id, String email, String password) {
+    public User(int id, String userName, String userEmail, String userPassword, Role userRole, int userBalance) {
         super(id);
-        this.email = email;
-        this.password = password;
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.userRole = userRole;
+        this.userBalance = userBalance;
     }
 
-    public String getEmail() {
-        return email;
+    public User() {
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public Role getUserRole() {
+        return userRole;
+    }
+
+    public int getUserBalance() {
+        return userBalance;
     }
 
     @Override
@@ -27,12 +48,15 @@ public final class User extends AbstractModel {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         User user = (User) o;
-        return Objects.equals(email, user.email) &&
-            Objects.equals(password, user.password);
+        return userBalance == user.userBalance &&
+            Objects.equals(userName, user.userName) &&
+            Objects.equals(userEmail, user.userEmail) &&
+            Objects.equals(userPassword, user.userPassword) &&
+            userRole == user.userRole;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), email, password);
+        return Objects.hash(super.hashCode(), userName, userEmail, userPassword, userRole, userBalance);
     }
 }
