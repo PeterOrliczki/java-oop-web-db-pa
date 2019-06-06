@@ -1,6 +1,5 @@
 package com.codecool.web.service;
 
-import com.codecool.web.model.Activity;
 import com.codecool.web.model.Role;
 import com.codecool.web.model.User;
 
@@ -28,6 +27,4 @@ public interface UserService {
     void updateUserPasswordById(int id, String password) throws SQLException;
 
     void deleteUserById(int id) throws SQLException;
-
-    List<Activity> findAllActivity() throws SQLException;
 }

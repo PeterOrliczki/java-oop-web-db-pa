@@ -1,7 +1,6 @@
 package com.codecool.web.service.simple;
 
 import com.codecool.web.dao.UserDao;
-import com.codecool.web.model.Activity;
 import com.codecool.web.model.Role;
 import com.codecool.web.model.User;
 import com.codecool.web.service.UserService;
@@ -65,10 +64,5 @@ public final class SimpleUserService implements UserService {
     @Override
     public void deleteUserById(int id) throws SQLException {
         userDao.deleteUserById(id);
-    }
-
-    @Override
-    public List<Activity> findAllActivity() throws SQLException {
-        return userDao.findAllActivity();
     }
 }
