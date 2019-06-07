@@ -27,7 +27,7 @@ public final class DatabasePlaneDao extends AbstractDao implements PlaneDao {
     }
 
     @Override
-    public Plane findPlaneById(int id) throws SQLException {
+    public Plane findById(int id) throws SQLException {
         String sql = "SELECT * FROM planes WHERE plane_id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -90,7 +90,7 @@ public final class DatabasePlaneDao extends AbstractDao implements PlaneDao {
     }
 
     @Override
-    public void updatePlaneNameById(int id, String name) throws SQLException {
+    public void updateNameById(int id, String name) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "UPDATE planes SET plane_name=? WHERE plane_id=?";
@@ -108,7 +108,7 @@ public final class DatabasePlaneDao extends AbstractDao implements PlaneDao {
     }
 
     @Override
-    public void updatePlaneCapacityById(int id, int capacity) throws SQLException {
+    public void updateCapacityById(int id, int capacity) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "UPDATE planes SET plane_capacity=? WHERE plane_id=?";
@@ -126,7 +126,7 @@ public final class DatabasePlaneDao extends AbstractDao implements PlaneDao {
     }
 
     @Override
-    public void deletePlaneById(int id) throws SQLException {
+    public void deleteById(int id) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "DELETE FROM planes WHERE plane_id=?";

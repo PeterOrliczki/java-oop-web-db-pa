@@ -28,7 +28,7 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
     }
 
     @Override
-    public User findUserById(int id) throws SQLException {
+    public User findById(int id) throws SQLException {
         String sql = "SELECT * FROM users WHERE user_id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -122,7 +122,7 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
     }
 
     @Override
-    public void updateUserEmailById(int id, String email) throws SQLException {
+    public void updateEmailById(int id, String email) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "UPDATE users SET user_email=? WHERE user_id=?";
@@ -140,7 +140,7 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
     }
 
     @Override
-    public void updateUserPasswordById(int id, String password) throws SQLException {
+    public void updatePasswordById(int id, String password) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "UPDATE users SET user_password=? WHERE user_id=?";
@@ -158,7 +158,7 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
     }
 
     @Override
-    public void deleteUserById(int id) throws SQLException {
+    public void deleteById(int id) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "DELETE FROM users WHERE user_id=?";

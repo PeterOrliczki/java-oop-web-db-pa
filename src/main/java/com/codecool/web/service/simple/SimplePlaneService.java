@@ -21,8 +21,8 @@ public final class SimplePlaneService implements PlaneService {
     }
 
     @Override
-    public Plane findPlaneById(int id) throws SQLException {
-        return planeDao.findPlaneById(id);
+    public Plane findById(int id) throws SQLException {
+        return planeDao.findById(id);
     }
 
     @Override
@@ -41,17 +41,17 @@ public final class SimplePlaneService implements PlaneService {
     }
 
     @Override
-    public void updatePlaneNameById(int id, String name) throws SQLException {
-        planeDao.updatePlaneNameById(id, name);
+    public void updateNameById(int id, String name) throws SQLException {
+        planeDao.updateNameById(id, name);
     }
 
     @Override
-    public void updatePlaneCapacityById(int id, int capacity) throws SQLException {
-        planeDao.updatePlaneCapacityById(id, capacity);
+    public void updateCapacityById(int id, int capacity) throws SQLException {
+        planeDao.updateCapacityById(id, capacity);
     }
 
     @Override
-    public void deletePlaneById(int id) throws SQLException {
-        planeDao.deletePlaneById(id);
+    public void deleteById(int id) throws SQLException {
+        planeDao.deleteById(id);
     }
 }

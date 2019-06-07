@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ActivityService {
 
-    List<Activity> findAllActivity() throws SQLException;
+    List<Activity> findAll() throws SQLException;
 }

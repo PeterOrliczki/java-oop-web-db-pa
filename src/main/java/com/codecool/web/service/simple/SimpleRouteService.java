@@ -22,13 +22,13 @@ public final class SimpleRouteService implements RouteService {
     }
 
     @Override
-    public Route findRouteById(int id) throws SQLException {
-        return routeDao.findRouteById(id);
+    public Route findById(int id) throws SQLException {
+        return routeDao.findById(id);
     }
 
     @Override
-    public Route findRouteByTaxiId(int id) throws SQLException {
-        return routeDao.findRouteByTaxiId(id);
+    public Route findByTaxiId(int id) throws SQLException {
+        return routeDao.findByTaxiId(id);
     }
 
     @Override
@@ -102,7 +102,7 @@ public final class SimpleRouteService implements RouteService {
     }
 
     @Override
-    public void deleteRouteById(int id) throws SQLException {
-        routeDao.deleteRouteById(id);
+    public void deleteById(int id) throws SQLException {
+        routeDao.deleteById(id);
     }
 }

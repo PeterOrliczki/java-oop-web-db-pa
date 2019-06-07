@@ -22,8 +22,8 @@ public final class SimpleUserService implements UserService {
     }
 
     @Override
-    public User findUserById(int id) throws SQLException {
-        return userDao.findUserById(id);
+    public User findById(int id) throws SQLException {
+        return userDao.findById(id);
     }
 
     @Override
@@ -52,17 +52,17 @@ public final class SimpleUserService implements UserService {
     }
 
     @Override
-    public void updateUserEmailById(int id, String email) throws SQLException {
-        userDao.updateUserEmailById(id, email);
+    public void updateEmailById(int id, String email) throws SQLException {
+        userDao.updateEmailById(id, email);
     }
 
     @Override
-    public void updateUserPasswordById(int id, String password) throws SQLException {
-        userDao.updateUserEmailById(id, password);
+    public void updatePasswordById(int id, String password) throws SQLException {
+        userDao.updateEmailById(id, password);
     }
 
     @Override
-    public void deleteUserById(int id) throws SQLException {
-        userDao.deleteUserById(id);
+    public void deleteById(int id) throws SQLException {
+        userDao.deleteById(id);
     }
 }

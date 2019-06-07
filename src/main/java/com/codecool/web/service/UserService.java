@@ -10,7 +10,7 @@ public interface UserService {
 
     List<User> findAll() throws SQLException;
 
-    User findUserById(int id) throws SQLException;
+    User findById(int id) throws SQLException;
 
     User findByName(String name) throws SQLException;
 
@@ -22,9 +22,9 @@ public interface UserService {
 
     User addUser(String name, String email, String password, Role role, int balance) throws SQLException;
 
-    void updateUserEmailById(int id, String email) throws SQLException;
+    void updateEmailById(int id, String email) throws SQLException;
 
-    void updateUserPasswordById(int id, String password) throws SQLException;
+    void updatePasswordById(int id, String password) throws SQLException;
 
-    void deleteUserById(int id) throws SQLException;
+    void deleteById(int id) throws SQLException;
 }

@@ -10,9 +10,9 @@ public interface RouteDao {
 
     List<Route> findAll() throws SQLException;
 
-    Route findRouteById(int id) throws SQLException;
+    Route findById(int id) throws SQLException;
 
-    Route findRouteByTaxiId(int id) throws SQLException;
+    Route findByTaxiId(int id) throws SQLException;
 
     Route findByOrigin(String origin) throws SQLException;
 
@@ -42,5 +42,5 @@ public interface RouteDao {
 
     void updatePriceById(int id, int price) throws SQLException;
 
-    void deleteRouteById(int id) throws SQLException;
+    void deleteById(int id) throws SQLException;
 }

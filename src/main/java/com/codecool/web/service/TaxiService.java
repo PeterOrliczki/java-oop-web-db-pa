@@ -9,7 +9,7 @@ public interface TaxiService {
 
     List<Taxi> findAll() throws SQLException;
 
-    Taxi findTaxiById(int id) throws SQLException;
+    Taxi findById(int id) throws SQLException;
 
     Taxi findByName(String name) throws SQLException;
 
@@ -19,11 +19,11 @@ public interface TaxiService {
 
     Taxi addTaxi(String name, String licensePlate, int capacity) throws SQLException;
 
-    void updateTaxiNameById(int id, String name) throws SQLException;
+    void updateNameById(int id, String name) throws SQLException;
 
-    void updateTaxiLicensePlateById(int id, String licensePlate) throws SQLException;
+    void updateLicensePlateById(int id, String licensePlate) throws SQLException;
 
-    void updateTaxiCapacityById(int id, int capacity) throws SQLException;
+    void updateCapacityById(int id, int capacity) throws SQLException;
 
-    void deleteTaxiById(int id) throws SQLException;
+    void deleteById(int id) throws SQLException;
 }

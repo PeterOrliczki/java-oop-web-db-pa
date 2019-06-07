@@ -16,7 +16,7 @@ public final class SimpleActivityService implements ActivityService {
     }
 
     @Override
-    public List<Activity> findAllActivity() throws SQLException {
-        return activityDao.findAllActivity();
+    public List<Activity> findAll() throws SQLException {
+        return activityDao.findAll();
     }
 }

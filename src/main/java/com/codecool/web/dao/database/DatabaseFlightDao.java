@@ -29,7 +29,7 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
     }
 
     @Override
-    public Flight findFlightById(int id) throws SQLException {
+    public Flight findById(int id) throws SQLException {
         String sql = "SELECT * FROM flights WHERE flight_id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -43,7 +43,7 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
     }
 
     @Override
-    public Flight findFlightByPlaneId(int id) throws SQLException {
+    public Flight findByPlaneId(int id) throws SQLException {
         String sql = "SELECT * FROM flights WHERE plane_id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -328,7 +328,7 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
     }
 
     @Override
-    public void deleteFlightById(int id) throws SQLException {
+    public void deleteById(int id) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "DELETE FROM flights WHERE flight_id=?";

@@ -27,7 +27,7 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
     }
 
     @Override
-    public Taxi findTaxiById(int id) throws SQLException {
+    public Taxi findById(int id) throws SQLException {
         String sql = "SELECT * FROM taxis WHERE taxi_id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -105,7 +105,7 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
     }
 
     @Override
-    public void updateTaxiNameById(int id, String name) throws SQLException {
+    public void updateNameById(int id, String name) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "UPDATE taxis SET taxi_name=? WHERE taxi_id=?";
@@ -123,7 +123,7 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
     }
 
     @Override
-    public void updateTaxiLicensePlateById(int id, String licensePlate) throws SQLException {
+    public void updateLicensePlateById(int id, String licensePlate) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "UPDATE taxis SET taxi_license_plate=? WHERE taxi_id=?";
@@ -141,7 +141,7 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
     }
 
     @Override
-    public void updateTaxiCapacityById(int id, int capacity) throws SQLException {
+    public void updateCapacityById(int id, int capacity) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "UPDATE taxis SET taxi_capacity=? WHERE taxi_id=?";
@@ -159,7 +159,7 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
     }
 
     @Override
-    public void deleteTaxiById(int id) throws SQLException {
+    public void deleteById(int id) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "DELETE FROM taxis WHERE taxi_id=?";

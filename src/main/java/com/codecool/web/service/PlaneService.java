@@ -9,7 +9,7 @@ public interface PlaneService {
 
     List<Plane> findAll() throws SQLException;
 
-    Plane findPlaneById(int id) throws SQLException;
+    Plane findById(int id) throws SQLException;
 
     Plane findByName(String name) throws SQLException;
 
@@ -17,9 +17,9 @@ public interface PlaneService {
 
     Plane addPlane(String name, int capacity) throws SQLException;
 
-    void updatePlaneNameById(int id, String name) throws SQLException;
+    void updateNameById(int id, String name) throws SQLException;
 
-    void updatePlaneCapacityById(int id, int capacity) throws SQLException;
+    void updateCapacityById(int id, int capacity) throws SQLException;
 
-    void deletePlaneById(int id) throws SQLException;
+    void deleteById(int id) throws SQLException;
 }

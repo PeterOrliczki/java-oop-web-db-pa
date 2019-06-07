@@ -17,7 +17,7 @@ public final class DatabaseActivityDao extends AbstractDao implements ActivityDa
     }
 
     @Override
-    public List<Activity> findAllActivity() throws SQLException {
+    public List<Activity> findAll() throws SQLException {
         List<Activity> activities = new ArrayList<>();
         String sql = "SELECT event_name, table_name, event_date, users.user_name FROM audit JOIN users ON audit.user_id = users.user_id";
         try (Statement statement = connection.createStatement();

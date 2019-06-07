@@ -29,7 +29,7 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
     }
 
     @Override
-    public Route findRouteById(int id) throws SQLException {
+    public Route findById(int id) throws SQLException {
         String sql = "SELECT * FROM routes WHERE route_id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -43,7 +43,7 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
     }
 
     @Override
-    public Route findRouteByTaxiId(int id) throws SQLException {
+    public Route findByTaxiId(int id) throws SQLException {
         String sql = "SELECT * FROM routes WHERE taxi_id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -295,7 +295,7 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
     }
 
     @Override
-    public void deleteRouteById(int id) throws SQLException {
+    public void deleteById(int id) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "DELETE FROM routes WHERE route_id=?";

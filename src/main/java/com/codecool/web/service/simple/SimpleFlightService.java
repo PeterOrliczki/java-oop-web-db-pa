@@ -22,13 +22,13 @@ public final class SimpleFlightService implements FlightService {
     }
 
     @Override
-    public Flight findFlightById(int id) throws SQLException {
-        return flightDao.findFlightById(id);
+    public Flight findById(int id) throws SQLException {
+        return flightDao.findById(id);
     }
 
     @Override
-    public Flight findFlightByPlaneId(int id) throws SQLException {
-        return flightDao.findFlightByPlaneId(id);
+    public Flight findByPlaneId(int id) throws SQLException {
+        return flightDao.findByPlaneId(id);
     }
 
     @Override
@@ -112,7 +112,7 @@ public final class SimpleFlightService implements FlightService {
     }
 
     @Override
-    public void deleteFlightById(int id) throws SQLException {
-        flightDao.deleteFlightById(id);
+    public void deleteById(int id) throws SQLException {
+        flightDao.deleteById(id);
     }
 }

@@ -10,9 +10,9 @@ public interface FlightDao {
 
     List<Flight> findAll() throws SQLException;
 
-    Flight findFlightById(int id) throws SQLException;
+    Flight findById(int id) throws SQLException;
 
-    Flight findFlightByPlaneId(int id) throws SQLException;
+    Flight findByPlaneId(int id) throws SQLException;
 
     Flight findByOrigin(String origin) throws SQLException;
 
@@ -46,5 +46,5 @@ public interface FlightDao {
 
     void updatePriceById(int id, int price) throws SQLException;
 
-    void deleteFlightById(int id) throws SQLException;
+    void deleteById(int id) throws SQLException;
 }
