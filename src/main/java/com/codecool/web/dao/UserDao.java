@@ -27,4 +27,8 @@ public interface UserDao {
     void updatePasswordById(int id, String password) throws SQLException;
 
     void deleteById(int id) throws SQLException;
+
+    void subtractFromBalanceById(int id, int price) throws SQLException;
+
+    void addToBalanceById(int id, int deposit) throws SQLException;
 }

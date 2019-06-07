@@ -68,6 +68,16 @@ public final class SimpleUserService implements UserService {
     }
 
     @Override
+    public void subtractFromBalanceById(int id, int price) throws SQLException {
+        userDao.subtractFromBalanceById(id, price);
+    }
+
+    @Override
+    public void addToBalanceById(int id, int deposit) throws SQLException {
+        userDao.addToBalanceById(id, deposit);
+    }
+
+    @Override
     public User loginUser(String email, String password) throws SQLException, ServiceException {
         try {
             User user = userDao.findByEmail(email);

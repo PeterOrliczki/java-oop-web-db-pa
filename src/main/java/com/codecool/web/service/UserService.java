@@ -29,5 +29,9 @@ public interface UserService {
 
     void deleteById(int id) throws SQLException;
 
+    void subtractFromBalanceById(int id, int price) throws SQLException;
+
+    void addToBalanceById(int id, int deposit) throws SQLException;
+
     User loginUser(String email, String password) throws SQLException, ServiceException;
 }

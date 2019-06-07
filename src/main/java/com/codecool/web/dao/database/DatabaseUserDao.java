@@ -85,7 +85,6 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
 
     @Override
     public boolean findIfUserExists(String email) throws SQLException {
-        List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users WHERE user_email=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
@@ -165,6 +164,42 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, id);
             executeInsert(preparedStatement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public void subtractFromBalanceById(int id, int price) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "UPDATE users SET user_balance=user_balance-? WHERE user_id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, price);
+            statement.setInt(2, id);
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public void addToBalanceById(int id, int deposit) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "UPDATE users SET user_balance=user_balance+? WHERE user_id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, deposit);
+            statement.setInt(2, id);
+            executeInsert(statement);
             connection.commit();
         } catch (SQLException ex) {
             connection.rollback();
