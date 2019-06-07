@@ -4,6 +4,7 @@ import com.codecool.web.dao.UserDao;
 import com.codecool.web.model.Role;
 import com.codecool.web.model.User;
 import com.codecool.web.service.UserService;
+import com.codecool.web.service.exception.ServiceException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -64,5 +65,18 @@ public final class SimpleUserService implements UserService {
     @Override
     public void deleteById(int id) throws SQLException {
         userDao.deleteById(id);
+    }
+
+    @Override
+    public User loginUser(String email, String password) throws SQLException, ServiceException {
+        try {
+            User user = userDao.findByEmail(email);
+            if (user == null || !user.getUserPassword().equals(password)) {
+                throw new ServiceException("Bad login");
+            }
+            return user;
+        } catch (IllegalArgumentException ex) {
+            throw new ServiceException(ex.getMessage());
+        }
     }
 }
