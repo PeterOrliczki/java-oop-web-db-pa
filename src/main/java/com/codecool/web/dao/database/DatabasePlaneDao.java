@@ -132,7 +132,7 @@ public final class DatabasePlaneDao extends AbstractDao implements PlaneDao {
         String sql = "DELETE FROM planes WHERE plane_id=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, id);
-            executeInsert(preparedStatement);
+            preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {
             connection.rollback();

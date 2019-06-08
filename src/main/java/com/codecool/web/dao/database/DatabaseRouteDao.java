@@ -301,7 +301,7 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
         String sql = "DELETE FROM routes WHERE route_id=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, id);
-            executeInsert(preparedStatement);
+            preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {
             connection.rollback();

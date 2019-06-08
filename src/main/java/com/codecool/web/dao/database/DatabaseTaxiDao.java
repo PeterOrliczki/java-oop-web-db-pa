@@ -165,7 +165,7 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
         String sql = "DELETE FROM taxis WHERE taxi_id=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, id);
-            executeInsert(preparedStatement);
+            preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {
             connection.rollback();

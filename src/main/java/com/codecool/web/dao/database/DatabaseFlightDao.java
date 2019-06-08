@@ -334,7 +334,7 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
         String sql = "DELETE FROM flights WHERE flight_id=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, id);
-            executeInsert(preparedStatement);
+            preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {
             connection.rollback();
