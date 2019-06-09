@@ -4,42 +4,42 @@ import java.util.Objects;
 
 public final class User extends AbstractModel {
 
-    private String userName;
-    private String userEmail;
-    private String userPassword;
-    private Role userRole;
-    private int userBalance;
+    private String name;
+    private String email;
+    private String password;
+    private Role role;
+    private int balance;
 
     public User(int id, String userName, String userEmail, String userPassword, Role userRole, int userBalance) {
         super(id);
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.userPassword = userPassword;
-        this.userRole = userRole;
-        this.userBalance = userBalance;
+        this.name = userName;
+        this.email = userEmail;
+        this.password = userPassword;
+        this.role = userRole;
+        this.balance = userBalance;
     }
 
     public User() {
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public String getUserPassword() {
-        return userPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public Role getUserRole() {
-        return userRole;
+    public Role getRole() {
+        return role;
     }
 
-    public int getUserBalance() {
-        return userBalance;
+    public int getBalance() {
+        return balance;
     }
 
     @Override
@@ -48,15 +48,15 @@ public final class User extends AbstractModel {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         User user = (User) o;
-        return userBalance == user.userBalance &&
-            Objects.equals(userName, user.userName) &&
-            Objects.equals(userEmail, user.userEmail) &&
-            Objects.equals(userPassword, user.userPassword) &&
-            userRole == user.userRole;
+        return balance == user.balance &&
+            Objects.equals(name, user.name) &&
+            Objects.equals(email, user.email) &&
+            Objects.equals(password, user.password) &&
+            role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), userName, userEmail, userPassword, userRole, userBalance);
+        return Objects.hash(super.hashCode(), name, email, password, role, balance);
     }
 }

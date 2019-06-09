@@ -4,24 +4,24 @@ import java.util.Objects;
 
 public final class Plane extends AbstractModel {
 
-    private String planeName;
-    private int planeCapacity;
+    private String name;
+    private int capacity;
 
     public Plane(int id, String planeName, int planeCapacity) {
         super(id);
-        this.planeName = planeName;
-        this.planeCapacity = planeCapacity;
+        this.name = planeName;
+        this.capacity = planeCapacity;
     }
 
     public Plane() {
     }
 
-    public String getPlaneName() {
-        return planeName;
+    public String getName() {
+        return name;
     }
 
-    public int getPlaneCapacity() {
-        return planeCapacity;
+    public int getCapacity() {
+        return capacity;
     }
 
     @Override
@@ -30,12 +30,12 @@ public final class Plane extends AbstractModel {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Plane plane = (Plane) o;
-        return planeCapacity == plane.planeCapacity &&
-            Objects.equals(planeName, plane.planeName);
+        return capacity == plane.capacity &&
+            Objects.equals(name, plane.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), planeName, planeCapacity);
+        return Objects.hash(super.hashCode(), name, capacity);
     }
 }

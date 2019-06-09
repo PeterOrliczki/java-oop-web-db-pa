@@ -6,24 +6,24 @@ import java.util.Objects;
 public final class Flight extends AbstractModel {
 
     private int planeId;
-    private String flightOrigin;
-    private String flightDestination;
-    private LocalDate flightDate;
-    private int flightStart;
-    private int flightEnd;
+    private String origin;
+    private String destination;
+    private LocalDate date;
+    private int start;
+    private int end;
     private String flightClass;
-    private int flightPrice;
+    private int price;
 
     public Flight(int id, int planeId, String flightOrigin, String flightDestination, LocalDate flightDate, int flightStart, int flightEnd, String flightClass, int flightPrice) {
         super(id);
         this.planeId = planeId;
-        this.flightOrigin = flightOrigin;
-        this.flightDestination = flightDestination;
-        this.flightDate = flightDate;
-        this.flightStart = flightStart;
-        this.flightEnd = flightEnd;
+        this.origin = flightOrigin;
+        this.destination = flightDestination;
+        this.date = flightDate;
+        this.start = flightStart;
+        this.end = flightEnd;
         this.flightClass = flightClass;
-        this.flightPrice = flightPrice;
+        this.price = flightPrice;
     }
 
     public Flight() {
@@ -33,32 +33,32 @@ public final class Flight extends AbstractModel {
         return planeId;
     }
 
-    public String getFlightOrigin() {
-        return flightOrigin;
+    public String getOrigin() {
+        return origin;
     }
 
-    public String getFlightDestination() {
-        return flightDestination;
+    public String getDestination() {
+        return destination;
     }
 
-    public LocalDate getFlightDate() {
-        return flightDate;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public int getFlightStart() {
-        return flightStart;
+    public int getStart() {
+        return start;
     }
 
-    public int getFlightEnd() {
-        return flightEnd;
+    public int getEnd() {
+        return end;
     }
 
     public String getFlightClass() {
         return flightClass;
     }
 
-    public int getFlightPrice() {
-        return flightPrice;
+    public int getPrice() {
+        return price;
     }
 
     @Override
@@ -68,17 +68,17 @@ public final class Flight extends AbstractModel {
         if (!super.equals(o)) return false;
         Flight flight = (Flight) o;
         return planeId == flight.planeId &&
-            flightStart == flight.flightStart &&
-            flightEnd == flight.flightEnd &&
-            flightPrice == flight.flightPrice &&
-            Objects.equals(flightOrigin, flight.flightOrigin) &&
-            Objects.equals(flightDestination, flight.flightDestination) &&
-            Objects.equals(flightDate, flight.flightDate) &&
+            start == flight.start &&
+            end == flight.end &&
+            price == flight.price &&
+            Objects.equals(origin, flight.origin) &&
+            Objects.equals(destination, flight.destination) &&
+            Objects.equals(date, flight.date) &&
             Objects.equals(flightClass, flight.flightClass);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), planeId, flightOrigin, flightDestination, flightDate, flightStart, flightEnd, flightClass, flightPrice);
+        return Objects.hash(super.hashCode(), planeId, origin, destination, date, start, end, flightClass, price);
     }
 }
