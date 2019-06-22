@@ -6,22 +6,22 @@ import java.util.Objects;
 public final class Route extends AbstractModel {
 
     private int taxiId;
-    private String routeOrigin;
-    private String routeDestination;
-    private LocalDate routeDate;
-    private int routeStart;
-    private int routeEnd;
-    private int routePrice;
+    private String origin;
+    private String destination;
+    private LocalDate date;
+    private int start;
+    private int end;
+    private int price;
 
     public Route(int id, int taxiId, String routeOrigin, String routeDestination, LocalDate routeDate, int routeStart, int routeEnd, int routePrice) {
         super(id);
         this.taxiId = taxiId;
-        this.routeOrigin = routeOrigin;
-        this.routeDestination = routeDestination;
-        this.routeDate = routeDate;
-        this.routeStart = routeStart;
-        this.routeEnd = routeEnd;
-        this.routePrice = routePrice;
+        this.origin = routeOrigin;
+        this.destination = routeDestination;
+        this.date = routeDate;
+        this.start = routeStart;
+        this.end = routeEnd;
+        this.price = routePrice;
     }
 
     public Route() {
@@ -31,28 +31,28 @@ public final class Route extends AbstractModel {
         return taxiId;
     }
 
-    public String getRouteOrigin() {
-        return routeOrigin;
+    public String getOrigin() {
+        return origin;
     }
 
-    public String getRouteDestination() {
-        return routeDestination;
+    public String getDestination() {
+        return destination;
     }
 
-    public LocalDate getRouteDate() {
-        return routeDate;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public int getRouteStart() {
-        return routeStart;
+    public int getStart() {
+        return start;
     }
 
-    public int getRouteEnd() {
-        return routeEnd;
+    public int getEnd() {
+        return end;
     }
 
-    public int getRoutePrice() {
-        return routePrice;
+    public int getPrice() {
+        return price;
     }
 
     @Override
@@ -62,16 +62,16 @@ public final class Route extends AbstractModel {
         if (!super.equals(o)) return false;
         Route route = (Route) o;
         return taxiId == route.taxiId &&
-            routeStart == route.routeStart &&
-            routeEnd == route.routeEnd &&
-            routePrice == route.routePrice &&
-            Objects.equals(routeOrigin, route.routeOrigin) &&
-            Objects.equals(routeDestination, route.routeDestination) &&
-            Objects.equals(routeDate, route.routeDate);
+            start == route.start &&
+            end == route.end &&
+            price == route.price &&
+            Objects.equals(origin, route.origin) &&
+            Objects.equals(destination, route.destination) &&
+            Objects.equals(date, route.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), taxiId, routeOrigin, routeDestination, routeDate, routeStart, routeEnd, routePrice);
+        return Objects.hash(super.hashCode(), taxiId, origin, destination, date, start, end, price);
     }
 }

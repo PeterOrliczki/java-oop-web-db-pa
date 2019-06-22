@@ -4,30 +4,30 @@ import java.util.Objects;
 
 public final class Taxi extends AbstractModel {
 
-    private String taxiName;
-    private String taxiLicensePlate;
-    private int taxiCapacity;
+    private String name;
+    private String licensePlate;
+    private int capacity;
 
     public Taxi(int id, String taxiName, String taxiLicensePlate, int taxiCapacity) {
         super(id);
-        this.taxiName = taxiName;
-        this.taxiLicensePlate = taxiLicensePlate;
-        this.taxiCapacity = taxiCapacity;
+        this.name = taxiName;
+        this.licensePlate = taxiLicensePlate;
+        this.capacity = taxiCapacity;
     }
 
     public Taxi() {
     }
 
-    public String getTaxiName() {
-        return taxiName;
+    public String getName() {
+        return name;
     }
 
-    public String getTaxiLicensePlate() {
-        return taxiLicensePlate;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public int getTaxiCapacity() {
-        return taxiCapacity;
+    public int getCapacity() {
+        return capacity;
     }
 
     @Override
@@ -36,13 +36,13 @@ public final class Taxi extends AbstractModel {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Taxi taxi = (Taxi) o;
-        return taxiCapacity == taxi.taxiCapacity &&
-            Objects.equals(taxiName, taxi.taxiName) &&
-            Objects.equals(taxiLicensePlate, taxi.taxiLicensePlate);
+        return capacity == taxi.capacity &&
+            Objects.equals(name, taxi.name) &&
+            Objects.equals(licensePlate, taxi.licensePlate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), taxiName, taxiLicensePlate, taxiCapacity);
+        return Objects.hash(super.hashCode(), name, licensePlate, capacity);
     }
 }
