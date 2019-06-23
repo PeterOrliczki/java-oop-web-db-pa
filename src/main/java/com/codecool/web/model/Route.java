@@ -13,15 +13,15 @@ public final class Route extends AbstractModel {
     private int end;
     private int price;
 
-    public Route(int id, int taxiId, String routeOrigin, String routeDestination, LocalDate routeDate, int routeStart, int routeEnd, int routePrice) {
+    public Route(int id, int taxiId, String origin, String destination, LocalDate date, int start, int end, int price) {
         super(id);
         this.taxiId = taxiId;
-        this.origin = routeOrigin;
-        this.destination = routeDestination;
-        this.date = routeDate;
-        this.start = routeStart;
-        this.end = routeEnd;
-        this.price = routePrice;
+        this.origin = origin;
+        this.destination = destination;
+        this.date = date;
+        this.start = start;
+        this.end = end;
+        this.price = price;
     }
 
     public Route() {

@@ -28,7 +28,7 @@ public interface FlightDao {
 
     Flight findByPrice(int price) throws SQLException;
 
-    Flight addFlight(int planeId, String flightOrigin, String flightDestination, LocalDate flightDate, int flightStart, int flightEnd, String flightClass, int flightPrice) throws SQLException;
+    Flight addFlight(int planeId, String origin, String destination, LocalDate date, int start, int end, String flightClass, int price) throws SQLException;
 
     void updatePlaneIdById(int id, int planeId) throws SQLException;
 

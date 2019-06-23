@@ -210,12 +210,12 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
     }
 
     private User fetchUser(ResultSet resultSet) throws SQLException {
-        int userId = resultSet.getInt("user_id");
-        String userName = resultSet.getString("user_name");
-        String userEmail = resultSet.getString("user_email");
-        String userPassword = resultSet.getString("user_password");
-        Role userRole = Role.valueOf(resultSet.getString("user_role"));
-        int userBalance = resultSet.getInt("user_balance".toUpperCase());
-        return new User(userId, userName, userEmail, userPassword, userRole, userBalance);
+        int id = resultSet.getInt("user_id");
+        String name = resultSet.getString("user_name");
+        String email = resultSet.getString("user_email");
+        String password = resultSet.getString("user_password");
+        Role role = Role.valueOf(resultSet.getString("user_role"));
+        int balance = resultSet.getInt("user_balance".toUpperCase());
+        return new User(id, name, email, password, role, balance);
     }
 }

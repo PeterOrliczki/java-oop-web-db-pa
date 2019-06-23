@@ -10,13 +10,13 @@ public final class User extends AbstractModel {
     private Role role;
     private int balance;
 
-    public User(int id, String userName, String userEmail, String userPassword, Role userRole, int userBalance) {
+    public User(int id, String name, String email, String password, Role role, int balance) {
         super(id);
-        this.name = userName;
-        this.email = userEmail;
-        this.password = userPassword;
-        this.role = userRole;
-        this.balance = userBalance;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.balance = balance;
     }
 
     public User() {

@@ -8,11 +8,11 @@ public final class Taxi extends AbstractModel {
     private String licensePlate;
     private int capacity;
 
-    public Taxi(int id, String taxiName, String taxiLicensePlate, int taxiCapacity) {
+    public Taxi(int id, String name, String licensePlate, int capacity) {
         super(id);
-        this.name = taxiName;
-        this.licensePlate = taxiLicensePlate;
-        this.capacity = taxiCapacity;
+        this.name = name;
+        this.licensePlate = licensePlate;
+        this.capacity = capacity;
     }
 
     public Taxi() {

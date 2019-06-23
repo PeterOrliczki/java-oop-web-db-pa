@@ -67,8 +67,8 @@ public final class SimpleFlightService implements FlightService {
     }
 
     @Override
-    public Flight addFlight(int planeId, String flightOrigin, String flightDestination, LocalDate flightDate, int flightStart, int flightEnd, String flightClass, int flightPrice) throws SQLException {
-        return flightDao.addFlight(planeId, flightOrigin, flightDestination, flightDate, flightStart, flightEnd, flightClass, flightPrice);
+    public Flight addFlight(int planeId, String origin, String destination, LocalDate date, int start, int end, String flightClass, int price) throws SQLException {
+        return flightDao.addFlight(planeId, origin, destination, date, start, end, flightClass, price);
     }
 
     @Override

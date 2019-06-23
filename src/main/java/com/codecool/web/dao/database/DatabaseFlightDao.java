@@ -156,24 +156,24 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
     }
 
     @Override
-    public Flight addFlight(int planeId, String flightOrigin, String flightDestination, LocalDate flightDate, int flightStart, int flightEnd, String flightClass, int flightPrice) throws SQLException {
+    public Flight addFlight(int planeId, String origin, String destination, LocalDate date, int start, int end, String flightClass, int price) throws SQLException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "INSERT INTO flights(plane_id, flight_origin, flight_destination, flight_date, flight_start, flight_end, flight_class, flight_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, planeId);
-            statement.setString(2, flightOrigin);
-            statement.setString(3, flightDestination);
-            statement.setString(4, flightDate.format(formatter));
-            statement.setInt(5, flightStart);
-            statement.setInt(6, flightEnd);
+            statement.setString(2, origin);
+            statement.setString(3, destination);
+            statement.setString(4, date.format(formatter));
+            statement.setInt(5, start);
+            statement.setInt(6, end);
             statement.setString(7, flightClass);
-            statement.setInt(8, flightPrice);
+            statement.setInt(8, price);
             executeInsert(statement);
             int id = fetchGeneratedId(statement);
             connection.commit();
-            return new Flight(id, planeId, flightOrigin, flightDestination, flightDate, flightStart, flightEnd, flightClass, flightPrice);
+            return new Flight(id, planeId, origin, destination, date, start, end, flightClass, price);
         } catch (SQLException ex) {
             connection.rollback();
             throw ex;
@@ -345,15 +345,15 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
     }
 
     private Flight fetchFlight(ResultSet resultSet) throws SQLException {
-        int flightId = resultSet.getInt("flight_id");
+        int id = resultSet.getInt("flight_id");
         int planeId = resultSet.getInt("plane_id");
-        String flightOrigin = resultSet.getString("flight_origin");
-        String flightDestination = resultSet.getString("flight_destination");
-        LocalDate flightDate = resultSet.getDate("flight_date").toLocalDate();
-        int flightStart = resultSet.getInt("flight_start");
-        int flightEnd = resultSet.getInt("flight_end");
+        String origin = resultSet.getString("flight_origin");
+        String destination = resultSet.getString("flight_destination");
+        LocalDate date = resultSet.getDate("flight_date").toLocalDate();
+        int start = resultSet.getInt("flight_start");
+        int end = resultSet.getInt("flight_end");
         String flightClass = resultSet.getString("flight_class");
-        int flightPrice = resultSet.getInt("flight_price");
-        return new Flight(flightId, planeId, flightOrigin, flightDestination, flightDate, flightStart, flightEnd, flightClass, flightPrice);
+        int price = resultSet.getInt("flight_price");
+        return new Flight(id, planeId, origin, destination, date, start, end, flightClass, price);
     }
 }

@@ -176,10 +176,10 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
     }
 
     private Taxi fetchTaxi(ResultSet resultSet) throws SQLException {
-        int taxiId = resultSet.getInt("taxi_id");
-        String taxiName = resultSet.getString("taxi_name");
-        String taxiLicensePlate = resultSet.getString("taxi_license_plate");
-        int taxiCapacity = resultSet.getInt("taxi_capacity");
-        return new Taxi(taxiId, taxiName, taxiLicensePlate, taxiCapacity);
+        int id = resultSet.getInt("taxi_id");
+        String name = resultSet.getString("taxi_name");
+        String licensePlate = resultSet.getString("taxi_license_plate");
+        int capacity = resultSet.getInt("taxi_capacity");
+        return new Taxi(id, name, licensePlate, capacity);
     }
 }

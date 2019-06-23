@@ -62,8 +62,8 @@ public final class SimpleRouteService implements RouteService {
     }
 
     @Override
-    public Route addRoute(int taxiId, String routeOrigin, String routeDestination, LocalDate routeDate, int routeStart, int routeEnd, int routePrice) throws SQLException {
-        return routeDao.addRoute(taxiId, routeOrigin, routeDestination, routeDate, routeStart, routeEnd, routePrice);
+    public Route addRoute(int taxiId, String origin, String destination, LocalDate date, int start, int end, int price) throws SQLException {
+        return routeDao.addRoute(taxiId, origin, destination, date, start, end, price);
     }
 
     @Override

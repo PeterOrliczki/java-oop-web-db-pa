@@ -26,7 +26,7 @@ public interface RouteDao {
 
     Route findByPrice(int price) throws SQLException;
 
-    Route addRoute(int taxiId, String routeOrigin, String routeDestination, LocalDate routeDate, int routeStart, int routeEnd, int routePrice) throws SQLException;
+    Route addRoute(int taxiId, String origin, String destination, LocalDate date, int start, int end, int price) throws SQLException;
 
     void updateTaxiIdById(int id, int taxiId) throws SQLException;
 

@@ -143,9 +143,9 @@ public final class DatabasePlaneDao extends AbstractDao implements PlaneDao {
     }
 
     private Plane fetchPlane(ResultSet resultSet) throws SQLException {
-        int planeId = resultSet.getInt("plane_id");
-        String planeName = resultSet.getString("plane_name");
-        int planeCapacity = resultSet.getInt("plane_capacity");
-        return new Plane(planeId, planeName, planeCapacity);
+        int id = resultSet.getInt("plane_id");
+        String name = resultSet.getString("plane_name");
+        int capacity = resultSet.getInt("plane_capacity");
+        return new Plane(id, name, capacity);
     }
 }

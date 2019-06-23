@@ -7,10 +7,10 @@ public final class Plane extends AbstractModel {
     private String name;
     private int capacity;
 
-    public Plane(int id, String planeName, int planeCapacity) {
+    public Plane(int id, String name, int capacity) {
         super(id);
-        this.name = planeName;
-        this.capacity = planeCapacity;
+        this.name = name;
+        this.capacity = capacity;
     }
 
     public Plane() {

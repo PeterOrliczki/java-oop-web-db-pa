@@ -142,23 +142,23 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
     }
 
     @Override
-    public Route addRoute(int taxiId, String routeOrigin, String routeDestination, LocalDate routeDate, int routeStart, int routeEnd, int routePrice) throws SQLException {
+    public Route addRoute(int taxiId, String origin, String destination, LocalDate date, int start, int end, int price) throws SQLException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "INSERT INTO routes(taxi_id, route_origin, route_destination, route_date, route_start, route_end, route_price) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, taxiId);
-            statement.setString(2, routeOrigin);
-            statement.setString(3, routeDestination);
-            statement.setString(4, routeDate.format(formatter));
-            statement.setInt(5, routeStart);
-            statement.setInt(6, routeEnd);
-            statement.setInt(7, routePrice);
+            statement.setString(2, origin);
+            statement.setString(3, destination);
+            statement.setString(4, date.format(formatter));
+            statement.setInt(5, start);
+            statement.setInt(6, end);
+            statement.setInt(7, price);
             executeInsert(statement);
             int id = fetchGeneratedId(statement);
             connection.commit();
-            return new Route(id, taxiId, routeOrigin, routeDestination, routeDate, routeStart, routeEnd, routePrice);
+            return new Route(id, taxiId, origin, destination, date, start, end, price);
         } catch (SQLException ex) {
             connection.rollback();
             throw ex;
@@ -312,14 +312,14 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
     }
 
     private Route fetchRoute(ResultSet resultSet) throws SQLException {
-        int routeId = resultSet.getInt("route_id");
+        int id = resultSet.getInt("route_id");
         int taxiId = resultSet.getInt("taxi_id");
-        String routeOrigin = resultSet.getString("route_origin");
-        String routeDestination = resultSet.getString("route_destination");
-        LocalDate routeDate = resultSet.getDate("route_date").toLocalDate();
-        int routeStart = resultSet.getInt("route_start");
-        int routeEnd = resultSet.getInt("route_end");
-        int routePrice = resultSet.getInt("route_price");
-        return new Route(routeId, taxiId, routeOrigin, routeDestination, routeDate, routeStart, routeEnd, routePrice);
+        String origin = resultSet.getString("route_origin");
+        String destination = resultSet.getString("route_destination");
+        LocalDate date = resultSet.getDate("route_date").toLocalDate();
+        int start = resultSet.getInt("route_start");
+        int end = resultSet.getInt("route_end");
+        int price = resultSet.getInt("route_price");
+        return new Route(id, taxiId, origin, destination, date, start, end, price);
     }
 }

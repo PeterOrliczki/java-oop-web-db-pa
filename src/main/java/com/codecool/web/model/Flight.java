@@ -14,16 +14,16 @@ public final class Flight extends AbstractModel {
     private String flightClass;
     private int price;
 
-    public Flight(int id, int planeId, String flightOrigin, String flightDestination, LocalDate flightDate, int flightStart, int flightEnd, String flightClass, int flightPrice) {
+    public Flight(int id, int planeId, String origin, String destination, LocalDate date, int start, int end, String flightClass, int price) {
         super(id);
         this.planeId = planeId;
-        this.origin = flightOrigin;
-        this.destination = flightDestination;
-        this.date = flightDate;
-        this.start = flightStart;
-        this.end = flightEnd;
+        this.origin = origin;
+        this.destination = destination;
+        this.date = date;
+        this.start = start;
+        this.end = end;
         this.flightClass = flightClass;
-        this.price = flightPrice;
+        this.price = price;
     }
 
     public Flight() {
