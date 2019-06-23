@@ -12,6 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -28,14 +30,16 @@ public class RegisterServlet extends AbstractServlet {
             String name = req.getParameter("name");
             String email = req.getParameter("email");
             String password = req.getParameter("password");
-            Role userRole = Role.REGISTERED;
+            Role role = Role.REGISTERED;
 
             if (!userService.findIfUserExists(email)) {
-                User user = userService.addUser(name, email, password, userRole, 0);
+                User user = userService.addUser(name, email, passwordService.getHashedPassword(password), role, 0);
 
                 req.setAttribute("user", user);
                 sendMessage(resp, HttpServletResponse.SC_OK, user);
             }
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
         } catch (SQLException ex) {
             handleSqlError(resp, ex);
         }
