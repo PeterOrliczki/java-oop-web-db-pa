@@ -33,8 +33,8 @@ public final class ProfileServlet extends AbstractServlet {
 
             User user = om.readValue(req.getInputStream(), User.class);
 
-            userService.updateEmailById(user.getId(), user.getUserEmail());
-            userService.updatePasswordById(user.getId(), user.getUserPassword());
+            userService.updateEmailById(user.getId(), user.getEmail());
+            userService.updatePasswordById(user.getId(), user.getPassword());
 
             req.getSession().setAttribute("user", user);
             sendMessage(resp, HttpServletResponse.SC_OK, "Your data has been updated.");
