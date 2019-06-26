@@ -106,12 +106,30 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
             statement.setString(1, name);
             statement.setString(2, email);
             statement.setString(3, password);
-            statement.setString(4, role.getValue());
+            statement.setString(4, role.getValue().toUpperCase());
             statement.setInt(5, balance);
             executeInsert(statement);
             int id = fetchGeneratedId(statement);
             connection.commit();
             return new User(id, name, email, password, role, balance);
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public void updateNameById(int id, String name) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "UPDATE users SET user_name=? WHERE user_id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, name);
+            statement.setInt(2, id);
+            executeInsert(statement);
+            connection.commit();
         } catch (SQLException ex) {
             connection.rollback();
             throw ex;

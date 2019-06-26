@@ -3,9 +3,12 @@ package com.codecool.web.service.simple;
 import com.codecool.web.dao.UserDao;
 import com.codecool.web.model.Role;
 import com.codecool.web.model.User;
+import com.codecool.web.service.PasswordService;
 import com.codecool.web.service.UserService;
 import com.codecool.web.service.exception.ServiceException;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -53,6 +56,11 @@ public final class SimpleUserService implements UserService {
     }
 
     @Override
+    public void updateNameById(int id, String name) throws SQLException {
+        userDao.updateNameById(id, name);
+    }
+
+    @Override
     public void updateEmailById(int id, String email) throws SQLException {
         userDao.updateEmailById(id, email);
     }
@@ -79,13 +87,14 @@ public final class SimpleUserService implements UserService {
 
     @Override
     public User loginUser(String email, String password) throws SQLException, ServiceException {
+        PasswordService passwordService = new PasswordService();
         try {
             User user = userDao.findByEmail(email);
-            if (user == null || !user.getPassword().equals(password)) {
+            if (user == null || !passwordService.validatePassword(password, user.getPassword())) {
                 throw new ServiceException("Bad login");
             }
             return user;
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException | NoSuchAlgorithmException | InvalidKeySpecException ex) {
             throw new ServiceException(ex.getMessage());
         }
     }
