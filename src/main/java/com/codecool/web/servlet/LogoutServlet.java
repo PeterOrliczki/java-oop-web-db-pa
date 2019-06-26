@@ -6,12 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/protected/logout")
+@WebServlet("/logout")
 public final class LogoutServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
-        sendMessage(resp, HttpServletResponse.SC_OK, "Logged out.");
+        sendMessage(resp, HttpServletResponse.SC_OK, "Logout successful.");
     }
 }
+

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Plane Ticket And Taxi Fare Buyer</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link href="style.css" rel="stylesheet">
+    <script src="index.js"></script>
+    <script src="login.js"></script>
+    <script src="profile.js"></script>
+    <script src="activities.js"></script>
+    <script src="users.js"></script>
+    <script src="flights.js"></script>
+    <script src="routes.js"></script>
+    <script src="planes.js"></script>
+    <script src="taxis.js"></script>
+    <script src="logout.js"></script>
+</head>
+
+<body class="main">
+
+<header id="header" class="header">
+    <div class="header-wrapper">
+        <div class="header-center">
+            <h1 class="header-title">
+                <a href="">Plane Ticket And Taxi Fare Buyer</a>
+            </h1>
+        </div>
+    </div>
+</header>
+
+
+<nav id="menu" class="menu">
+
+    <ul id="menu-list" class="menu-list">
+        <li class="menu-item">
+            <a href="javascript:void(0)" onclick="onActivitiesClicked()" id="link-activity" class="menu-link">Activity
+                Log<span
+                        class="menu-line"></span></a>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0)" onclick="onProfileClicked()" id="link-profile" class="menu-link">My
+                Profile<span class="menu-line"></span></a>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0)" onclick="onUsersClicked()" id="link-users" class="menu-link">Users<span
+                    class="menu-line"></span></a>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0)" onclick="onFlightsClicked()" id="link-flights" class="menu-link">Flights<span
+                    class="menu-line"></span></a>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0)" onclick="onRoutesClicked()" id="link-routes" class="menu-link">Routes<span
+                    class="menu-line"></span></a>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0)" onclick="onPlanesClicked()" id="link-planes" class="menu-link">Planes<span
+                    class="menu-line"></span></a>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0)" onclick="onTaxisClicked()" id="link-taxis" class="menu-link">Taxis<span
+                    class="menu-line"></span></a>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0)" onclick="onLogoutClicked()" id="link-logout" class="menu-link">Logout<span
+                    class="menu-line"></span></a>
+        </li>
+    </ul>
+</nav>
+
+<div id="container" class="container">
+
+    <section id="login-content" class="content">
+        <header class="content-header">
+            <h3 id="login-content-title" class="content-title">
+                Login
+            </h3>
+        </header>
+
+        <form id="login-form" class="menu-form" onsubmit="return false;">
+            <input name="email" class="text-input" placeholder="Email">
+            <input name="password" type="password" class="text-input" placeholder="Password">
+            <br>
+            <button id="login-button" class="form-button">Login</button>
+            <p id="register-text" class="register-text">
+                No account yet? Click <a href="javascript:void(0)" id="register-redirect">here</a> to register!
+                <br>
+                Or click <a href="javascript:void(0)" id="guest-redirect">here</a> to continue as a guest.
+            </p>
+        </form>
+
+        <form id="register-form" class="menu-form" onsubmit="return false;">
+            <input name="name" class="text-input" placeholder="Name">
+            <input name="email" class="text-input" placeholder="Email">
+            <input name="password" type="password" class="text-input" placeholder="Password">
+            <br>
+            <button id="register-button" class="form-button">Register</button>
+            <p id="login-text" class="register-text">
+                Already have an account? Click <a href="javascript:void(0)" id="login-redirect">here</a> to login!
+            </p>
+        </form>
+    </section>
+
+    <section id="activities-content" class="content">
+        <header class="content-header">
+            <h3 id="activity-content-title" class="content-title">
+                Activity Log
+            </h3>
+        </header>
+    </section>
+
+    <section id="profile-content" class="content">
+        <header class="content-header">
+            <h3 id="profile-content-title" class="content-title">
+                Profile
+            </h3>
+        </header>
+    </section>
+
+    <section id="user-content" class="content">
+        <header class="content-header">
+            <h3 id="user-content-title" class="content-title">
+                Users
+            </h3>
+        </header>
+    </section>
+
+    <section id="flight-content" class="content">
+        <header class="content-header">
+            <h3 id="flights-content-title" class="content-title">
+                Flights
+            </h3>
+        </header>
+    </section>
+
+    <section id="route-content" class="content">
+        <header class="content-header">
+            <h3 id="routes-content-title" class="content-title">
+                Routes
+            </h3>
+        </header>
+    </section>
+
+    <section id="plane-content" class="content">
+        <header class="content-header">
+            <h3 id="planes-content-title" class="content-title">
+                Planes
+            </h3>
+        </header>
+    </section>
+
+    <section id="taxi-content" class="content">
+        <header class="content-header">
+            <h3 id="taxis-content-title" class="content-title">
+                Taxis
+            </h3>
+        </header>
+    </section>
+
+</div>
+
+</body>
+
+</html>

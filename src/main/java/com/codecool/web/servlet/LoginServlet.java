@@ -6,6 +6,7 @@ import com.codecool.web.model.User;
 import com.codecool.web.service.UserService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.simple.SimpleUserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,8 @@ import java.sql.SQLException;
 
 @WebServlet("/login")
 public final class LoginServlet extends AbstractServlet {
+
+    private final ObjectMapper om = new ObjectMapper();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -37,3 +40,4 @@ public final class LoginServlet extends AbstractServlet {
         }
     }
 }
+

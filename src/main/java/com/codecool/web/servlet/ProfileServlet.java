@@ -1,3 +1,4 @@
+
 package com.codecool.web.servlet;
 
 import com.codecool.web.dao.UserDao;
@@ -22,17 +23,28 @@ public final class ProfileServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
-        sendMessage(response, HttpServletResponse.SC_OK, user);
+        try (Connection connection = getConnection(request.getServletContext())) {
+            UserDao userDao = new DatabaseUserDao(connection);
+            UserService userService = new SimpleUserService(userDao);
+
+            User user = (User) request.getSession().getAttribute("user");
+            int userId = user.getId();
+
+            sendMessage(response, HttpServletResponse.SC_OK, userService.findById(userId));
+        } catch (SQLException exc) {
+            handleSqlError(response, exc);
+        }
     }
 
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
             UserDao userDao = new DatabaseUserDao(connection);
             UserService userService = new SimpleUserService(userDao);
 
             User user = om.readValue(req.getInputStream(), User.class);
 
+            userService.updateNameById(user.getId(), user.getName());
             userService.updateEmailById(user.getId(), user.getEmail());
             userService.updatePasswordById(user.getId(), user.getPassword());
 
