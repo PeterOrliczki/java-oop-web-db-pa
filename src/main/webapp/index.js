@@ -4,14 +4,25 @@ const UNAUTHORIZED = 401;
 const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 
+let headerDivEl;
+let navDivEl;
+let menuListEl;
 let loginContentDivEl;
+let registerRedirectEl;
+let guestRedirectEl;
+let loginRedirectEl;
 let profileContentDivEl;
-let couponContentDivEl;
-let couponsContentDivEl;
-let shopContentDivEl;
-let shopsContentDivEl;
-let backToProfileContentDivEl;
-let logoutContentDivEl;
+let profileContentTitleDivEl;
+let mySchedulesDivEl;
+let allSchedulesDivEl;
+let myTasksDivéEl;
+let myActivitiesDivEl;
+let footerDivEl;
+let myUsersDivEl;
+let myFlightsDivEl;
+let myRoutesDivEl;
+let myPlanesDivEl;
+let myTaxisDivEl;
 
 function newInfo(targetEl, message) {
     newMessage(targetEl, 'info', message);
@@ -40,21 +51,13 @@ function clearMessages() {
     }
 }
 
-function showContents(ids) {
-    const contentEls = document.getElementsByClassName('content');
-    for (let i = 0; i < contentEls.length; i++) {
-        const contentEl = contentEls[i];
-        if (ids.includes(contentEl.id)) {
-            contentEl.classList.remove('hidden');
-        } else {
-            contentEl.classList.add('hidden');
-        }
-    }
-}
-
 function removeAllChildren(el) {
-    while (el.firstChild) {
-        el.removeChild(el.firstChild);
+    while (el.lastChild) {
+      if (el.lastChild.className !== 'content-header') {
+        el.lastChild.remove();
+      } else if (el.lastChild.className === 'content-header') {
+        break;
+      }
     }
 }
 
@@ -62,7 +65,7 @@ function onNetworkError(response) {
     document.body.remove();
     const bodyEl = document.createElement('body');
     document.appendChild(bodyEl);
-    newError(bodyEl, 'Network error, please try reloaing the page');
+    newError(bodyEl, 'Network error, please try reloading the page');
 }
 
 function onOtherResponse(targetEl, xhr) {
@@ -81,11 +84,51 @@ function onOtherResponse(targetEl, xhr) {
     }
 }
 
+function showContents(ids) {
+    const contentEls = document.getElementsByClassName('content');
+    for (let i = 0; i < contentEls.length; i++) {
+        const contentEl = contentEls[i];
+        if (ids.includes(contentEl.id)) {
+            contentEl.style.display = 'block';
+        } else {
+            contentEl.style.display = 'none';
+        }
+    }
+}
+
+function showMenu() {
+    menuListEl.style.display = 'block';
+}
+
+function hideMenu() {
+    menuListEl.style.display = 'none';
+}
+
+function showContentById(id) {
+    const contentEl = document.getElementById(id);
+    contentEl.style.display = 'block';
+}
+
+function hideContentById(id) {
+    const contentEl = document.getElementById(id);
+    contentEl.style.display = 'none';
+}
+
+function hasAuthorization() {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/flights');
+    xhr.send();
+    if (xhr.status === OK) {
+      return true;
+    }
+}
+
 function setAuthorization(user) {
     return localStorage.setItem('user', JSON.stringify(user));
 }
 
-function getAuthorization() {
+function getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));
 }
 
@@ -94,33 +137,48 @@ function setUnauthorized() {
 }
 
 function onLoad() {
+    headerDivEl = document.getElementById('header');
+    navDivEl = document.getElementById('menu');
+    menuListEl = document.getElementById('menu-list');
     loginContentDivEl = document.getElementById('login-content');
+
+    loginRedirectEl = document.getElementById('login-redirect');
+    loginRedirectEl.addEventListener('click', onLoginRedirectClicked);
+
+    registerRedirectEl = document.getElementById('register-redirect');
+    registerRedirectEl.addEventListener('click', onRegisterRedirectClicked);
+
+    guestRedirectEl = document.getElementById('guest-redirect');
+    guestRedirectEl.addEventListener('click', onGuestRedirectClicked);
+
     profileContentDivEl = document.getElementById('profile-content');
-    couponContentDivEl = document.getElementById('coupon-content');
-    couponsContentDivEl = document.getElementById('coupons-content');
-    shopContentDivEl = document.getElementById('shop-content');
-    shopsContentDivEl = document.getElementById('shops-content');
-    backToProfileContentDivEl = document.getElementById('back-to-profile-content');
-    logoutContentDivEl = document.getElementById('logout-content');
+    profileContentTitleDivEl = document.getElementById('profile-content-title');
+
+    myActivitiesDivEl = document.getElementById('activities-content');
+
+    myUsersDivEl = document.getElementById('user-content');
+
+    myFlightsDivEl = document.getElementById('flight-content');
+
+    myRoutesDivEl = document.getElementById('route-content');
+
+    myPlanesDivEl = document.getElementById('plane-content');
+
+    myTaxisDivEl = document.getElementById('taxi-content');
 
     const loginButtonEl = document.getElementById('login-button');
     loginButtonEl.addEventListener('click', onLoginButtonClicked);
 
-    const logoutButtonEl = document.getElementById('logout-button');
-    logoutButtonEl.addEventListener('click', onLogoutButtonClicked);
-
-    const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', function() {
-        if (this.status === OK) {
-            onProfileLoad(getAuthorization());
-        } else {
-            clearMessages();
-            showContents(['login-content']);
-        }
-    });
-    xhr.addEventListener('error', onNetworkError);
-    xhr.open('GET', 'protected/profile');
-    xhr.send();
+    const registerButtonEl = document.getElementById('register-button');
+    registerButtonEl.addEventListener('click', onRegisterButtonClicked);
+    getCurrentUser();
+    if (hasAuthorization()) {
+        onProfileLoad(getCurrentUser());
+    } else {
+        hideMenu();
+        showContents(['login-content']);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);
+
