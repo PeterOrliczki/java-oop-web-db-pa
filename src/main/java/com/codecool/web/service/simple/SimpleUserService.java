@@ -67,7 +67,7 @@ public final class SimpleUserService implements UserService {
 
     @Override
     public void updatePasswordById(int id, String password) throws SQLException {
-        userDao.updateEmailById(id, password);
+        userDao.updatePasswordById(id, password);
     }
 
     @Override

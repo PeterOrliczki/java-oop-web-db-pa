@@ -112,15 +112,16 @@ function createProfileTableBody(user) {
     emailTdEl.setAttribute('id', user.id);
 
     const passwordTdEl = document.createElement('td');
-    passwordTdEl.textContent = '*****';
+    passwordTdEl.textContent = user.password;
     passwordTdEl.setAttribute('id', user.id);
 
     const roleTdEl = document.createElement('td');
     roleTdEl.textContent = user.role;
     roleTdEl.setAttribute('id', user.role);
 
-    const buttonEditEl = document.createElement('i');
-    buttonEditEl.classList.add('icon-edit');
+    const buttonEditEl = document.createElement('p');
+    buttonEditEl.textContent = "edit button placeholder";
+    buttonEditEl.setAttribute('id', 'id-edit-button-' + user.id);
 
     buttonEditEl.dataset.userEditId = user.id;
     buttonEditEl.addEventListener('click', onProfileEditButtonClicked);
@@ -155,16 +156,16 @@ function onProfileEditButtonClicked() {
         tdEl.appendChild(createPopUpInput(i, oldValue));
     }
 
-    const buttonEditTdEl = document.getElementById('user-edit-button-' + id);
-    const saveButtonEl = document.createElement('i');
-    saveButtonEl.classList.add('icon-save');
+    document.getElementById('id-edit-button-' + id).style.display = 'none';
+    const saveButtonEl = document.createElement('p');
+    const saveButtonTextNodeEl = document.createTextNode('edit button placeholder');
+    saveButtonEl.appendChild(saveButtonTextNodeEl);
     saveButtonEl.dataset.userId = id;
     saveButtonEl.addEventListener('click', onProfileSaveButtonClicked);
-    buttonEditTdEl.innerHTML = '';
-    buttonEditTdEl.appendChild(saveButtonEl);
+    document.getElementById('user-edit-button-' + id).appendChild(saveButtonEl);
 }
 
-function createProfilePopUpInput(id, textContent) {
+function createPopUpInput(id, textContent) {
     const inputEl = document.createElement('input');
     inputEl.classList.add('pop-up-box');
     inputEl.name = 'input-user-id-' + id;
@@ -192,6 +193,7 @@ function onProfileSaveButtonClicked() {
     xhr.addEventListener('error', onNetworkError);
     xhr.open('PUT', 'protected/profile');
     xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
     xhr.send(json);
 }
 
