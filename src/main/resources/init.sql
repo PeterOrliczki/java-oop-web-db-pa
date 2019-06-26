@@ -1,14 +1,14 @@
-DROP TABLE IF EXISTS users_flights CASCADE;
-DROP TABLE IF EXISTS users_routes CASCADE;
-DROP TABLE IF EXISTS flights CASCADE;
-DROP TABLE IF EXISTS routes CASCADE;
-DROP TABLE IF EXISTS planes CASCADE;
-DROP TABLE IF EXISTS taxis CASCADE;
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS audit CASCADE;
-DROP SEQUENCE IF EXISTS counter CASCADE;
+drop table IF EXISTS users_flights CASCADE;
+drop table IF EXISTS users_routes CASCADE;
+drop table IF EXISTS flights CASCADE;
+drop table IF EXISTS routes CASCADE;
+drop table IF EXISTS planes CASCADE;
+drop table IF EXISTS taxis CASCADE;
+drop table IF EXISTS users CASCADE;
+drop table IF EXISTS audit CASCADE;
+drop sequence IF EXISTS counter CASCADE;
 
-CREATE TABLE users(
+create TABLE users(
 	user_id SERIAL UNIQUE PRIMARY KEY,
 	user_name varchar(16) NOT NULL,
 	user_email varchar(254) NOT NULL,
@@ -21,20 +21,20 @@ CREATE TABLE users(
 	CONSTRAINT user_role_not_empty CHECK (user_role <> '')
 );
 
-CREATE TABLE planes(
+create TABLE planes(
 	plane_id SERIAL UNIQUE PRIMARY KEY,
 	plane_name varchar(100) NOT NULL,
     plane_capacity integer NOT NULL
 );
 
-CREATE TABLE taxis(
+create TABLE taxis(
 	taxi_id SERIAL UNIQUE PRIMARY KEY,
 	taxi_name varchar(100) NOT NULL,
 	taxi_license_plate varchar(100) NOT NULL,
     taxi_capacity integer NOT NULL
 );
 
-CREATE TABLE flights(
+create TABLE flights(
 	flight_id SERIAL UNIQUE PRIMARY KEY,
 	plane_id integer,
 	flight_origin varchar(100) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE flights(
     CONSTRAINT flight_end_borders CHECK (flight_end > 0 AND flight_end <= 24)
 );
 
-CREATE TABLE routes(
+create TABLE routes(
 	route_id SERIAL UNIQUE PRIMARY KEY,
 	taxi_id integer,
 	route_origin varchar(100) NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE routes(
     CONSTRAINT route_end_borders CHECK (route_end > 0 AND route_end <= 24)
 );
 
-CREATE TABLE users_flights(
+create TABLE users_flights(
 	user_id integer,
 	flight_id integer,
 	FOREIGN KEY(user_id) REFERENCES users(user_id),
@@ -71,7 +71,7 @@ CREATE TABLE users_flights(
 	UNIQUE (user_id, flight_id)
 );
 
-CREATE TABLE users_routes(
+create TABLE users_routes(
 	user_id integer,
 	route_id integer,
 	FOREIGN KEY(user_id) REFERENCES users(user_id),
@@ -79,7 +79,7 @@ CREATE TABLE users_routes(
 	UNIQUE (user_id, route_id)
 );
 
-CREATE TABLE audit(
+create TABLE audit(
 	event_counter integer UNIQUE PRIMARY KEY,
 	event_name varchar(100),
 	table_name varchar(100),
@@ -87,9 +87,9 @@ CREATE TABLE audit(
 	event_date timestamp
 );
 
-CREATE SEQUENCE counter AS integer INCREMENT BY 1 START 1;
+create sequence counter AS integer INCREMENT BY 1 START 1;
 
-CREATE OR REPLACE FUNCTION process_audit() RETURNS TRIGGER AS '
+create or replace function process_audit() RETURNS trigger AS '
     BEGIN
         IF (TG_OP = ''DELETE'') THEN
             INSERT INTO audit
@@ -105,38 +105,38 @@ CREATE OR REPLACE FUNCTION process_audit() RETURNS TRIGGER AS '
     END;
 ' LANGUAGE plpgsql;
 
-CREATE TRIGGER users_audit_insert
-    AFTER INSERT ON users
-    FOR EACH ROW EXECUTE PROCEDURE process_audit();
-CREATE TRIGGER users_audit_update
-    AFTER UPDATE ON users
-    FOR EACH ROW EXECUTE PROCEDURE process_audit();
-CREATE TRIGGER users_audit_delete
-    AFTER DELETE ON users
-    FOR EACH ROW EXECUTE PROCEDURE process_audit();
+create trigger users_audit_insert
+    after insert on users
+    for each row EXECUTE procedure process_audit();
+create trigger users_audit_update
+    after update on users
+    for each row EXECUTE procedure process_audit();
+create trigger users_audit_delete
+    after delete on users
+    for each row EXECUTE procedure process_audit();
 
-CREATE TRIGGER users_flights_audit_insert
-    AFTER INSERT ON users_flights
-    FOR EACH ROW EXECUTE PROCEDURE process_audit();
-CREATE TRIGGER users_flights_audit_update
-    AFTER UPDATE ON users_flights
-    FOR EACH ROW EXECUTE PROCEDURE process_audit();
-CREATE TRIGGER users_flights_audit_delete
-    AFTER DELETE ON users_flights
-    FOR EACH ROW EXECUTE PROCEDURE process_audit();
+create trigger users_flights_audit_insert
+    after insert on users_flights
+    for each row EXECUTE procedure process_audit();
+create trigger users_flights_audit_update
+    after update on users_flights
+    for each row EXECUTE procedure process_audit();
+create trigger users_flights_audit_delete
+    after delete on users_flights
+    for each row EXECUTE procedure process_audit();
 
-CREATE TRIGGER users_routes_audit_insert
-    AFTER INSERT ON users_routes
-    FOR EACH ROW EXECUTE PROCEDURE process_audit();
-CREATE TRIGGER users_routes_audit_update
-    AFTER UPDATE ON users_routes
-    FOR EACH ROW EXECUTE PROCEDURE process_audit();
-CREATE TRIGGER users_routes_audit_delete
-    AFTER DELETE ON users_routes
-    FOR EACH ROW EXECUTE PROCEDURE process_audit();
+create trigger users_routes_audit_insert
+    after insert on users_routes
+    for each row EXECUTE procedure process_audit();
+create trigger users_routes_audit_update
+    after update on users_routes
+    for each row EXECUTE procedure process_audit();
+create trigger users_routes_audit_delete
+    after delete on users_routes
+    for each row EXECUTE procedure process_audit();
 
 
-INSERT INTO users(user_name, user_email, user_password, user_role, user_balance) VALUES ('admin', 'admin', 'ADMIN', 'admin', 1000);
+INSERT INTO users(user_name, user_email, user_password, user_role, user_balance) VALUES ('admin', 'admin', '1000:409fe2cfb15529fcbcc703c6ec160803:b06f766b8e27629b174f389e378e7e8b81b108d05a48e54e73efd92ca0398266c9bf9aef05191aff03595804636159ce029795404791b4806069c2a554f2c650', 'ADMIN', 0);
 
 INSERT INTO planes(plane_name, plane_capacity) VALUES ('Boeing 737', 162);
 
