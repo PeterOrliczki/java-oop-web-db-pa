@@ -73,7 +73,7 @@ public final class SimpleRouteService implements RouteService {
 
     @Override
     public void updateOriginById(int id, String origin) throws SQLException {
-        routeDao.findByOrigin(origin);
+        routeDao.updateOriginById(id, origin);
     }
 
     @Override
@@ -83,17 +83,17 @@ public final class SimpleRouteService implements RouteService {
 
     @Override
     public void updateDateById(int id, LocalDate date) throws SQLException {
-        routeDao.findByDate(date);
+        routeDao.updateDateById(id, date);
     }
 
     @Override
     public void updateStartById(int id, int start) throws SQLException {
-        routeDao.findByStart(start);
+        routeDao.updateStartById(id, start);
     }
 
     @Override
     public void updateEndById(int id, int end) throws SQLException {
-        routeDao.findByEnd(end);
+        routeDao.updateEndById(id, end);
     }
 
     @Override

@@ -35,5 +35,24 @@ public class RoutesServlet extends AbstractServlet {
             handleSqlError(response, exc);
         }
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            RouteDao routeDao = new DatabaseRouteDao(connection);
+            RouteService routeService = new SimpleRouteService(routeDao);
+
+            Route route = om.readValue(req.getInputStream(), Route.class);
+
+            routeService.updateOriginById(route.getId(), route.getOrigin());
+            routeService.updateDestinationById(route.getId(), route.getDestination());
+            routeService.updateStartById(route.getId(), route.getStart());
+            routeService.updateEndById(route.getId(), route.getEnd());
+
+            sendMessage(resp, HttpServletResponse.SC_OK, "Your data has been updated.");
+        } catch (SQLException exc) {
+            handleSqlError(resp, exc);
+        }
+    }
 }
 
