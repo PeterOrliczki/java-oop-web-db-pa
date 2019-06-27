@@ -35,5 +35,23 @@ public class TaxisServlet extends AbstractServlet {
             handleSqlError(response, exc);
         }
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            TaxiDao taxiDao = new DatabaseTaxiDao(connection);
+            TaxiService taxiService = new SimpleTaxiService(taxiDao);
+
+            Taxi taxi = om.readValue(req.getInputStream(), Taxi.class);
+
+            taxiService.updateNameById(taxi.getId(), taxi.getName());
+            taxiService.updateCapacityById(taxi.getId(), taxi.getCapacity());
+            taxiService.updateLicensePlateById(taxi.getId(), taxi.getLicensePlate());
+
+            sendMessage(resp, HttpServletResponse.SC_OK, "Your data has been updated.");
+        } catch (SQLException exc) {
+            handleSqlError(resp, exc);
+        }
+    }
 }
 

@@ -27,6 +27,7 @@ function createTaxisDisplay(taxis) {
   } else {
     removeAllChildren(myTaxisDivEl);
     const tableEl = document.createElement('table');
+    tableEl.setAttribute('id', 'edit-taxi-table');
     const theadEl = createTaxisTableHeader();
     const tbodyEl = createTaxisTableBody(taxis);
     tableEl.appendChild(theadEl);
@@ -49,9 +50,27 @@ function createTaxisTableBody(taxis) {
     tableNameTdEl.classList.add('default-cell');
     tableNameTdEl.textContent = taxi.capacity;
 
+    const userNameTdEl = document.createElement('td');
+    userNameTdEl.classList.add('default-cell');
+    userNameTdEl.textContent = taxi.licensePlate;
+
+    const buttonEditEl = document.createElement('p');
+    buttonEditEl.textContent = "edit button placeholder";
+    buttonEditEl.setAttribute('id', 'id-edit-taxi-button-' + taxi.id);
+
+    buttonEditEl.dataset.taxiEditId = taxi.id;
+    buttonEditEl.addEventListener('click', onTaxiEditButtonClicked);
+
+    const buttonOneTdEl = document.createElement('td');
+    buttonOneTdEl.appendChild(buttonEditEl);
+    buttonOneTdEl.setAttribute('id', 'taxi-edit-button-' + taxi.id);
+
     const trEl = document.createElement('tr');
+    trEl.setAttribute('id', 'row-taxi-id-' + taxi.id);
     trEl.appendChild(eventNameTdEl);
     trEl.appendChild(tableNameTdEl);
+    trEl.appendChild(userNameTdEl);
+    trEl.appendChild(buttonOneTdEl);
 
     tbodyEl.appendChild(trEl);
   }
@@ -68,15 +87,87 @@ function createTaxisTableHeader() {
      tableNameThEl.classList.add('default-th');
      tableNameThEl.textContent = 'Table';
 
+     const userNameThEl = document.createElement('th');
+     userNameThEl.classList.add('default-th');
+     userNameThEl.textContent = 'User';
+
+     const buttonOneTdEl = document.createElement('th');
+     buttonOneTdEl.textContent = 'Edit';
+
      const trEl = document.createElement('tr');
 
      trEl.appendChild(eventNameThEl);
      trEl.appendChild(tableNameThEl);
+     trEl.appendChild(userNameThEl);
+     trEl.appendChild(buttonOneTdEl);
 
      const theadEl = document.createElement('thead');
      theadEl.appendChild(trEl);
      return theadEl;
 }
+
+function onTaxiEditButtonClicked() {
+    const id = this.dataset.taxiEditId;
+    const tableEl = document.getElementById('edit-taxi-table');
+    const cells = tableEl.rows.namedItem('row-taxi-id-' + id).cells;
+
+    for (let i = 0; i < cells.length - 1; i++) {
+        const tdEl = cells[i];
+        const oldValue = tdEl.textContent;
+        tdEl.textContent = '';
+        tdEl.appendChild(createPopUpInput(i, oldValue));
+    }
+
+    document.getElementById('id-edit-taxi-button-' + id).style.display = 'none';
+    const saveButtonEl = document.createElement('p');
+    const saveButtonTextNodeEl = document.createTextNode('edit button placeholder');
+    saveButtonEl.appendChild(saveButtonTextNodeEl);
+    saveButtonEl.dataset.taxiId = id;
+    saveButtonEl.addEventListener('click', onTaxiSaveButtonClicked);
+    document.getElementById('taxi-edit-button-' + id).appendChild(saveButtonEl);
+}
+
+function createPopUpInput(id, textContent) {
+    const inputEl = document.createElement('input');
+    inputEl.classList.add('pop-up-box');
+    inputEl.name = 'input-taxi-id-' + id;
+    inputEl.setAttribute('id', 'taxi-input-' + id);
+    inputEl.value = textContent;
+    return inputEl;
+}
+
+function onTaxiSaveButtonClicked() {
+    const id = this.dataset.taxiId;
+    const user = getCurrentUser();
+
+    const inputs = document.getElementsByClassName('pop-up-box');
+
+    const data = {};
+    data.id = id;
+    data.name = inputs[0].value;
+    data.capacity = inputs[1].value;
+    data.licensePlate = inputs[2].value;
+    const json = JSON.stringify(data);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onTaxiEditSubmitResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/taxis');
+    xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+    xhr.send(json);
+}
+
+function onTaxiEditSubmitResponse() {
+    if (this.status === OK) {
+        const message = JSON.parse(this.responseText);
+        alert(message.message);
+        onTaxisClicked();
+    } else {
+        onOtherResponse(myTaxisDivEl, this);
+    }
+}
+
 
 function onTaxiResponse() {
     if (this.status === OK) {
