@@ -35,4 +35,21 @@ public class PlanesServlet extends AbstractServlet {
             handleSqlError(response, exc);
         }
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            PlaneDao planeDao = new DatabasePlaneDao(connection);
+            PlaneService planeService = new SimplePlaneService(planeDao);
+
+            Plane plane = om.readValue(req.getInputStream(), Plane.class);
+
+            planeService.updateNameById(plane.getId(), plane.getName());
+            planeService.updateCapacityById(plane.getId(), plane.getCapacity());
+
+            sendMessage(resp, HttpServletResponse.SC_OK, "Your data has been updated.");
+        } catch (SQLException exc) {
+            handleSqlError(resp, exc);
+        }
+    }
 }
