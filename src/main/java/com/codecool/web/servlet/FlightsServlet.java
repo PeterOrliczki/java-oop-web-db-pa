@@ -35,4 +35,23 @@ public class FlightsServlet extends AbstractServlet {
             handleSqlError(response, exc);
         }
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            FlightDao flightDao = new DatabaseFlightDao(connection);
+            FlightService flightService = new SimpleFlightService(flightDao);
+
+            Flight flight = om.readValue(req.getInputStream(), Flight.class);
+
+            flightService.updateOriginById(flight.getId(), flight.getOrigin());
+            flightService.updateDestinationById(flight.getId(), flight.getDestination());
+            flightService.updateStartById(flight.getId(), flight.getStart());
+            flightService.updateEndById(flight.getId(), flight.getEnd());
+
+            sendMessage(resp, HttpServletResponse.SC_OK, "Your data has been updated.");
+        } catch (SQLException exc) {
+            handleSqlError(resp, exc);
+        }
+    }
 }

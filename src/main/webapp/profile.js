@@ -112,7 +112,7 @@ function createProfileTableBody(user) {
     emailTdEl.setAttribute('id', user.id);
 
     const passwordTdEl = document.createElement('td');
-    passwordTdEl.textContent = user.password;
+    passwordTdEl.textContent = '*****';
     passwordTdEl.setAttribute('id', user.id);
 
     const roleTdEl = document.createElement('td');

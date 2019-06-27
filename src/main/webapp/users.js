@@ -27,6 +27,7 @@ function createUsersDisplay(users) {
   } else {
     removeAllChildren(myUsersDivEl);
     const tableEl = document.createElement('table');
+    tableEl.setAttribute('id', 'edit-user-table');
     const theadEl = createUsersTableHeader();
     const tbodyEl = createUsersTableBody(users);
     tableEl.appendChild(theadEl);
@@ -51,17 +52,30 @@ function createUsersTableBody(users) {
 
     const userNameTdEl = document.createElement('td');
     userNameTdEl.classList.add('default-cell');
-    userNameTdEl.textContent = user.password;
+    userNameTdEl.textContent = '*****';
 
     const eventDateTdEl = document.createElement('td');
     eventDateTdEl.classList.add('default-cell');
     eventDateTdEl.textContent = user.role;
 
+    const buttonEditEl = document.createElement('p');
+    buttonEditEl.textContent = "edit button placeholder";
+    buttonEditEl.setAttribute('id', 'id-edit-user-button-' + user.id);
+
+    buttonEditEl.dataset.userEditId = user.id;
+    buttonEditEl.addEventListener('click', onUserEditButtonClicked);
+
+    const buttonOneTdEl = document.createElement('td');
+    buttonOneTdEl.appendChild(buttonEditEl);
+    buttonOneTdEl.setAttribute('id', 'user-edit-user-button-' + user.id);
+
     const trEl = document.createElement('tr');
+    trEl.setAttribute('id', 'row-user-id-' + user.id);
     trEl.appendChild(eventNameTdEl);
     trEl.appendChild(tableNameTdEl);
     trEl.appendChild(userNameTdEl);
     trEl.appendChild(eventDateTdEl);
+    trEl.appendChild(buttonOneTdEl);
 
     tbodyEl.appendChild(trEl);
   }
@@ -86,22 +100,89 @@ function createUsersTableHeader() {
     eventDateThEl.classList.add('default-th');
     eventDateThEl.textContent = 'Date';
 
+    const buttonOneTdEl = document.createElement('th');
+    buttonOneTdEl.textContent = 'Edit';
+
     const trEl = document.createElement('tr');
 
     trEl.appendChild(eventNameThEl);
     trEl.appendChild(tableNameThEl);
     trEl.appendChild(userNameThEl);
     trEl.appendChild(eventDateThEl);
+    trEl.appendChild(buttonOneTdEl);
 
     const theadEl = document.createElement('thead');
     theadEl.appendChild(trEl);
     return theadEl;
 }
 
+function onUserEditButtonClicked() {
+    const id = this.dataset.userEditId;
+    const tableEl = document.getElementById('edit-user-table');
+    const cells = tableEl.rows.namedItem('row-user-id-' + id).cells;
+
+    for (let i = 0; i < cells.length - 1; i++) {
+        const tdEl = cells[i];
+        const oldValue = tdEl.textContent;
+        tdEl.textContent = '';
+        tdEl.appendChild(createPopUpInput(i, oldValue));
+    }
+
+    document.getElementById('id-edit-user-button-' + id).style.display = 'none';
+    const saveButtonEl = document.createElement('p');
+    const saveButtonTextNodeEl = document.createTextNode('edit button placeholder');
+    saveButtonEl.appendChild(saveButtonTextNodeEl);
+    saveButtonEl.dataset.userId = id;
+    saveButtonEl.addEventListener('click', onUserSaveButtonClicked);
+    document.getElementById('user-edit-user-button-' + id).appendChild(saveButtonEl);
+}
+
+function createPopUpInput(id, textContent) {
+    const inputEl = document.createElement('input');
+    inputEl.classList.add('pop-up-box');
+    inputEl.name = 'input-user-id-' + id;
+    inputEl.setAttribute('id', 'user-input-' + id);
+    inputEl.value = textContent;
+    return inputEl;
+}
+
+function onUserSaveButtonClicked() {
+    const id = this.dataset.userId;
+    const user = getCurrentUser();
+
+    const inputs = document.getElementsByClassName('pop-up-box');
+
+    const data = {};
+    data.id = id;
+    data.name = inputs[0].value;
+    data.email = inputs[1].value;
+    data.password = inputs[2].value;
+    data.role = user.role;
+    const json = JSON.stringify(data);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onAdminUserEditSubmitResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/profile');
+    xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+    xhr.send(json);
+}
+
 function onUserResponse() {
     if (this.status === OK) {
         const user = JSON.parse(this.responseText);
         onUserLoad(user);
+    } else {
+        onOtherResponse(myUsersDivEl, this);
+    }
+}
+
+function onAdminUserEditSubmitResponse() {
+    if (this.status === OK) {
+        const message = JSON.parse(this.responseText);
+        alert(message.message);
+        onUsersClicked();
     } else {
         onOtherResponse(myUsersDivEl, this);
     }
@@ -117,4 +198,3 @@ function onUserLoad(user) {
     removeAllChildren(myUsersDivEl);
     myUsersDivEl.appendChild(tableEl);
 }
-

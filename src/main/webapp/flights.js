@@ -27,6 +27,7 @@ function createFlightsDisplay(flights) {
   } else {
     removeAllChildren(myFlightsDivEl);
     const tableEl = document.createElement('table');
+    tableEl.setAttribute('id', 'edit-flight-table');
     const theadEl = createFlightsTableHeader();
     const tbodyEl = createFlightsTableBody(flights);
     tableEl.appendChild(theadEl);
@@ -57,11 +58,24 @@ function createFlightsTableBody(flights) {
     eventDateTdEl.classList.add('default-cell');
     eventDateTdEl.textContent = flight.end;
 
+    const buttonEditEl = document.createElement('p');
+    buttonEditEl.textContent = "edit button placeholder";
+    buttonEditEl.setAttribute('id', 'id-edit-flight-button-' + flight.id);
+
+    buttonEditEl.dataset.flightEditId = flight.id;
+    buttonEditEl.addEventListener('click', onFlightEditButtonClicked);
+
+    const buttonOneTdEl = document.createElement('td');
+    buttonOneTdEl.appendChild(buttonEditEl);
+    buttonOneTdEl.setAttribute('id', 'flight-edit-button-' + flight.id);
+
     const trEl = document.createElement('tr');
+    trEl.setAttribute('id', 'row-flight-id-' + flight.id);
     trEl.appendChild(eventNameTdEl);
     trEl.appendChild(tableNameTdEl);
     trEl.appendChild(userNameTdEl);
     trEl.appendChild(eventDateTdEl);
+    trEl.appendChild(buttonOneTdEl);
 
     tbodyEl.appendChild(trEl);
   }
@@ -86,16 +100,83 @@ function createFlightsTableHeader() {
     eventDateThEl.classList.add('default-th');
     eventDateThEl.textContent = 'Date';
 
+    const buttonOneTdEl = document.createElement('th');
+    buttonOneTdEl.textContent = 'Edit';
+
     const trEl = document.createElement('tr');
 
     trEl.appendChild(eventNameThEl);
     trEl.appendChild(tableNameThEl);
     trEl.appendChild(userNameThEl);
     trEl.appendChild(eventDateThEl);
+    trEl.appendChild(buttonOneTdEl);
 
     const theadEl = document.createElement('thead');
     theadEl.appendChild(trEl);
     return theadEl;
+}
+
+function onFlightEditButtonClicked() {
+    const id = this.dataset.flightEditId;
+    const tableEl = document.getElementById('edit-flight-table');
+    const cells = tableEl.rows.namedItem('row-flight-id-' + id).cells;
+
+    for (let i = 0; i < cells.length - 1; i++) {
+        const tdEl = cells[i];
+        const oldValue = tdEl.textContent;
+        tdEl.textContent = '';
+        tdEl.appendChild(createPopUpInput(i, oldValue));
+    }
+
+    document.getElementById('id-edit-flight-button-' + id).style.display = 'none';
+    const saveButtonEl = document.createElement('p');
+    const saveButtonTextNodeEl = document.createTextNode('edit button placeholder');
+    saveButtonEl.appendChild(saveButtonTextNodeEl);
+    saveButtonEl.dataset.flightId = id;
+    saveButtonEl.addEventListener('click', onFlightSaveButtonClicked);
+    document.getElementById('flight-edit-button-' + id).appendChild(saveButtonEl);
+}
+
+function createPopUpInput(id, textContent) {
+    const inputEl = document.createElement('input');
+    inputEl.classList.add('pop-up-box');
+    inputEl.name = 'input-flight-id-' + id;
+    inputEl.setAttribute('id', 'flight-input-' + id);
+    inputEl.value = textContent;
+    return inputEl;
+}
+
+function onFlightSaveButtonClicked() {
+    const id = this.dataset.flightId;
+    const user = getCurrentUser();
+
+    const inputs = document.getElementsByClassName('pop-up-box');
+
+    const data = {};
+    data.id = id;
+    data.origin = inputs[0].value;
+    data.destination = inputs[1].value;
+    data.start = inputs[2].value;
+    data.end = inputs[3].value;
+    const json = JSON.stringify(data);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onFlightEditSubmitResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/flights');
+    xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+    xhr.send(json);
+}
+
+function onFlightEditSubmitResponse() {
+    if (this.status === OK) {
+        const message = JSON.parse(this.responseText);
+        alert(message.message);
+        onFlightsClicked();
+    } else {
+        onOtherResponse(myFlightsDivEl, this);
+    }
 }
 
 function onFlightResponse() {
@@ -115,4 +196,3 @@ function onFlightLoad(flight) {
     removeAllChildren(myFlightsDivEl);
     myFlightsDivEl.appendChild(tableEl);
 }
-
