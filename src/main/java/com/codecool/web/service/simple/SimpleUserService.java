@@ -51,6 +51,16 @@ public final class SimpleUserService implements UserService {
     }
 
     @Override
+    public boolean findIfUserIdExistsInUsersFlights(int id) throws SQLException {
+        return userDao.findIfUserIdExistsInUsersFlights(id);
+    }
+
+    @Override
+    public boolean findIfUserIdExistsInUsersRoutes(int id) throws SQLException {
+        return userDao.findIfUserIdExistsInUsersRoutes(id);
+    }
+
+    @Override
     public User addUser(String name, String email, String password, Role role, int balance) throws SQLException {
         return userDao.addUser(name, email, password, role, balance);
     }
@@ -73,6 +83,16 @@ public final class SimpleUserService implements UserService {
     @Override
     public void deleteById(int id) throws SQLException {
         userDao.deleteById(id);
+    }
+
+    @Override
+    public void deleteFromUsersFlightsById(int id) throws SQLException {
+        userDao.deleteFromUsersFlightsById(id);
+    }
+
+    @Override
+    public void deleteFromUsersRoutesById(int id) throws SQLException {
+        userDao.deleteFromUsersRoutesById(id);
     }
 
     @Override

@@ -34,5 +34,26 @@ public final class UsersServlet extends AbstractServlet {
             handleSqlError(response, exc);
         }
     }
+
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try (Connection connection = getConnection(request.getServletContext())) {
+            UserDao userDao = new DatabaseUserDao(connection);
+            UserService userService = new SimpleUserService(userDao);
+
+            int id = Integer.valueOf(request.getParameter("id"));
+
+            if (userService.findIfUserIdExistsInUsersFlights(id)) {
+                userService.deleteFromUsersFlightsById(id);
+            }
+            if (userService.findIfUserIdExistsInUsersRoutes(id)) {
+                userService.deleteFromUsersRoutesById(id);
+            }
+            userService.deleteById(id);
+
+            sendMessage(response, HttpServletResponse.SC_OK, "Task succesfully deleted");
+        } catch (SQLException exc) {
+            handleSqlError(response, exc);
+        }
+    }
 }
 

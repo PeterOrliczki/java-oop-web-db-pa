@@ -23,7 +23,6 @@ function createUsersDisplay(users) {
     pEl.setAttribute('id', 'user-info');
     pEl.textContent = 'The user log is empty';
     myUsersDivEl.appendChild(pEl);
-    myUsersDivEl.appendChild(buttonEl);
   } else {
     removeAllChildren(myUsersDivEl);
     const tableEl = document.createElement('table');
@@ -69,6 +68,14 @@ function createUsersTableBody(users) {
     buttonOneTdEl.appendChild(buttonEditEl);
     buttonOneTdEl.setAttribute('id', 'user-edit-user-button-' + user.id);
 
+    const buttonDeleteEl = document.createElement('p');
+    buttonDeleteEl.classList.add('icon-trash');
+    buttonDeleteEl.textContent = "delete button placeholder";
+    buttonDeleteEl.setAttribute('id', user.id);
+    buttonDeleteEl.dataset.userDeleteId = user.id;
+    buttonDeleteEl.addEventListener('click', onUserDeleteClicked);
+
+
     const trEl = document.createElement('tr');
     trEl.setAttribute('id', 'row-user-id-' + user.id);
     trEl.appendChild(eventNameTdEl);
@@ -76,6 +83,7 @@ function createUsersTableBody(users) {
     trEl.appendChild(userNameTdEl);
     trEl.appendChild(eventDateTdEl);
     trEl.appendChild(buttonOneTdEl);
+    trEl.appendChild(buttonDeleteEl);
 
     tbodyEl.appendChild(trEl);
   }
@@ -103,6 +111,9 @@ function createUsersTableHeader() {
     const buttonOneTdEl = document.createElement('th');
     buttonOneTdEl.textContent = 'Edit';
 
+    const buttonTwoTdEl = document.createElement('th');
+    buttonTwoTdEl.textContent = 'Delete';
+
     const trEl = document.createElement('tr');
 
     trEl.appendChild(eventNameThEl);
@@ -110,6 +121,7 @@ function createUsersTableHeader() {
     trEl.appendChild(userNameThEl);
     trEl.appendChild(eventDateThEl);
     trEl.appendChild(buttonOneTdEl);
+    trEl.appendChild(buttonTwoTdEl);
 
     const theadEl = document.createElement('thead');
     theadEl.appendChild(trEl);
@@ -167,6 +179,29 @@ function onUserSaveButtonClicked() {
     xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
 
     xhr.send(json);
+}
+
+function onUserDeleteClicked() {
+    removeAllChildren(myUsersDivEl);
+    const userId = this.dataset.userDeleteId;
+
+    const params = new URLSearchParams();
+    params.append('id', userId);
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onDeleteResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('DELETE', 'protected/users?' + params.toString());
+    xhr.send();
+}
+
+function onDeleteResponse() {
+    if(this.status === OK) {
+        const response = JSON.parse(this.responseText);
+        alert(response.message);
+        onUsersClicked();
+    } else {
+        onOtherResponse(myUsersDivEl, this);
+    }
 }
 
 function onUserResponse() {

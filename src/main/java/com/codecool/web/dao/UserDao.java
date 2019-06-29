@@ -20,6 +20,10 @@ public interface UserDao {
 
     boolean findIfUserExists(String email) throws SQLException;
 
+    boolean findIfUserIdExistsInUsersFlights(int id) throws SQLException;
+
+    boolean findIfUserIdExistsInUsersRoutes(int id) throws SQLException;
+
     User addUser(String name, String email, String password, Role role, int balance) throws SQLException;
 
     void updateNameById(int id, String name) throws SQLException;
@@ -29,6 +33,10 @@ public interface UserDao {
     void updatePasswordById(int id, String password) throws SQLException;
 
     void deleteById(int id) throws SQLException;
+
+    void deleteFromUsersFlightsById(int id) throws SQLException;
+
+    void deleteFromUsersRoutesById(int id) throws SQLException;
 
     void subtractFromBalanceById(int id, int price) throws SQLException;
 
