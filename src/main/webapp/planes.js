@@ -17,12 +17,15 @@ function onPlanesLoad() {
 }
 
 function createPlanesDisplay(planes) {
+  const buttonEl = createNewPlaneButton();
+  buttonEl.addEventListener('click', addNewPlane);
   if (planes.length === 0) {
     removeAllChildren(myPlanesDivEl);
     const pEl = document.createElement('p');
     pEl.setAttribute('id', 'plane-info');
     pEl.textContent = 'The plane log is empty';
     myPlanesDivEl.appendChild(pEl);
+    myPlanesDivEl.appendChild(buttonEl);
     myPlanesDivEl.appendChild(buttonEl);
   } else {
     removeAllChildren(myPlanesDivEl);
@@ -33,6 +36,7 @@ function createPlanesDisplay(planes) {
     tableEl.appendChild(theadEl);
     tableEl.appendChild(tbodyEl);
     myPlanesDivEl.appendChild(tableEl);
+    myPlanesDivEl.appendChild(buttonEl);
   }
 }
 
@@ -94,6 +98,90 @@ function createPlanesTableHeader() {
      const theadEl = document.createElement('thead');
      theadEl.appendChild(trEl);
      return theadEl;
+}
+
+function createNewPlaneButton() {
+    const buttonEl = document.createElement('button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Add new plane';
+    return buttonEl;
+}
+
+function addNewPlane() {
+    removeAllChildren(myPlanesDivEl);
+    createNewPlaneForm();
+}
+
+function createNewPlaneForm() {
+    const formEl = document.createElement('form');
+    formEl.setAttribute('id','new-plane-form');
+    formEl.classList.add('menu-form');
+    formEl.onSubmit = 'return false;';
+
+    const inputTiEl = document.createElement("input");
+    inputTiEl.setAttribute("type","text");
+    inputTiEl.classList.add("text-input");
+    inputTiEl.placeholder = "Name";
+    inputTiEl.setAttribute("name","plane-name");
+
+    const inputCoEl = document.createElement("input");
+    inputCoEl.setAttribute("typ","text");
+    inputCoEl.classList.add("text-input");
+    inputCoEl.placeholder = "Capacity";
+    inputCoEl.setAttribute("name","plane-capacity");
+
+    const brEl = document.createElement("br");
+
+    const sEl = createNewSubmitButton();
+    sEl.addEventListener('click', onSubmitNewPlane);
+
+    formEl.appendChild(inputTiEl);
+    formEl.appendChild(inputCoEl);
+    formEl.appendChild(brEl);
+    formEl.appendChild(sEl);
+
+    myPlanesDivEl.appendChild(formEl);
+}
+
+function createNewSubmitButton() {
+    const buttonEl = document.createElement('button');
+    buttonEl.setAttribute('id', 'new-plane-button');
+    buttonEl.setAttribute('type', 'button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Add new plane';
+
+    return buttonEl;
+}
+
+function onSubmitNewPlane() {
+    const loginFormEl = document.forms['new-plane-form'];
+
+    const titleInputEl = loginFormEl.querySelector('input[name="plane-name"]');
+    const contentInputEl = loginFormEl.querySelector('input[name="plane-capacity"]');
+
+    removeAllChildren(myPlanesDivEl);
+    const title = titleInputEl.value;
+    const content = contentInputEl.value;
+
+    const params = new URLSearchParams();
+    params.append('plane-name', title);
+    params.append('plane-capacity', content);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onSubmissionResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'protected/planes');
+    xhr.send(params);
+}
+
+function onSubmissionResponse() {
+    if (this.status === OK) {
+        const plane = JSON.parse(this.responseText);
+        alert(plane.message);
+        onPlanesClicked();
+    } else {
+        onOtherResponse(myPlanesDivEl, this);
+    }
 }
 
 function onPlaneEditButtonClicked() {

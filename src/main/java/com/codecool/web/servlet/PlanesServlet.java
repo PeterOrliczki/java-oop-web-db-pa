@@ -52,4 +52,21 @@ public class PlanesServlet extends AbstractServlet {
             handleSqlError(resp, exc);
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try (Connection connection = getConnection(request.getServletContext())) {
+            PlaneDao planeDao = new DatabasePlaneDao(connection);
+            PlaneService planeService = new SimplePlaneService(planeDao);
+
+            String planeName = request.getParameter("plane-name");
+            int planeCapacity = Integer.parseInt(request.getParameter("plane-capacity"));
+
+            planeService.addPlane(planeName, planeCapacity);
+
+            sendMessage(response, HttpServletResponse.SC_OK, "Plane successfully added");
+        } catch (SQLException exc) {
+            handleSqlError(response, exc);
+        }
+    }
 }
