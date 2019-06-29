@@ -90,7 +90,7 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
         String sql = "INSERT INTO taxis(taxi_name, taxi_license_plate, taxi_capacity) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name);
-            statement.setString(1, licensePlate);
+            statement.setString(2, licensePlate);
             statement.setInt(3, capacity);
             executeInsert(statement);
             int id = fetchGeneratedId(statement);

@@ -17,6 +17,8 @@ function onTaxisLoad() {
 }
 
 function createTaxisDisplay(taxis) {
+  const buttonEl = createNewTaxiButton();
+  buttonEl.addEventListener('click', addNewTaxi);
   if (taxis.length === 0) {
     removeAllChildren(myTaxisDivEl);
     const pEl = document.createElement('p');
@@ -33,6 +35,7 @@ function createTaxisDisplay(taxis) {
     tableEl.appendChild(theadEl);
     tableEl.appendChild(tbodyEl);
     myTaxisDivEl.appendChild(tableEl);
+    myTaxisDivEl.appendChild(buttonEl);
   }
 }
 
@@ -46,13 +49,13 @@ function createTaxisTableBody(taxis) {
     eventNameTdEl.classList.add('default-cell');
     eventNameTdEl.textContent = taxi.name;
 
-    const tableNameTdEl = document.createElement('td');
-    tableNameTdEl.classList.add('default-cell');
-    tableNameTdEl.textContent = taxi.capacity;
-
     const userNameTdEl = document.createElement('td');
     userNameTdEl.classList.add('default-cell');
     userNameTdEl.textContent = taxi.licensePlate;
+
+    const tableNameTdEl = document.createElement('td');
+    tableNameTdEl.classList.add('default-cell');
+    tableNameTdEl.textContent = taxi.capacity;
 
     const buttonEditEl = document.createElement('p');
     buttonEditEl.textContent = "edit button placeholder";
@@ -68,8 +71,8 @@ function createTaxisTableBody(taxis) {
     const trEl = document.createElement('tr');
     trEl.setAttribute('id', 'row-taxi-id-' + taxi.id);
     trEl.appendChild(eventNameTdEl);
-    trEl.appendChild(tableNameTdEl);
     trEl.appendChild(userNameTdEl);
+    trEl.appendChild(tableNameTdEl);
     trEl.appendChild(buttonOneTdEl);
 
     tbodyEl.appendChild(trEl);
@@ -104,6 +107,100 @@ function createTaxisTableHeader() {
      const theadEl = document.createElement('thead');
      theadEl.appendChild(trEl);
      return theadEl;
+}
+
+function createNewTaxiButton() {
+    const buttonEl = document.createElement('button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Add new taxi';
+    return buttonEl;
+}
+
+function addNewTaxi() {
+    removeAllChildren(myTaxisDivEl);
+    createNewTaxiForm();
+}
+
+function createNewTaxiForm() {
+    const formEl = document.createElement('form');
+    formEl.setAttribute('id','new-taxi-form');
+    formEl.classList.add('menu-form');
+    formEl.onSubmit = 'return false;';
+
+    const inputTiEl = document.createElement("input");
+    inputTiEl.setAttribute("type","text");
+    inputTiEl.classList.add("text-input");
+    inputTiEl.placeholder = "Name";
+    inputTiEl.setAttribute("name","taxi-name");
+
+    const inputLiPlEl = document.createElement("input");
+    inputLiPlEl.setAttribute("type","text");
+    inputLiPlEl.classList.add("text-input");
+    inputLiPlEl.placeholder = "License Plate";
+    inputLiPlEl.setAttribute("name","taxi-license-plate");
+
+    const inputCoEl = document.createElement("input");
+    inputCoEl.setAttribute("type","text");
+    inputCoEl.classList.add("text-input");
+    inputCoEl.placeholder = "Capacity";
+    inputCoEl.setAttribute("name","taxi-capacity");
+
+    const brEl = document.createElement("br");
+
+    const sEl = createNewSubmitButton();
+    sEl.addEventListener('click', onSubmitNewTaxi);
+
+    formEl.appendChild(inputTiEl);
+    formEl.appendChild(inputLiPlEl);
+    formEl.appendChild(inputCoEl);
+    formEl.appendChild(brEl);
+    formEl.appendChild(sEl);
+
+    myTaxisDivEl.appendChild(formEl);
+}
+
+function createNewSubmitButton() {
+    const buttonEl = document.createElement('button');
+    buttonEl.setAttribute('id', 'new-taxi-button');
+    buttonEl.setAttribute('type', 'button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Add new taxi';
+
+    return buttonEl;
+}
+
+function onSubmitNewTaxi() {
+    const loginFormEl = document.forms['new-taxi-form'];
+
+    const titleInputEl = loginFormEl.querySelector('input[name="taxi-name"]');
+    const licensePlateInputEl = loginFormEl.querySelector('input[name="taxi-license-plate"]');
+    const contentInputEl = loginFormEl.querySelector('input[name="taxi-capacity"]');
+
+    removeAllChildren(myTaxisDivEl);
+    const title = titleInputEl.value;
+    const licensePlate = licensePlateInputEl.value;
+    const content = contentInputEl.value;
+
+    const params = new URLSearchParams();
+    params.append('taxi-name', title);
+    params.append('taxi-license-plate', licensePlate);
+    params.append('taxi-capacity', content);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onSubmissionResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'protected/taxis');
+    xhr.send(params);
+}
+
+function onSubmissionResponse() {
+    if (this.status === OK) {
+        const taxi = JSON.parse(this.responseText);
+        alert(taxi.message);
+        onTaxisClicked();
+    } else {
+        onOtherResponse(myTaxisDivEl, this);
+    }
 }
 
 function onTaxiEditButtonClicked() {
@@ -145,8 +242,8 @@ function onTaxiSaveButtonClicked() {
     const data = {};
     data.id = id;
     data.name = inputs[0].value;
-    data.capacity = inputs[1].value;
-    data.licensePlate = inputs[2].value;
+    data.licensePlate = inputs[1].value;
+    data.capacity = inputs[2].value;
     const json = JSON.stringify(data);
 
     const xhr = new XMLHttpRequest();

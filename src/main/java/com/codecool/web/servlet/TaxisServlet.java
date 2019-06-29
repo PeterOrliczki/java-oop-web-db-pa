@@ -53,5 +53,23 @@ public class TaxisServlet extends AbstractServlet {
             handleSqlError(resp, exc);
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try (Connection connection = getConnection(request.getServletContext())) {
+            TaxiDao taxiDao = new DatabaseTaxiDao(connection);
+            TaxiService taxiService = new SimpleTaxiService(taxiDao);
+
+            String taxiName = request.getParameter("taxi-name");
+            String taxiLicensePlate = request.getParameter("taxi-license-plate");
+            int taxiCapacity = Integer.parseInt(request.getParameter("taxi-capacity"));
+
+            taxiService.addTaxi(taxiName, taxiLicensePlate, taxiCapacity);
+
+            sendMessage(response, HttpServletResponse.SC_OK, "Taxi successfully added");
+        } catch (SQLException exc) {
+            handleSqlError(response, exc);
+        }
+    }
 }
 

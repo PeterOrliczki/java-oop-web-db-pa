@@ -26,7 +26,6 @@ function createPlanesDisplay(planes) {
     pEl.textContent = 'The plane log is empty';
     myPlanesDivEl.appendChild(pEl);
     myPlanesDivEl.appendChild(buttonEl);
-    myPlanesDivEl.appendChild(buttonEl);
   } else {
     removeAllChildren(myPlanesDivEl);
     const tableEl = document.createElement('table');
@@ -125,7 +124,7 @@ function createNewPlaneForm() {
     inputTiEl.setAttribute("name","plane-name");
 
     const inputCoEl = document.createElement("input");
-    inputCoEl.setAttribute("typ","text");
+    inputCoEl.setAttribute("type","text");
     inputCoEl.classList.add("text-input");
     inputCoEl.placeholder = "Capacity";
     inputCoEl.setAttribute("name","plane-capacity");
