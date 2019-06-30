@@ -17,13 +17,15 @@ function onRoutesLoad() {
 }
 
 function createRoutesDisplay(routes) {
+  const routeButtonEl = createNewRouteButton();
+  routeButtonEl.addEventListener('click', addNewRoute);
   if (routes.length === 0) {
     removeAllChildren(myRoutesDivEl);
     const pEl = document.createElement('p');
     pEl.setAttribute('id', 'route-info');
     pEl.textContent = 'The route log is empty';
     myRoutesDivEl.appendChild(pEl);
-    myRoutesDivEl.appendChild(buttonEl);
+    myRoutesDivEl.appendChild(routeButtonEl);
   } else {
     removeAllChildren(myRoutesDivEl);
     const tableEl = document.createElement('table');
@@ -33,6 +35,7 @@ function createRoutesDisplay(routes) {
     tableEl.appendChild(theadEl);
     tableEl.appendChild(tbodyEl);
     myRoutesDivEl.appendChild(tableEl);
+    myRoutesDivEl.appendChild(routeButtonEl);
   }
 }
 
@@ -115,6 +118,141 @@ function createRoutesTableHeader() {
     theadEl.appendChild(trEl);
     return theadEl;
 }
+
+function createNewRouteButton() {
+    const buttonEl = document.createElement('button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Add new route';
+    return buttonEl;
+}
+
+function addNewRoute() {
+    removeAllChildren(myRoutesDivEl);
+    createNewRouteForm();
+}
+
+function createNewRouteForm() {
+    const formEl = document.createElement('form');
+    formEl.setAttribute('id','new-route-form');
+    formEl.classList.add('menu-form');
+    formEl.onSubmit = 'return false;';
+
+    const inputIdEl = document.createElement("input");
+    inputIdEl.setAttribute("type","text");
+    inputIdEl.classList.add("text-input");
+    inputIdEl.placeholder = "Id";
+    inputIdEl.setAttribute("name","taxi-id");
+
+    const inputOrEl = document.createElement("input");
+    inputOrEl.setAttribute("type","text");
+    inputOrEl.classList.add("text-input");
+    inputOrEl.placeholder = "Origin";
+    inputOrEl.setAttribute("name","route-origin");
+
+    const inputDeEl = document.createElement("input");
+    inputDeEl.setAttribute("type","text");
+    inputDeEl.classList.add("text-input");
+    inputDeEl.placeholder = "Destination";
+    inputDeEl.setAttribute("name","route-destination");
+
+    const inputDaEl = document.createElement("input");
+    inputDaEl.setAttribute("type","text");
+    inputDaEl.classList.add("text-input");
+    inputDaEl.placeholder = "Date";
+    inputDaEl.setAttribute("name","route-date");
+
+    const inputStEl = document.createElement("input");
+    inputStEl.setAttribute("type","text");
+    inputStEl.classList.add("text-input");
+    inputStEl.placeholder = "Start";
+    inputStEl.setAttribute("name","route-start");
+
+    const inputEnEl = document.createElement("input");
+    inputEnEl.setAttribute("type","text");
+    inputEnEl.classList.add("text-input");
+    inputEnEl.placeholder = "End";
+    inputEnEl.setAttribute("name","route-end");
+
+    const inputPrEl = document.createElement("input");
+    inputPrEl.setAttribute("type","text");
+    inputPrEl.classList.add("text-input");
+    inputPrEl.placeholder = "Price";
+    inputPrEl.setAttribute("name","route-price");
+
+    const brEl = document.createElement("br");
+
+    const sEl = createNewSubmitRouteButton();
+    sEl.addEventListener('click', onSubmitNewRoute);
+
+    formEl.appendChild(inputIdEl);
+    formEl.appendChild(inputOrEl);
+    formEl.appendChild(inputDeEl);
+    formEl.appendChild(inputDaEl);
+    formEl.appendChild(inputStEl);
+    formEl.appendChild(inputEnEl);
+    formEl.appendChild(inputPrEl);
+    formEl.appendChild(brEl);
+    formEl.appendChild(sEl);
+
+    myRoutesDivEl.appendChild(formEl);
+}
+
+function createNewSubmitRouteButton() {
+    const buttonEl = document.createElement('button');
+    buttonEl.setAttribute('id', 'new-route-button');
+    buttonEl.setAttribute('type', 'button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Add new route';
+
+    return buttonEl;
+}
+
+function onSubmitNewRoute() {
+    const loginFormEl = document.forms['new-route-form'];
+
+    const taxiIdInputEl = loginFormEl.querySelector('input[name="taxi-id"]');
+    const originInputEl = loginFormEl.querySelector('input[name="route-origin"]');
+    const destinationInputEl = loginFormEl.querySelector('input[name="route-destination"]');
+    const dateInputEl = loginFormEl.querySelector('input[name="route-date"]');
+    const startInputEl = loginFormEl.querySelector('input[name="route-start"]');
+    const endInputEl = loginFormEl.querySelector('input[name="route-end"]');
+    const priceInputEl = loginFormEl.querySelector('input[name="route-price"]');
+
+    removeAllChildren(myRoutesDivEl);
+    const taxiId = taxiIdInputEl.value;
+    const origin = originInputEl.value;
+    const destination = destinationInputEl.value;
+    const date = dateInputEl.value;
+    const start = startInputEl.value;
+    const end = endInputEl.value;
+    const price = priceInputEl.value;
+
+    const params = new URLSearchParams();
+    params.append('taxi-id', taxiId);
+    params.append('route-origin', origin);
+    params.append('route-destination', destination);
+    params.append('route-date', date);
+    params.append('route-start', start);
+    params.append('route-end', end);
+    params.append('route-price', price);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onRouteSubmissionResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'protected/routes');
+    xhr.send(params);
+}
+
+function onRouteSubmissionResponse() {
+    if (this.status === OK) {
+        const route = JSON.parse(this.responseText);
+        alert(route.message);
+        onRoutesClicked();
+    } else {
+        onOtherResponse(myRoutesDivEl, this);
+    }
+}
+
 
 function onRouteEditButtonClicked() {
     const id = this.dataset.routeEditId;
