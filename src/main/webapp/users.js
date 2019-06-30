@@ -41,24 +41,28 @@ function createUsersTableBody(users) {
   for (let i = 0; i < users.length; i++) {
     const user = users[i];
 
-    const eventNameTdEl = document.createElement('td');
-    eventNameTdEl.classList.add('default-cell');
-    eventNameTdEl.textContent = user.name;
+    const nameTdEl = document.createElement('td');
+    nameTdEl.classList.add('default-cell');
+    nameTdEl.textContent = user.name;
 
-    const tableNameTdEl = document.createElement('td');
-    tableNameTdEl.classList.add('default-cell');
-    tableNameTdEl.textContent = user.email;
+    const emailTdEl = document.createElement('td');
+    emailTdEl.classList.add('default-cell');
+    emailTdEl.textContent = user.email;
 
-    const userNameTdEl = document.createElement('td');
-    userNameTdEl.classList.add('default-cell');
-    userNameTdEl.textContent = '*****';
+    const passwordTdEl = document.createElement('td');
+    passwordTdEl.classList.add('default-cell');
+    passwordTdEl.textContent = '*****';
 
-    const eventDateTdEl = document.createElement('td');
-    eventDateTdEl.classList.add('default-cell');
-    eventDateTdEl.textContent = user.role;
+    const roleTdEl = document.createElement('td');
+    roleTdEl.classList.add('default-cell');
+    roleTdEl.textContent = user.role;
+
+    const balanceTdEl = document.createElement('td');
+    balanceTdEl.classList.add('default-cell');
+    balanceTdEl.textContent = user.balance;
 
     const buttonEditEl = document.createElement('p');
-    buttonEditEl.textContent = "edit button placeholder";
+    buttonEditEl.textContent = "Edit";
     buttonEditEl.setAttribute('id', 'id-edit-user-button-' + user.id);
 
     buttonEditEl.dataset.userEditId = user.id;
@@ -70,7 +74,7 @@ function createUsersTableBody(users) {
 
     const buttonDeleteEl = document.createElement('p');
     buttonDeleteEl.classList.add('icon-trash');
-    buttonDeleteEl.textContent = "delete button placeholder";
+    buttonDeleteEl.textContent = "Delete";
     buttonDeleteEl.setAttribute('id', user.id);
     buttonDeleteEl.dataset.userDeleteId = user.id;
     buttonDeleteEl.addEventListener('click', onUserDeleteClicked);
@@ -78,10 +82,11 @@ function createUsersTableBody(users) {
 
     const trEl = document.createElement('tr');
     trEl.setAttribute('id', 'row-user-id-' + user.id);
-    trEl.appendChild(eventNameTdEl);
-    trEl.appendChild(tableNameTdEl);
-    trEl.appendChild(userNameTdEl);
-    trEl.appendChild(eventDateTdEl);
+    trEl.appendChild(nameTdEl);
+    trEl.appendChild(emailTdEl);
+    trEl.appendChild(passwordTdEl);
+    trEl.appendChild(roleTdEl);
+    trEl.appendChild(balanceTdEl);
     trEl.appendChild(buttonOneTdEl);
     trEl.appendChild(buttonDeleteEl);
 
@@ -92,36 +97,33 @@ function createUsersTableBody(users) {
 }
 
 function createUsersTableHeader() {
-    const eventNameThEl = document.createElement('th');
-    eventNameThEl.classList.add('default-th');``
-    eventNameThEl.textContent = 'Event';
+    const nameThEl = document.createElement('th');
+    nameThEl.classList.add('default-th');``
+    nameThEl.textContent = 'Name';
 
-    const tableNameThEl = document.createElement('th');
-    tableNameThEl.classList.add('default-th');
-    tableNameThEl.textContent = 'Table';
+    const emailThEl = document.createElement('th');
+    emailThEl.classList.add('default-th');
+    emailThEl.textContent = 'Email';
 
-    const userNameThEl = document.createElement('th');
-    userNameThEl.classList.add('default-th');
-    userNameThEl.textContent = 'User';
+    const passwordThEl = document.createElement('th');
+    passwordThEl.classList.add('default-th');
+    passwordThEl.textContent = 'Password';
 
-    const eventDateThEl = document.createElement('th');
-    eventDateThEl.classList.add('default-th');
-    eventDateThEl.textContent = 'Date';
+    const roleThEl = document.createElement('th');
+    roleThEl.classList.add('default-th');
+    roleThEl.textContent = 'Role';
 
-    const buttonOneTdEl = document.createElement('th');
-    buttonOneTdEl.textContent = 'Edit';
-
-    const buttonTwoTdEl = document.createElement('th');
-    buttonTwoTdEl.textContent = 'Delete';
+    const balanceThEl = document.createElement('th');
+    balanceThEl.classList.add('default-th');
+    balanceThEl.textContent = 'Balance';
 
     const trEl = document.createElement('tr');
 
-    trEl.appendChild(eventNameThEl);
-    trEl.appendChild(tableNameThEl);
-    trEl.appendChild(userNameThEl);
-    trEl.appendChild(eventDateThEl);
-    trEl.appendChild(buttonOneTdEl);
-    trEl.appendChild(buttonTwoTdEl);
+    trEl.appendChild(nameThEl);
+    trEl.appendChild(emailThEl);
+    trEl.appendChild(passwordThEl);
+    trEl.appendChild(roleThEl);
+    trEl.appendChild(balanceThEl);
 
     const theadEl = document.createElement('thead');
     theadEl.appendChild(trEl);
@@ -133,7 +135,7 @@ function onUserEditButtonClicked() {
     const tableEl = document.getElementById('edit-user-table');
     const cells = tableEl.rows.namedItem('row-user-id-' + id).cells;
 
-    for (let i = 0; i < cells.length - 1; i++) {
+    for (let i = 0; i < cells.length - 3; i++) {
         const tdEl = cells[i];
         const oldValue = tdEl.textContent;
         tdEl.textContent = '';
@@ -142,7 +144,7 @@ function onUserEditButtonClicked() {
 
     document.getElementById('id-edit-user-button-' + id).style.display = 'none';
     const saveButtonEl = document.createElement('p');
-    const saveButtonTextNodeEl = document.createTextNode('edit button placeholder');
+    const saveButtonTextNodeEl = document.createTextNode('Edit');
     saveButtonEl.appendChild(saveButtonTextNodeEl);
     saveButtonEl.dataset.userId = id;
     saveButtonEl.addEventListener('click', onUserSaveButtonClicked);
