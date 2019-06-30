@@ -48,10 +48,13 @@ public class RoutesServlet extends AbstractServlet {
 
             Route route = om.readValue(req.getInputStream(), Route.class);
 
+            routeService.updateTaxiIdById(route.getId(), route.getTaxiId());
             routeService.updateOriginById(route.getId(), route.getOrigin());
             routeService.updateDestinationById(route.getId(), route.getDestination());
+            routeService.updateDateById(route.getId(), route.getDate());
             routeService.updateStartById(route.getId(), route.getStart());
             routeService.updateEndById(route.getId(), route.getEnd());
+            routeService.updatePriceById(route.getId(), route.getPrice());
 
             sendMessage(resp, HttpServletResponse.SC_OK, "Your data has been updated.");
         } catch (SQLException exc) {

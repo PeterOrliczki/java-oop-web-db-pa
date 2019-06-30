@@ -45,24 +45,36 @@ function createRoutesTableBody(routes) {
   for (let i = 0; i < routes.length; i++) {
     const route = routes[i];
 
-    const eventNameTdEl = document.createElement('td');
-    eventNameTdEl.classList.add('default-cell');
-    eventNameTdEl.textContent = route.origin;
+    const taxiIdTdEl = document.createElement('td');
+    taxiIdTdEl.classList.add('default-cell');
+    taxiIdTdEl.textContent = route.taxiId;
 
-    const tableNameTdEl = document.createElement('td');
-    tableNameTdEl.classList.add('default-cell');
-    tableNameTdEl.textContent = route.destination;
+    const originTdEl = document.createElement('td');
+    originTdEl.classList.add('default-cell');
+    originTdEl.textContent = route.origin;
 
-    const userNameTdEl = document.createElement('td');
-    userNameTdEl.classList.add('default-cell');
-    userNameTdEl.textContent = route.start;
+    const destinationTdEl = document.createElement('td');
+    destinationTdEl.classList.add('default-cell');
+    destinationTdEl.textContent = route.destination;
 
-    const eventDateTdEl = document.createElement('td');
-    eventDateTdEl.classList.add('default-cell');
-    eventDateTdEl.textContent = route.end;
+    const dateTdEl = document.createElement('td');
+    dateTdEl.classList.add('default-cell');
+    dateTdEl.textContent = route.date;
+
+    const startTdEl = document.createElement('td');
+    startTdEl.classList.add('default-cell');
+    startTdEl.textContent = route.start;
+
+    const endTdEl = document.createElement('td');
+    endTdEl.classList.add('default-cell');
+    endTdEl.textContent = route.end;
+
+    const priceTdEl = document.createElement('td');
+    priceTdEl.classList.add('default-cell');
+    priceTdEl.textContent = route.price;
 
     const buttonEditEl = document.createElement('p');
-    buttonEditEl.textContent = "edit button placeholder";
+    buttonEditEl.textContent = "Edit";
     buttonEditEl.setAttribute('id', 'id-edit-route-button-' + route.id);
 
     buttonEditEl.dataset.routeEditId = route.id;
@@ -74,10 +86,13 @@ function createRoutesTableBody(routes) {
 
     const trEl = document.createElement('tr');
     trEl.setAttribute('id', 'row-route-id-' + route.id);
-    trEl.appendChild(eventNameTdEl);
-    trEl.appendChild(tableNameTdEl);
-    trEl.appendChild(userNameTdEl);
-    trEl.appendChild(eventDateTdEl);
+    trEl.appendChild(taxiIdTdEl);
+    trEl.appendChild(originTdEl);
+    trEl.appendChild(destinationTdEl);
+    trEl.appendChild(dateTdEl);
+    trEl.appendChild(startTdEl);
+    trEl.appendChild(endTdEl);
+    trEl.appendChild(priceTdEl);
     trEl.appendChild(buttonOneTdEl);
 
     tbodyEl.appendChild(trEl);
@@ -87,32 +102,43 @@ function createRoutesTableBody(routes) {
 }
 
 function createRoutesTableHeader() {
-    const eventNameThEl = document.createElement('th');
-    eventNameThEl.classList.add('default-th');``
-    eventNameThEl.textContent = 'Event';
+    const taxiIdThEl = document.createElement('th');
+    taxiIdThEl.classList.add('default-th');``
+    taxiIdThEl.textContent = 'Taxi ID';
 
-    const tableNameThEl = document.createElement('th');
-    tableNameThEl.classList.add('default-th');
-    tableNameThEl.textContent = 'Table';
+    const originThEl = document.createElement('th');
+    originThEl.classList.add('default-th');
+    originThEl.textContent = 'Origin';
 
-    const userNameThEl = document.createElement('th');
-    userNameThEl.classList.add('default-th');
-    userNameThEl.textContent = 'User';
+    const destinationThEl = document.createElement('th');
+    destinationThEl.classList.add('default-th');
+    destinationThEl.textContent = 'Destination';
 
-    const eventDateThEl = document.createElement('th');
-    eventDateThEl.classList.add('default-th');
-    eventDateThEl.textContent = 'Date';
+    const dateThEl = document.createElement('th');
+    dateThEl.classList.add('default-th');
+    dateThEl.textContent = 'Date';
 
-    const buttonOneTdEl = document.createElement('th');
-    buttonOneTdEl.textContent = 'Edit';
+    const startThEl = document.createElement('th');
+    startThEl.classList.add('default-th');
+    startThEl.textContent = 'Start';
+
+    const endThEl = document.createElement('th');
+    endThEl.classList.add('default-th');
+    endThEl.textContent = 'End';
+
+    const priceThEl = document.createElement('th');
+    priceThEl.classList.add('default-th');
+    priceThEl.textContent = 'Price';
 
     const trEl = document.createElement('tr');
 
-    trEl.appendChild(eventNameThEl);
-    trEl.appendChild(tableNameThEl);
-    trEl.appendChild(userNameThEl);
-    trEl.appendChild(eventDateThEl);
-    trEl.appendChild(buttonOneTdEl);
+    trEl.appendChild(taxiIdThEl);
+    trEl.appendChild(originThEl);
+    trEl.appendChild(destinationThEl);
+    trEl.appendChild(dateThEl);
+    trEl.appendChild(startThEl);
+    trEl.appendChild(endThEl);
+    trEl.appendChild(priceThEl);
 
     const theadEl = document.createElement('thead');
     theadEl.appendChild(trEl);
@@ -140,7 +166,7 @@ function createNewRouteForm() {
     const inputIdEl = document.createElement("input");
     inputIdEl.setAttribute("type","text");
     inputIdEl.classList.add("text-input");
-    inputIdEl.placeholder = "Id";
+    inputIdEl.placeholder = "Taxi ID";
     inputIdEl.setAttribute("name","taxi-id");
 
     const inputOrEl = document.createElement("input");
@@ -268,7 +294,7 @@ function onRouteEditButtonClicked() {
 
     document.getElementById('id-edit-route-button-' + id).style.display = 'none';
     const saveButtonEl = document.createElement('p');
-    const saveButtonTextNodeEl = document.createTextNode('edit button placeholder');
+    const saveButtonTextNodeEl = document.createTextNode('Edit');
     saveButtonEl.appendChild(saveButtonTextNodeEl);
     saveButtonEl.dataset.routeId = id;
     saveButtonEl.addEventListener('click', onRouteSaveButtonClicked);
@@ -292,10 +318,13 @@ function onRouteSaveButtonClicked() {
 
     const data = {};
     data.id = id;
-    data.origin = inputs[0].value;
-    data.destination = inputs[1].value;
-    data.start = inputs[2].value;
-    data.end = inputs[3].value;
+    data.taxiId = inputs[0].value;
+    data.origin = inputs[1].value;
+    data.destination = inputs[2].value;
+    data.date = inputs[3].value;
+    data.start = inputs[4].value;
+    data.end = inputs[5].value;
+    data.price = inputs[6].value;
     const json = JSON.stringify(data);
 
     const xhr = new XMLHttpRequest();

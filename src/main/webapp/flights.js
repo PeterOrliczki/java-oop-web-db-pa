@@ -176,7 +176,7 @@ function createNewFlightForm() {
     const inputIdEl = document.createElement("input");
     inputIdEl.setAttribute("type","text");
     inputIdEl.classList.add("text-input");
-    inputIdEl.placeholder = "Id";
+    inputIdEl.placeholder = "Plane ID";
     inputIdEl.setAttribute("name","plane-id");
 
     const inputOrEl = document.createElement("input");
@@ -313,7 +313,7 @@ function onFlightEditButtonClicked() {
 
     document.getElementById('id-edit-flight-button-' + id).style.display = 'none';
     const saveButtonEl = document.createElement('p');
-    const saveButtonTextNodeEl = document.createTextNode('edit button placeholder');
+    const saveButtonTextNodeEl = document.createTextNode('Edit');
     saveButtonEl.appendChild(saveButtonTextNodeEl);
     saveButtonEl.dataset.flightId = id;
     saveButtonEl.addEventListener('click', onFlightSaveButtonClicked);
