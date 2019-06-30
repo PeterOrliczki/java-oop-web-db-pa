@@ -17,15 +17,15 @@ function onFlightsLoad() {
 }
 
 function createFlightsDisplay(flights) {
-  const buttonEl = createNewFlightButton();
-  buttonEl.addEventListener('click', addNewFlight);
+  const flightButtonEl = createNewFlightButton();
+  flightButtonEl.addEventListener('click', addNewFlight);
   if (flights.length === 0) {
     removeAllChildren(myFlightsDivEl);
     const pEl = document.createElement('p');
     pEl.setAttribute('id', 'flight-info');
     pEl.textContent = 'The flight log is empty';
     myFlightsDivEl.appendChild(pEl);
-    myFlightsDivEl.appendChild(buttonEl);
+    myFlightsDivEl.appendChild(flightButtonEl);
   } else {
     removeAllChildren(myFlightsDivEl);
     const tableEl = document.createElement('table');
@@ -35,7 +35,7 @@ function createFlightsDisplay(flights) {
     tableEl.appendChild(theadEl);
     tableEl.appendChild(tbodyEl);
     myFlightsDivEl.appendChild(tableEl);
-    myFlightsDivEl.appendChild(buttonEl);
+    myFlightsDivEl.appendChild(flightButtonEl);
   }
 }
 
@@ -187,14 +187,13 @@ function createNewFlightForm() {
 
     const brEl = document.createElement("br");
 
-    const sEl = createNewSubmitButton();
+    const sEl = createNewSubmitFlightButton();
     sEl.addEventListener('click', onSubmitNewFlight);
 
     formEl.appendChild(inputIdEl);
     formEl.appendChild(inputOrEl);
     formEl.appendChild(inputDeEl);
     formEl.appendChild(inputDaEl);
-    formEl.appendChild(inputDeEl);
     formEl.appendChild(inputStEl);
     formEl.appendChild(inputEnEl);
     formEl.appendChild(inputClEl);
@@ -205,7 +204,7 @@ function createNewFlightForm() {
     myFlightsDivEl.appendChild(formEl);
 }
 
-function createNewSubmitButton() {
+function createNewSubmitFlightButton() {
     const buttonEl = document.createElement('button');
     buttonEl.setAttribute('id', 'new-flight-button');
     buttonEl.setAttribute('type', 'button');
@@ -234,27 +233,27 @@ function onSubmitNewFlight() {
     const date = dateInputEl.value;
     const start = startInputEl.value;
     const end = endInputEl.value;
-    const class = classInputEl.value;
+    const flightClass = classInputEl.value;
     const price = priceInputEl.value;
 
     const params = new URLSearchParams();
-    params.append('plane-id', id);
+    params.append('plane-id', planeId);
     params.append('flight-origin', origin);
     params.append('flight-destination', destination);
     params.append('flight-date', date);
     params.append('flight-start', start);
     params.append('flight-end', end);
-    params.append('flight-class', class);
+    params.append('flight-class', flightClass);
     params.append('flight-price', price);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onSubmissionResponse);
+    xhr.addEventListener('load', onFlightSubmissionResponse);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('POST', 'protected/flights');
     xhr.send(params);
 }
 
-function onSubmissionResponse() {
+function onFlightSubmissionResponse() {
     if (this.status === OK) {
         const flight = JSON.parse(this.responseText);
         alert(flight.message);

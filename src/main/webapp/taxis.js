@@ -147,7 +147,7 @@ function createNewTaxiForm() {
 
     const brEl = document.createElement("br");
 
-    const sEl = createNewSubmitButton();
+    const sEl = createNewSubmitTaxiButton();
     sEl.addEventListener('click', onSubmitNewTaxi);
 
     formEl.appendChild(inputTiEl);
@@ -159,7 +159,7 @@ function createNewTaxiForm() {
     myTaxisDivEl.appendChild(formEl);
 }
 
-function createNewSubmitButton() {
+function createNewSubmitTaxiButton() {
     const buttonEl = document.createElement('button');
     buttonEl.setAttribute('id', 'new-taxi-button');
     buttonEl.setAttribute('type', 'button');
@@ -187,13 +187,13 @@ function onSubmitNewTaxi() {
     params.append('taxi-capacity', content);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onSubmissionResponse);
+    xhr.addEventListener('load', onTaxiSubmissionResponse);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('POST', 'protected/taxis');
     xhr.send(params);
 }
 
-function onSubmissionResponse() {
+function onTaxiSubmissionResponse() {
     if (this.status === OK) {
         const taxi = JSON.parse(this.responseText);
         alert(taxi.message);

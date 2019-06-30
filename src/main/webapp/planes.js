@@ -131,7 +131,7 @@ function createNewPlaneForm() {
 
     const brEl = document.createElement("br");
 
-    const sEl = createNewSubmitButton();
+    const sEl = createNewSubmitPlaneButton();
     sEl.addEventListener('click', onSubmitNewPlane);
 
     formEl.appendChild(inputTiEl);
@@ -142,7 +142,7 @@ function createNewPlaneForm() {
     myPlanesDivEl.appendChild(formEl);
 }
 
-function createNewSubmitButton() {
+function createNewSubmitPlaneButton() {
     const buttonEl = document.createElement('button');
     buttonEl.setAttribute('id', 'new-plane-button');
     buttonEl.setAttribute('type', 'button');
@@ -167,13 +167,13 @@ function onSubmitNewPlane() {
     params.append('plane-capacity', content);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onSubmissionResponse);
+    xhr.addEventListener('load', onPlaneSubmissionResponse);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('POST', 'protected/planes');
     xhr.send(params);
 }
 
-function onSubmissionResponse() {
+function onPlaneSubmissionResponse() {
     if (this.status === OK) {
         const plane = JSON.parse(this.responseText);
         alert(plane.message);

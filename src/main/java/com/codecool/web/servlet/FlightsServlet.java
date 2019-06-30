@@ -1,10 +1,14 @@
 package com.codecool.web.servlet;
 
 import com.codecool.web.dao.FlightDao;
+import com.codecool.web.dao.PlaneDao;
 import com.codecool.web.dao.database.DatabaseFlightDao;
+import com.codecool.web.dao.database.DatabasePlaneDao;
 import com.codecool.web.model.Flight;
 import com.codecool.web.service.FlightService;
+import com.codecool.web.service.PlaneService;
 import com.codecool.web.service.simple.SimpleFlightService;
+import com.codecool.web.service.simple.SimplePlaneService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.ServletException;
@@ -61,6 +65,9 @@ public class FlightsServlet extends AbstractServlet {
             FlightDao flightDao = new DatabaseFlightDao(connection);
             FlightService flightService = new SimpleFlightService(flightDao);
 
+            PlaneDao planeDao = new DatabasePlaneDao(connection);
+            PlaneService planeService = new SimplePlaneService(planeDao);
+
             int planeId = Integer.parseInt(request.getParameter("plane-id"));
             String flightOrigin = request.getParameter("flight-origin");
             String flightDestination = request.getParameter("flight-destination");
@@ -70,9 +77,13 @@ public class FlightsServlet extends AbstractServlet {
             String flightClass = request.getParameter("flight-class");
             int flightPrice = Integer.parseInt(request.getParameter("flight-price"));
 
-            flightService.addFlight(planeId, flightOrigin, flightDestination, flightDate, flightStart, flightEnd, flightClass, flightPrice);
+            if (planeService.findIfPlaneExists(planeId)) {
+                flightService.addFlight(planeId, flightOrigin, flightDestination, flightDate, flightStart, flightEnd, flightClass, flightPrice);
+                sendMessage(response, HttpServletResponse.SC_OK, "Flight successfully added");
+            } else {
+                sendMessage(response, HttpServletResponse.SC_NOT_FOUND, "Plane with corresponding id not found");
+            }
 
-            sendMessage(response, HttpServletResponse.SC_OK, "Flight successfully added");
         } catch (SQLException exc) {
             handleSqlError(response, exc);
         }
