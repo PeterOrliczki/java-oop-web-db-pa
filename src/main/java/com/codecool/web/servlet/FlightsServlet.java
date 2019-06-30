@@ -48,10 +48,14 @@ public class FlightsServlet extends AbstractServlet {
 
             Flight flight = om.readValue(req.getInputStream(), Flight.class);
 
+            flightService.updatePlaneIdById(flight.getId(), flight.getPlaneId());
             flightService.updateOriginById(flight.getId(), flight.getOrigin());
             flightService.updateDestinationById(flight.getId(), flight.getDestination());
+            flightService.updateDateById(flight.getId(), flight.getDate());
             flightService.updateStartById(flight.getId(), flight.getStart());
             flightService.updateEndById(flight.getId(), flight.getEnd());
+            flightService.updateClassById(flight.getId(), flight.getFlightClass());
+            flightService.updatePriceById(flight.getId(), flight.getPrice());
 
             sendMessage(resp, HttpServletResponse.SC_OK, "Your data has been updated.");
         } catch (SQLException exc) {

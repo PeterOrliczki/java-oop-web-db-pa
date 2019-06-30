@@ -45,24 +45,40 @@ function createFlightsTableBody(flights) {
   for (let i = 0; i < flights.length; i++) {
     const flight = flights[i];
 
-    const eventNameTdEl = document.createElement('td');
-    eventNameTdEl.classList.add('default-cell');
-    eventNameTdEl.textContent = flight.origin;
+    const planeIdTdEl = document.createElement('td');
+    planeIdTdEl.classList.add('default-cell');
+    planeIdTdEl.textContent = flight.planeId;
 
-    const tableNameTdEl = document.createElement('td');
-    tableNameTdEl.classList.add('default-cell');
-    tableNameTdEl.textContent = flight.destination;
+    const originTdEl = document.createElement('td');
+    originTdEl.classList.add('default-cell');
+    originTdEl.textContent = flight.origin;
 
-    const userNameTdEl = document.createElement('td');
-    userNameTdEl.classList.add('default-cell');
-    userNameTdEl.textContent = flight.start;
+    const destinationTdEl = document.createElement('td');
+    destinationTdEl.classList.add('default-cell');
+    destinationTdEl.textContent = flight.destination;
 
-    const eventDateTdEl = document.createElement('td');
-    eventDateTdEl.classList.add('default-cell');
-    eventDateTdEl.textContent = flight.end;
+    const dateTdEl = document.createElement('td');
+    dateTdEl.classList.add('default-cell');
+    dateTdEl.textContent = flight.date;
+
+    const startTdEl = document.createElement('td');
+    startTdEl.classList.add('default-cell');
+    startTdEl.textContent = flight.start;
+
+    const endTdEl = document.createElement('td');
+    endTdEl.classList.add('default-cell');
+    endTdEl.textContent = flight.end;
+
+    const classTdEl = document.createElement('td');
+    classTdEl.classList.add('default-cell');
+    classTdEl.textContent = flight.flightClass;
+
+    const priceTdEl = document.createElement('td');
+    priceTdEl.classList.add('default-cell');
+    priceTdEl.textContent = flight.price;
 
     const buttonEditEl = document.createElement('p');
-    buttonEditEl.textContent = "edit button placeholder";
+    buttonEditEl.textContent = "Edit";
     buttonEditEl.setAttribute('id', 'id-edit-flight-button-' + flight.id);
 
     buttonEditEl.dataset.flightEditId = flight.id;
@@ -74,10 +90,14 @@ function createFlightsTableBody(flights) {
 
     const trEl = document.createElement('tr');
     trEl.setAttribute('id', 'row-flight-id-' + flight.id);
-    trEl.appendChild(eventNameTdEl);
-    trEl.appendChild(tableNameTdEl);
-    trEl.appendChild(userNameTdEl);
-    trEl.appendChild(eventDateTdEl);
+    trEl.appendChild(planeIdTdEl);
+    trEl.appendChild(originTdEl);
+    trEl.appendChild(destinationTdEl);
+    trEl.appendChild(dateTdEl);
+    trEl.appendChild(startTdEl);
+    trEl.appendChild(endTdEl);
+    trEl.appendChild(classTdEl);
+    trEl.appendChild(priceTdEl);
     trEl.appendChild(buttonOneTdEl);
 
     tbodyEl.appendChild(trEl);
@@ -87,32 +107,48 @@ function createFlightsTableBody(flights) {
 }
 
 function createFlightsTableHeader() {
-    const eventNameThEl = document.createElement('th');
-    eventNameThEl.classList.add('default-th');``
-    eventNameThEl.textContent = 'Event';
+    const planeIdThEl = document.createElement('th');
+    planeIdThEl.classList.add('default-th');``
+    planeIdThEl.textContent = 'Plane ID';
 
-    const tableNameThEl = document.createElement('th');
-    tableNameThEl.classList.add('default-th');
-    tableNameThEl.textContent = 'Table';
+    const originThEl = document.createElement('th');
+    originThEl.classList.add('default-th');``
+    originThEl.textContent = 'Origin';
 
-    const userNameThEl = document.createElement('th');
-    userNameThEl.classList.add('default-th');
-    userNameThEl.textContent = 'User';
+    const destinationThEl = document.createElement('th');
+    destinationThEl.classList.add('default-th');
+    destinationThEl.textContent = 'Destination';
 
-    const eventDateThEl = document.createElement('th');
-    eventDateThEl.classList.add('default-th');
-    eventDateThEl.textContent = 'Date';
+    const dateThEl = document.createElement('th');
+    dateThEl.classList.add('default-th');
+    dateThEl.textContent = 'Date';
 
-    const buttonOneTdEl = document.createElement('th');
-    buttonOneTdEl.textContent = 'Edit';
+    const startThEl = document.createElement('th');
+    startThEl.classList.add('default-th');
+    startThEl.textContent = 'Start';
+
+    const endThEl = document.createElement('th');
+    endThEl.classList.add('default-th');
+    endThEl.textContent = 'End';
+
+    const classThEl = document.createElement('th');
+    classThEl.classList.add('default-th');
+    classThEl.textContent = 'Class';
+
+    const priceThEl = document.createElement('th');
+    priceThEl.classList.add('default-th');
+    priceThEl.textContent = 'Price';
 
     const trEl = document.createElement('tr');
 
-    trEl.appendChild(eventNameThEl);
-    trEl.appendChild(tableNameThEl);
-    trEl.appendChild(userNameThEl);
-    trEl.appendChild(eventDateThEl);
-    trEl.appendChild(buttonOneTdEl);
+    trEl.appendChild(planeIdThEl);
+    trEl.appendChild(originThEl);
+    trEl.appendChild(destinationThEl);
+    trEl.appendChild(dateThEl);
+    trEl.appendChild(startThEl);
+    trEl.appendChild(endThEl);
+    trEl.appendChild(classThEl);
+    trEl.appendChild(priceThEl);
 
     const theadEl = document.createElement('thead');
     theadEl.appendChild(trEl);
@@ -301,10 +337,14 @@ function onFlightSaveButtonClicked() {
 
     const data = {};
     data.id = id;
-    data.origin = inputs[0].value;
-    data.destination = inputs[1].value;
-    data.start = inputs[2].value;
-    data.end = inputs[3].value;
+    data.planeId = inputs[0].value;
+    data.origin = inputs[1].value;
+    data.destination = inputs[2].value;
+    data.date = inputs[3].value;
+    data.start = inputs[4].value;
+    data.end = inputs[5].value;
+    data.flightClass = inputs[6].value;
+    data.price = inputs[7].value;
     const json = JSON.stringify(data);
 
     const xhr = new XMLHttpRequest();
