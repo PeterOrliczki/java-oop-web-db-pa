@@ -45,16 +45,20 @@ function createPlanesTableBody(planes) {
   for (let i = 0; i < planes.length; i++) {
     const plane = planes[i];
 
-    const eventNameTdEl = document.createElement('td');
-    eventNameTdEl.classList.add('default-cell');
-    eventNameTdEl.textContent = plane.name;
+    const idTdEl = document.createElement('td');
+    idTdEl.classList.add('default-cell');
+    idTdEl.textContent = plane.id;
 
-    const tableNameTdEl = document.createElement('td');
-    tableNameTdEl.classList.add('default-cell');
-    tableNameTdEl.textContent = plane.capacity;
+    const nameTdEl = document.createElement('td');
+    nameTdEl.classList.add('default-cell');
+    nameTdEl.textContent = plane.name;
+
+    const capacityTdEl = document.createElement('td');
+    capacityTdEl.classList.add('default-cell');
+    capacityTdEl.textContent = plane.capacity;
 
     const buttonEditEl = document.createElement('p');
-    buttonEditEl.textContent = "edit button placeholder";
+    buttonEditEl.textContent = "Edit";
     buttonEditEl.setAttribute('id', 'id-edit-plane-button-' + plane.id);
 
     buttonEditEl.dataset.planeEditId = plane.id;
@@ -66,33 +70,34 @@ function createPlanesTableBody(planes) {
 
     const trEl = document.createElement('tr');
     trEl.setAttribute('id', 'row-plane-id-' + plane.id);
-    trEl.appendChild(eventNameTdEl);
-    trEl.appendChild(tableNameTdEl);
+    trEl.appendChild(idTdEl);
+    trEl.appendChild(nameTdEl);
+    trEl.appendChild(capacityTdEl);
     trEl.appendChild(buttonOneTdEl);
 
     tbodyEl.appendChild(trEl);
   }
-
   return tbodyEl;
 }
 
 function createPlanesTableHeader() {
-     const eventNameThEl = document.createElement('th');
-     eventNameThEl.classList.add('default-th');``
-     eventNameThEl.textContent = 'Event';
+     const idThEl = document.createElement('th');
+     idThEl.classList.add('default-th');``
+     idThEl.textContent = 'ID';
 
-     const tableNameThEl = document.createElement('th');
-     tableNameThEl.classList.add('default-th');
-     tableNameThEl.textContent = 'Table';
+     const nameThEl = document.createElement('th');
+     nameThEl.classList.add('default-th');``
+     nameThEl.textContent = 'Name';
 
-     const buttonOneTdEl = document.createElement('th');
-     buttonOneTdEl.textContent = 'Edit';
+     const capacityThEl = document.createElement('th');
+     capacityThEl.classList.add('default-th');
+     capacityThEl.textContent = 'Capacity';
 
      const trEl = document.createElement('tr');
 
-     trEl.appendChild(eventNameThEl);
-     trEl.appendChild(tableNameThEl);
-     trEl.appendChild(buttonOneTdEl);
+    trEl.appendChild(idThEl);
+     trEl.appendChild(nameThEl);
+     trEl.appendChild(capacityThEl);
 
      const theadEl = document.createElement('thead');
      theadEl.appendChild(trEl);
@@ -117,25 +122,25 @@ function createNewPlaneForm() {
     formEl.classList.add('menu-form');
     formEl.onSubmit = 'return false;';
 
-    const inputTiEl = document.createElement("input");
-    inputTiEl.setAttribute("type","text");
-    inputTiEl.classList.add("text-input");
-    inputTiEl.placeholder = "Name";
-    inputTiEl.setAttribute("name","plane-name");
+    const inputNaEl = document.createElement("input");
+    inputNaEl.setAttribute("type","text");
+    inputNaEl.classList.add("text-input");
+    inputNaEl.placeholder = "Name";
+    inputNaEl.setAttribute("name","plane-name");
 
-    const inputCoEl = document.createElement("input");
-    inputCoEl.setAttribute("type","text");
-    inputCoEl.classList.add("text-input");
-    inputCoEl.placeholder = "Capacity";
-    inputCoEl.setAttribute("name","plane-capacity");
+    const inputCaEl = document.createElement("input");
+    inputCaEl.setAttribute("type","text");
+    inputCaEl.classList.add("text-input");
+    inputCaEl.placeholder = "Capacity";
+    inputCaEl.setAttribute("name","plane-capacity");
 
     const brEl = document.createElement("br");
 
     const sEl = createNewSubmitPlaneButton();
     sEl.addEventListener('click', onSubmitNewPlane);
 
-    formEl.appendChild(inputTiEl);
-    formEl.appendChild(inputCoEl);
+    formEl.appendChild(inputNaEl);
+    formEl.appendChild(inputCaEl);
     formEl.appendChild(brEl);
     formEl.appendChild(sEl);
 
@@ -155,16 +160,16 @@ function createNewSubmitPlaneButton() {
 function onSubmitNewPlane() {
     const loginFormEl = document.forms['new-plane-form'];
 
-    const titleInputEl = loginFormEl.querySelector('input[name="plane-name"]');
-    const contentInputEl = loginFormEl.querySelector('input[name="plane-capacity"]');
+    const nameInputEl = loginFormEl.querySelector('input[name="plane-name"]');
+    const capacityInputEl = loginFormEl.querySelector('input[name="plane-capacity"]');
 
     removeAllChildren(myPlanesDivEl);
-    const title = titleInputEl.value;
-    const content = contentInputEl.value;
+    const name = nameInputEl.value;
+    const capacity = capacityInputEl.value;
 
     const params = new URLSearchParams();
-    params.append('plane-name', title);
-    params.append('plane-capacity', content);
+    params.append('plane-name', name);
+    params.append('plane-capacity', capacity);
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onPlaneSubmissionResponse);
@@ -188,7 +193,7 @@ function onPlaneEditButtonClicked() {
     const tableEl = document.getElementById('edit-plane-table');
     const cells = tableEl.rows.namedItem('row-plane-id-' + id).cells;
 
-    for (let i = 0; i < cells.length - 1; i++) {
+    for (let i = 1; i < cells.length - 1; i++) {
         const tdEl = cells[i];
         const oldValue = tdEl.textContent;
         tdEl.textContent = '';
@@ -197,7 +202,7 @@ function onPlaneEditButtonClicked() {
 
     document.getElementById('id-edit-plane-button-' + id).style.display = 'none';
     const saveButtonEl = document.createElement('p');
-    const saveButtonTextNodeEl = document.createTextNode('edit button placeholder');
+    const saveButtonTextNodeEl = document.createTextNode('Edit');
     saveButtonEl.appendChild(saveButtonTextNodeEl);
     saveButtonEl.dataset.planeId = id;
     saveButtonEl.addEventListener('click', onPlaneSaveButtonClicked);
