@@ -36,8 +36,13 @@ public final class SimpleTaxiService implements TaxiService {
     }
 
     @Override
-    public boolean findIfTaxiExists(String name) throws SQLException {
-        return taxiDao.findIfTaxiExists(name);
+    public boolean findIfTaxiExists(int id) throws SQLException {
+        return taxiDao.findIfTaxiExists(id);
+    }
+
+    @Override
+    public boolean findIfTaxiExistsByName(String name) throws SQLException {
+        return taxiDao.findIfTaxiExistsByName(name);
     }
 
     @Override

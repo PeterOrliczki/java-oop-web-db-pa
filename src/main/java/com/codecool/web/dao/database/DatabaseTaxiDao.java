@@ -69,7 +69,22 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
     }
 
     @Override
-    public boolean findIfTaxiExists(String name) throws SQLException {
+    public boolean findIfTaxiExists(int id) throws SQLException {
+        List<Taxi> taxis = new ArrayList<>();
+        String sql = "SELECT * FROM taxis WHERE taxi_id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean findIfTaxiExistsByName(String name) throws SQLException {
         List<Taxi> taxis = new ArrayList<>();
         String sql = "SELECT * FROM taxis WHERE taxi_name=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

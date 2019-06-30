@@ -15,7 +15,9 @@ public interface TaxiDao {
 
     Taxi findByLicensePlate(String licensePlate) throws SQLException;
 
-    boolean findIfTaxiExists(String name) throws SQLException;
+    boolean findIfTaxiExists(int id) throws SQLException;
+
+    boolean findIfTaxiExistsByName(String name) throws SQLException;
 
     Taxi addTaxi(String name, String licensePlate, int capacity) throws SQLException;
 
