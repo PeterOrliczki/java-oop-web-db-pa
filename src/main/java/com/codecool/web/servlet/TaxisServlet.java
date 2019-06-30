@@ -45,8 +45,8 @@ public class TaxisServlet extends AbstractServlet {
             Taxi taxi = om.readValue(req.getInputStream(), Taxi.class);
 
             taxiService.updateNameById(taxi.getId(), taxi.getName());
-            taxiService.updateCapacityById(taxi.getId(), taxi.getCapacity());
             taxiService.updateLicensePlateById(taxi.getId(), taxi.getLicensePlate());
+            taxiService.updateCapacityById(taxi.getId(), taxi.getCapacity());
 
             sendMessage(resp, HttpServletResponse.SC_OK, "Your data has been updated.");
         } catch (SQLException exc) {

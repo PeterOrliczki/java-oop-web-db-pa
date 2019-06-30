@@ -45,20 +45,24 @@ function createTaxisTableBody(taxis) {
   for (let i = 0; i < taxis.length; i++) {
     const taxi = taxis[i];
 
-    const eventNameTdEl = document.createElement('td');
-    eventNameTdEl.classList.add('default-cell');
-    eventNameTdEl.textContent = taxi.name;
+    const idTdEl = document.createElement('td');
+    idTdEl.classList.add('default-cell');
+    idTdEl.textContent = taxi.id;
 
-    const userNameTdEl = document.createElement('td');
-    userNameTdEl.classList.add('default-cell');
-    userNameTdEl.textContent = taxi.licensePlate;
+    const nameTdEl = document.createElement('td');
+    nameTdEl.classList.add('default-cell');
+    nameTdEl.textContent = taxi.name;
 
-    const tableNameTdEl = document.createElement('td');
-    tableNameTdEl.classList.add('default-cell');
-    tableNameTdEl.textContent = taxi.capacity;
+    const licensePlateTdEl = document.createElement('td');
+    licensePlateTdEl.classList.add('default-cell');
+    licensePlateTdEl.textContent = taxi.licensePlate;
+
+    const capacityTdEl = document.createElement('td');
+    capacityTdEl.classList.add('default-cell');
+    capacityTdEl.textContent = taxi.capacity;
 
     const buttonEditEl = document.createElement('p');
-    buttonEditEl.textContent = "edit button placeholder";
+    buttonEditEl.textContent = "Edit";
     buttonEditEl.setAttribute('id', 'id-edit-taxi-button-' + taxi.id);
 
     buttonEditEl.dataset.taxiEditId = taxi.id;
@@ -70,39 +74,40 @@ function createTaxisTableBody(taxis) {
 
     const trEl = document.createElement('tr');
     trEl.setAttribute('id', 'row-taxi-id-' + taxi.id);
-    trEl.appendChild(eventNameTdEl);
-    trEl.appendChild(userNameTdEl);
-    trEl.appendChild(tableNameTdEl);
+    trEl.appendChild(idTdEl);
+    trEl.appendChild(nameTdEl);
+    trEl.appendChild(licensePlateTdEl);
+    trEl.appendChild(capacityTdEl);
     trEl.appendChild(buttonOneTdEl);
 
     tbodyEl.appendChild(trEl);
   }
-
   return tbodyEl;
 }
 
 function createTaxisTableHeader() {
-     const eventNameThEl = document.createElement('th');
-     eventNameThEl.classList.add('default-th');``
-     eventNameThEl.textContent = 'Event';
+     const idThEl = document.createElement('th');
+     idThEl.classList.add('default-th');``
+     idThEl.textContent = 'Taxi ID';
 
-     const tableNameThEl = document.createElement('th');
-     tableNameThEl.classList.add('default-th');
-     tableNameThEl.textContent = 'Table';
+     const nameThEl = document.createElement('th');
+     nameThEl.classList.add('default-th');``
+     nameThEl.textContent = 'Name';
 
-     const userNameThEl = document.createElement('th');
-     userNameThEl.classList.add('default-th');
-     userNameThEl.textContent = 'User';
+     const licensePlateThEl = document.createElement('th');
+     licensePlateThEl.classList.add('default-th');
+     licensePlateThEl.textContent = 'License Plate';
 
-     const buttonOneTdEl = document.createElement('th');
-     buttonOneTdEl.textContent = 'Edit';
+     const capacityThEl = document.createElement('th');
+     capacityThEl.classList.add('default-th');
+     capacityThEl.textContent = 'Capacity';
 
      const trEl = document.createElement('tr');
 
-     trEl.appendChild(eventNameThEl);
-     trEl.appendChild(tableNameThEl);
-     trEl.appendChild(userNameThEl);
-     trEl.appendChild(buttonOneTdEl);
+     trEl.appendChild(idThEl);
+     trEl.appendChild(nameThEl);
+     trEl.appendChild(licensePlateThEl);
+     trEl.appendChild(capacityThEl);
 
      const theadEl = document.createElement('thead');
      theadEl.appendChild(trEl);
@@ -127,11 +132,11 @@ function createNewTaxiForm() {
     formEl.classList.add('menu-form');
     formEl.onSubmit = 'return false;';
 
-    const inputTiEl = document.createElement("input");
-    inputTiEl.setAttribute("type","text");
-    inputTiEl.classList.add("text-input");
-    inputTiEl.placeholder = "Name";
-    inputTiEl.setAttribute("name","taxi-name");
+    const inputNaEl = document.createElement("input");
+    inputNaEl.setAttribute("type","text");
+    inputNaEl.classList.add("text-input");
+    inputNaEl.placeholder = "Name";
+    inputNaEl.setAttribute("name","taxi-name");
 
     const inputLiPlEl = document.createElement("input");
     inputLiPlEl.setAttribute("type","text");
@@ -139,20 +144,20 @@ function createNewTaxiForm() {
     inputLiPlEl.placeholder = "License Plate";
     inputLiPlEl.setAttribute("name","taxi-license-plate");
 
-    const inputCoEl = document.createElement("input");
-    inputCoEl.setAttribute("type","text");
-    inputCoEl.classList.add("text-input");
-    inputCoEl.placeholder = "Capacity";
-    inputCoEl.setAttribute("name","taxi-capacity");
+    const inputCaEl = document.createElement("input");
+    inputCaEl.setAttribute("type","text");
+    inputCaEl.classList.add("text-input");
+    inputCaEl.placeholder = "Capacity";
+    inputCaEl.setAttribute("name","taxi-capacity");
 
     const brEl = document.createElement("br");
 
     const sEl = createNewSubmitTaxiButton();
     sEl.addEventListener('click', onSubmitNewTaxi);
 
-    formEl.appendChild(inputTiEl);
+    formEl.appendChild(inputNaEl);
     formEl.appendChild(inputLiPlEl);
-    formEl.appendChild(inputCoEl);
+    formEl.appendChild(inputCaEl);
     formEl.appendChild(brEl);
     formEl.appendChild(sEl);
 
@@ -172,19 +177,19 @@ function createNewSubmitTaxiButton() {
 function onSubmitNewTaxi() {
     const loginFormEl = document.forms['new-taxi-form'];
 
-    const titleInputEl = loginFormEl.querySelector('input[name="taxi-name"]');
+    const nameInputEl = loginFormEl.querySelector('input[name="taxi-name"]');
     const licensePlateInputEl = loginFormEl.querySelector('input[name="taxi-license-plate"]');
-    const contentInputEl = loginFormEl.querySelector('input[name="taxi-capacity"]');
+    const capacityInputEl = loginFormEl.querySelector('input[name="taxi-capacity"]');
 
     removeAllChildren(myTaxisDivEl);
-    const title = titleInputEl.value;
+    const name = nameInputEl.value;
     const licensePlate = licensePlateInputEl.value;
-    const content = contentInputEl.value;
+    const capacity = capacityInputEl.value;
 
     const params = new URLSearchParams();
-    params.append('taxi-name', title);
+    params.append('taxi-name', name);
     params.append('taxi-license-plate', licensePlate);
-    params.append('taxi-capacity', content);
+    params.append('taxi-capacity', capacity);
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onTaxiSubmissionResponse);
@@ -208,7 +213,7 @@ function onTaxiEditButtonClicked() {
     const tableEl = document.getElementById('edit-taxi-table');
     const cells = tableEl.rows.namedItem('row-taxi-id-' + id).cells;
 
-    for (let i = 0; i < cells.length - 1; i++) {
+    for (let i = 1; i < cells.length - 1; i++) {
         const tdEl = cells[i];
         const oldValue = tdEl.textContent;
         tdEl.textContent = '';
@@ -217,7 +222,7 @@ function onTaxiEditButtonClicked() {
 
     document.getElementById('id-edit-taxi-button-' + id).style.display = 'none';
     const saveButtonEl = document.createElement('p');
-    const saveButtonTextNodeEl = document.createTextNode('edit button placeholder');
+    const saveButtonTextNodeEl = document.createTextNode('Edit');
     saveButtonEl.appendChild(saveButtonTextNodeEl);
     saveButtonEl.dataset.taxiId = id;
     saveButtonEl.addEventListener('click', onTaxiSaveButtonClicked);
