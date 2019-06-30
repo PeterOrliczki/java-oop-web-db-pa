@@ -31,8 +31,13 @@ public final class SimplePlaneService implements PlaneService {
     }
 
     @Override
-    public boolean findIfPlaneExists(String name) throws SQLException {
-        return planeDao.findIfPlaneExists(name);
+    public boolean findIfPlaneExists(int id) throws SQLException {
+        return planeDao.findIfPlaneExists(id);
+    }
+
+    @Override
+    public boolean findIfPlaneExistsByName(String name) throws SQLException {
+        return planeDao.findIfPlaneExistsByName(name);
     }
 
     @Override
