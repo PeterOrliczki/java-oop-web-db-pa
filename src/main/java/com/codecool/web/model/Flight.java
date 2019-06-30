@@ -1,6 +1,5 @@
 package com.codecool.web.model;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public final class Flight extends AbstractModel {
@@ -8,13 +7,13 @@ public final class Flight extends AbstractModel {
     private int planeId;
     private String origin;
     private String destination;
-    private LocalDate date;
+    private String date;
     private int start;
     private int end;
     private String flightClass;
     private int price;
 
-    public Flight(int id, int planeId, String origin, String destination, LocalDate date, int start, int end, String flightClass, int price) {
+    public Flight(int id, int planeId, String origin, String destination, String date, int start, int end, String flightClass, int price) {
         super(id);
         this.planeId = planeId;
         this.origin = origin;
@@ -41,7 +40,7 @@ public final class Flight extends AbstractModel {
         return destination;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 

@@ -5,7 +5,6 @@ import com.codecool.web.model.Route;
 import com.codecool.web.service.RouteService;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public final class SimpleRouteService implements RouteService {
@@ -42,7 +41,7 @@ public final class SimpleRouteService implements RouteService {
     }
 
     @Override
-    public Route findByDate(LocalDate date) throws SQLException {
+    public Route findByDate(String date) throws SQLException {
         return routeDao.findByDate(date);
     }
 
@@ -62,7 +61,7 @@ public final class SimpleRouteService implements RouteService {
     }
 
     @Override
-    public Route addRoute(int taxiId, String origin, String destination, LocalDate date, int start, int end, int price) throws SQLException {
+    public Route addRoute(int taxiId, String origin, String destination, String date, int start, int end, int price) throws SQLException {
         return routeDao.addRoute(taxiId, origin, destination, date, start, end, price);
     }
 
@@ -82,7 +81,7 @@ public final class SimpleRouteService implements RouteService {
     }
 
     @Override
-    public void updateDateById(int id, LocalDate date) throws SQLException {
+    public void updateDateById(int id, String date) throws SQLException {
         routeDao.updateDateById(id, date);
     }
 

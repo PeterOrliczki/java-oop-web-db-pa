@@ -4,8 +4,6 @@ import com.codecool.web.dao.RouteDao;
 import com.codecool.web.model.Route;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,11 +83,10 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
     }
 
     @Override
-    public Route findByDate(LocalDate date) throws SQLException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+    public Route findByDate(String date) throws SQLException {
         String sql = "SELECT * FROM routes WHERE route_date=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, date.format(formatter));
+            statement.setString(1, date);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return fetchRoute(resultSet);
@@ -142,8 +139,7 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
     }
 
     @Override
-    public Route addRoute(int taxiId, String origin, String destination, LocalDate date, int start, int end, int price) throws SQLException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+    public Route addRoute(int taxiId, String origin, String destination, String date, int start, int end, int price) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "INSERT INTO routes(taxi_id, route_origin, route_destination, route_date, route_start, route_end, route_price) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -151,7 +147,7 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
             statement.setInt(1, taxiId);
             statement.setString(2, origin);
             statement.setString(3, destination);
-            statement.setString(4, date.format(formatter));
+            statement.setString(4, date);
             statement.setInt(5, start);
             statement.setInt(6, end);
             statement.setInt(7, price);
@@ -222,13 +218,12 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
     }
 
     @Override
-    public void updateDateById(int id, LocalDate date) throws SQLException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+    public void updateDateById(int id, String date) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "UPDATE routes SET route_date=? WHERE route_id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, date.format(formatter));
+            statement.setString(1, date);
             statement.setInt(2, id);
             executeInsert(statement);
             connection.commit();
@@ -316,7 +311,7 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
         int taxiId = resultSet.getInt("taxi_id");
         String origin = resultSet.getString("route_origin");
         String destination = resultSet.getString("route_destination");
-        LocalDate date = resultSet.getDate("route_date").toLocalDate();
+        String date = resultSet.getString("route_date");
         int start = resultSet.getInt("route_start");
         int end = resultSet.getInt("route_end");
         int price = resultSet.getInt("route_price");

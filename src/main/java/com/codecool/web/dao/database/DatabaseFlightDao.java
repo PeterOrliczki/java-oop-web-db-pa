@@ -4,8 +4,6 @@ import com.codecool.web.dao.FlightDao;
 import com.codecool.web.model.Flight;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,11 +83,10 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
     }
 
     @Override
-    public Flight findByDate(LocalDate date) throws SQLException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+    public Flight findByDate(String date) throws SQLException {
         String sql = "SELECT * FROM flights WHERE flight_date=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, date.format(formatter));
+            statement.setString(1, date);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return fetchFlight(resultSet);
@@ -156,8 +153,7 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
     }
 
     @Override
-    public Flight addFlight(int planeId, String origin, String destination, LocalDate date, int start, int end, String flightClass, int price) throws SQLException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+    public Flight addFlight(int planeId, String origin, String destination, String date, int start, int end, String flightClass, int price) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "INSERT INTO flights(plane_id, flight_origin, flight_destination, flight_date, flight_start, flight_end, flight_class, flight_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -165,7 +161,7 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
             statement.setInt(1, planeId);
             statement.setString(2, origin);
             statement.setString(3, destination);
-            statement.setString(4, date.format(formatter));
+            statement.setString(4, date);
             statement.setInt(5, start);
             statement.setInt(6, end);
             statement.setString(7, flightClass);
@@ -237,13 +233,12 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
     }
 
     @Override
-    public void updateDateById(int id, LocalDate date) throws SQLException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+    public void updateDateById(int id, String date) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "UPDATE flights SET flight_date=? WHERE flight_id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, date.format(formatter));
+            statement.setString(1, date);
             statement.setInt(2, id);
             executeInsert(statement);
             connection.commit();
@@ -349,7 +344,7 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
         int planeId = resultSet.getInt("plane_id");
         String origin = resultSet.getString("flight_origin");
         String destination = resultSet.getString("flight_destination");
-        LocalDate date = resultSet.getDate("flight_date").toLocalDate();
+        String date = resultSet.getString("flight_date");
         int start = resultSet.getInt("flight_start");
         int end = resultSet.getInt("flight_end");
         String flightClass = resultSet.getString("flight_class");

@@ -3,7 +3,6 @@ package com.codecool.web.dao;
 import com.codecool.web.model.Flight;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public interface FlightDao {
@@ -18,7 +17,7 @@ public interface FlightDao {
 
     Flight findByDestination(String destination) throws SQLException;
 
-    Flight findByDate(LocalDate date) throws SQLException;
+    Flight findByDate(String date) throws SQLException;
 
     Flight findByStart(int start) throws SQLException;
 
@@ -28,7 +27,7 @@ public interface FlightDao {
 
     Flight findByPrice(int price) throws SQLException;
 
-    Flight addFlight(int planeId, String origin, String destination, LocalDate date, int start, int end, String flightClass, int price) throws SQLException;
+    Flight addFlight(int planeId, String origin, String destination, String date, int start, int end, String flightClass, int price) throws SQLException;
 
     void updatePlaneIdById(int id, int planeId) throws SQLException;
 
@@ -36,7 +35,7 @@ public interface FlightDao {
 
     void updateDestinationById(int id, String destination) throws SQLException;
 
-    void updateDateById(int id, LocalDate date) throws SQLException;
+    void updateDateById(int id, String date) throws SQLException;
 
     void updateStartById(int id, int start) throws SQLException;
 

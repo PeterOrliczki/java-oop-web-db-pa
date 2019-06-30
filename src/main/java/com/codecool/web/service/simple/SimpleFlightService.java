@@ -5,7 +5,6 @@ import com.codecool.web.model.Flight;
 import com.codecool.web.service.FlightService;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public final class SimpleFlightService implements FlightService {
@@ -42,7 +41,7 @@ public final class SimpleFlightService implements FlightService {
     }
 
     @Override
-    public Flight findByDate(LocalDate date) throws SQLException {
+    public Flight findByDate(String date) throws SQLException {
         return flightDao.findByDate(date);
     }
 
@@ -67,7 +66,7 @@ public final class SimpleFlightService implements FlightService {
     }
 
     @Override
-    public Flight addFlight(int planeId, String origin, String destination, LocalDate date, int start, int end, String flightClass, int price) throws SQLException {
+    public Flight addFlight(int planeId, String origin, String destination, String date, int start, int end, String flightClass, int price) throws SQLException {
         return flightDao.addFlight(planeId, origin, destination, date, start, end, flightClass, price);
     }
 
@@ -87,7 +86,7 @@ public final class SimpleFlightService implements FlightService {
     }
 
     @Override
-    public void updateDateById(int id, LocalDate date) throws SQLException {
+    public void updateDateById(int id, String date) throws SQLException {
         flightDao.updateDateById(id, date);
     }
 

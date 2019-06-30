@@ -3,7 +3,6 @@ package com.codecool.web.dao;
 import com.codecool.web.model.Route;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public interface RouteDao {
@@ -18,7 +17,7 @@ public interface RouteDao {
 
     Route findByDestination(String destination) throws SQLException;
 
-    Route findByDate(LocalDate date) throws SQLException;
+    Route findByDate(String date) throws SQLException;
 
     Route findByStart(int start) throws SQLException;
 
@@ -26,7 +25,7 @@ public interface RouteDao {
 
     Route findByPrice(int price) throws SQLException;
 
-    Route addRoute(int taxiId, String origin, String destination, LocalDate date, int start, int end, int price) throws SQLException;
+    Route addRoute(int taxiId, String origin, String destination, String date, int start, int end, int price) throws SQLException;
 
     void updateTaxiIdById(int id, int taxiId) throws SQLException;
 
@@ -34,7 +33,7 @@ public interface RouteDao {
 
     void updateDestinationById(int id, String destination) throws SQLException;
 
-    void updateDateById(int id, LocalDate date) throws SQLException;
+    void updateDateById(int id, String date) throws SQLException;
 
     void updateStartById(int id, int start) throws SQLException;
 
