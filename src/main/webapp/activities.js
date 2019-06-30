@@ -23,7 +23,6 @@ function createActivitiesDisplay(activities) {
     pEl.setAttribute('id', 'activity-info');
     pEl.textContent = 'The activity log is empty';
     myActivitiesDivEl.appendChild(pEl);
-    myActivitiesDivEl.appendChild(buttonEl);
   } else {
     removeAllChildren(myActivitiesDivEl);
     const tableEl = document.createElement('table');
