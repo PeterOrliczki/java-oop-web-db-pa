@@ -1,14 +1,10 @@
 package com.codecool.web.servlet;
 
 import com.codecool.web.dao.FlightDao;
-import com.codecool.web.dao.PlaneDao;
 import com.codecool.web.dao.database.DatabaseFlightDao;
-import com.codecool.web.dao.database.DatabasePlaneDao;
 import com.codecool.web.model.Flight;
 import com.codecool.web.service.FlightService;
-import com.codecool.web.service.PlaneService;
 import com.codecool.web.service.simple.SimpleFlightService;
-import com.codecool.web.service.simple.SimplePlaneService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.ServletException;
@@ -18,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -63,28 +58,21 @@ public class FlightsServlet extends AbstractServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try (Connection connection = getConnection(request.getServletContext())) {
-            PlaneDao planeDao = new DatabasePlaneDao(connection);
-            PlaneService planeService = new SimplePlaneService(planeDao);
-
             FlightDao flightDao = new DatabaseFlightDao(connection);
             FlightService flightService = new SimpleFlightService(flightDao);
 
             int planeId = Integer.parseInt(request.getParameter("plane-id"));
             String flightOrigin = request.getParameter("flight-origin");
             String flightDestination = request.getParameter("flight-destination");
-            LocalDate flightDate = LocalDate.parse(request.getParameter("flight-date"));
+            String flightDate = request.getParameter("flight-date");
             int flightStart = Integer.parseInt(request.getParameter("flight-start"));
             int flightEnd = Integer.parseInt(request.getParameter("flight-end"));
             String flightClass = request.getParameter("flight-class");
-            int flightPrice = Integer.parseInt("flight-price");
+            int flightPrice = Integer.parseInt(request.getParameter("flight-price"));
 
-            if (planeService.findIfPlaneExists(planeId)) {
-                flightService.addFlight(planeId, flightOrigin, flightDestination,
-                    flightDate, flightStart, flightEnd, flightClass, flightPrice);
-                sendMessage(response, HttpServletResponse.SC_OK, "Flight successfully added");
-            } else {
-                sendMessage(response, HttpServletResponse.SC_NOT_FOUND, "Corresponding plane does not exist");
-            }
+            flightService.addFlight(planeId, flightOrigin, flightDestination, flightDate, flightStart, flightEnd, flightClass, flightPrice);
+
+            sendMessage(response, HttpServletResponse.SC_OK, "Flight successfully added");
         } catch (SQLException exc) {
             handleSqlError(response, exc);
         }
