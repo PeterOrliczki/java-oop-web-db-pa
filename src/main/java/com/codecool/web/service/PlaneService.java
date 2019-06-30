@@ -13,7 +13,9 @@ public interface PlaneService {
 
     Plane findByName(String name) throws SQLException;
 
-    boolean findIfPlaneExists(String name) throws SQLException;
+    boolean findIfPlaneExists(int id) throws SQLException;
+
+    boolean findIfPlaneExistsByName(String name) throws SQLException;
 
     Plane addPlane(String name, int capacity) throws SQLException;
 

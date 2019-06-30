@@ -55,7 +55,22 @@ public final class DatabasePlaneDao extends AbstractDao implements PlaneDao {
     }
 
     @Override
-    public boolean findIfPlaneExists(String name) throws SQLException {
+    public boolean findIfPlaneExists(int id) throws SQLException {
+        List<Plane> planes = new ArrayList<>();
+        String sql = "SELECT * FROM planes WHERE plane_id=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean findIfPlaneExistsByName(String name) throws SQLException {
         List<Plane> planes = new ArrayList<>();
         String sql = "SELECT * FROM planes WHERE plane_name=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
