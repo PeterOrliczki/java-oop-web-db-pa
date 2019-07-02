@@ -114,4 +114,14 @@ public final class SimpleFlightService implements FlightService {
     public void deleteById(int id) throws SQLException {
         flightDao.deleteById(id);
     }
+
+    @Override
+    public void orderFlight(int userId, int flightId) throws SQLException {
+        flightDao.orderFlight(userId, flightId);
+    }
+
+    @Override
+    public List<Flight> findAllOrders(int userId) throws SQLException {
+        return flightDao.findAllOrders(userId);
+    }
 }

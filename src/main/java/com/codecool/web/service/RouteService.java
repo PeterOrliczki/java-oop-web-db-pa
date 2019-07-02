@@ -42,4 +42,8 @@ public interface RouteService {
     void updatePriceById(int id, int price) throws SQLException;
 
     void deleteById(int id) throws SQLException;
+
+    void orderRoute(int userId, int routeId) throws SQLException;
+
+    List<Route> findAllOrders(int userId) throws SQLException;
 }

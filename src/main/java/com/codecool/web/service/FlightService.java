@@ -46,4 +46,8 @@ public interface FlightService {
     void updatePriceById(int id, int price) throws SQLException;
 
     void deleteById(int id) throws SQLException;
+
+    void orderFlight(int userId, int flightId) throws SQLException;
+
+    List<Flight> findAllOrders(int userId) throws SQLException;
 }

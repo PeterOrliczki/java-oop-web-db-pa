@@ -19,6 +19,7 @@ let myFlightsDivEl;
 let myRoutesDivEl;
 let myPlanesDivEl;
 let myTaxisDivEl;
+let myOrdersDivEl;
 
 function newInfo(targetEl, message) {
     newMessage(targetEl, 'info', message);
@@ -161,6 +162,8 @@ function onLoad() {
     myPlanesDivEl = document.getElementById('plane-content');
 
     myTaxisDivEl = document.getElementById('taxi-content');
+
+    myOrdersDivEl = document.getElementById('order-content');
 
     const loginButtonEl = document.getElementById('login-button');
     loginButtonEl.addEventListener('click', onLoginButtonClicked);

@@ -306,6 +306,39 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
         }
     }
 
+    @Override
+    public void orderRoute(int userId, int routeId) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "INSERT INTO users_routes(user_id, route_id) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, routeId);
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public List<Route> findAllOrders(int userId) throws SQLException {
+        List<Route> routes = new ArrayList<>();
+        String sql = "SELECT * FROM users_routes JOIN routes ON users_routes.route_id = routes.route_id WHERE user_routes.user_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    routes.add(fetchRoute(resultSet));
+                }
+            }
+        }
+        return routes;
+    }
+
     private Route fetchRoute(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("route_id");
         int taxiId = resultSet.getInt("taxi_id");

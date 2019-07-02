@@ -104,4 +104,14 @@ public final class SimpleRouteService implements RouteService {
     public void deleteById(int id) throws SQLException {
         routeDao.deleteById(id);
     }
+
+    @Override
+    public void orderRoute(int userId, int routeId) throws SQLException {
+        routeDao.orderRoute(userId, routeId);
+    }
+
+    @Override
+    public List<Route> findAllOrders(int userId) throws SQLException {
+        return routeDao.findAllOrders(userId);
+    }
 }

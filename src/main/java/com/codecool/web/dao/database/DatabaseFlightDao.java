@@ -339,6 +339,39 @@ public final class DatabaseFlightDao extends AbstractDao implements FlightDao {
         }
     }
 
+    @Override
+    public void orderFlight(int userId, int flightId) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "INSERT INTO users_flights(user_id, flight_id) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, flightId);
+            executeInsert(statement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public List<Flight> findAllOrders(int userId) throws SQLException {
+        List<Flight> orders = new ArrayList<>();
+        String sql = "SELECT * FROM users_flights JOIN flights ON users_flights.flight_id = flights.flight_id WHERE users_flights.user_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    orders.add(fetchFlight(resultSet));
+                }
+            }
+        }
+        return orders;
+    }
+
     private Flight fetchFlight(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("flight_id");
         int planeId = resultSet.getInt("plane_id");
