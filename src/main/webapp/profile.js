@@ -120,7 +120,7 @@ function createProfileTableBody(user) {
     roleTdEl.setAttribute('id', user.role);
 
     const buttonEditEl = document.createElement('p');
-    buttonEditEl.textContent = "edit button placeholder";
+    buttonEditEl.textContent = "Edit";
     buttonEditEl.setAttribute('id', 'id-edit-button-' + user.id);
 
     buttonEditEl.dataset.userEditId = user.id;
@@ -158,7 +158,7 @@ function onProfileEditButtonClicked() {
 
     document.getElementById('id-edit-button-' + id).style.display = 'none';
     const saveButtonEl = document.createElement('p');
-    const saveButtonTextNodeEl = document.createTextNode('edit button placeholder');
+    const saveButtonTextNodeEl = document.createTextNode('Edit');
     saveButtonEl.appendChild(saveButtonTextNodeEl);
     saveButtonEl.dataset.userId = id;
     saveButtonEl.addEventListener('click', onProfileSaveButtonClicked);

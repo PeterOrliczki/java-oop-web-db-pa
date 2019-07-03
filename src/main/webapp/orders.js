@@ -41,9 +41,13 @@ function createOrdersTableBody(orders) {
   for (let i = 0; i < orders.length; i++) {
     const order = orders[i];
 
-    const idTdEl = document.createElement('td');
-    idTdEl.classList.add('default-cell');
-    idTdEl.textContent = order.id;
+    const tyTdEl = document.createElement('td');
+    tyTdEl.classList.add('default-cell');
+    if (order.flightClass) {
+        tyTdEl.textContent = "Flight";
+    } else {
+        tyTdEl.textContent = "Route";
+    }
 
     const orTdEl = document.createElement('td');
     orTdEl.classList.add('default-cell');
@@ -58,8 +62,7 @@ function createOrdersTableBody(orders) {
     stTdEl.textContent = order.start;
 
     const trEl = document.createElement('tr');
-    // trEl.setAttribute('id', 'row-order-id-' + flight.id);
-    trEl.appendChild(idTdEl);
+    trEl.appendChild(tyTdEl);
     trEl.appendChild(orTdEl);
     trEl.appendChild(daTdEl);
     trEl.appendChild(stTdEl);
@@ -70,12 +73,12 @@ function createOrdersTableBody(orders) {
 }
 
 function createOrdersTableHeader() {
-     const idThEl = document.createElement('th');
-     idThEl.classList.add('default-th');``
-     idThEl.textContent = 'ID';
+     const tyThEl = document.createElement('th');
+     tyThEl.classList.add('default-th');
+     tyThEl.textContent = 'Type';
 
      const orThEl = document.createElement('th');
-     orThEl.classList.add('default-th');``
+     orThEl.classList.add('default-th');
      orThEl.textContent = 'Origin';
 
      const daThEl = document.createElement('th');
@@ -88,7 +91,7 @@ function createOrdersTableHeader() {
 
      const trEl = document.createElement('tr');
 
-     trEl.appendChild(idThEl);
+     trEl.appendChild(tyThEl);
      trEl.appendChild(orThEl);
      trEl.appendChild(daThEl);
      trEl.appendChild(stThEl);
