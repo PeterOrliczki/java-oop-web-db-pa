@@ -72,7 +72,7 @@ function createOrdersTableBody(orders) {
 function createOrdersTableHeader() {
      const idThEl = document.createElement('th');
      idThEl.classList.add('default-th');``
-     idThEl.textContent = 'Flight ID';
+     idThEl.textContent = 'ID';
 
      const orThEl = document.createElement('th');
      orThEl.classList.add('default-th');``

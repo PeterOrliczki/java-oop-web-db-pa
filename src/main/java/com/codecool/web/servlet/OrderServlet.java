@@ -5,6 +5,7 @@ import com.codecool.web.dao.RouteDao;
 import com.codecool.web.dao.database.DatabaseFlightDao;
 import com.codecool.web.dao.database.DatabaseRouteDao;
 import com.codecool.web.model.Flight;
+import com.codecool.web.model.Route;
 import com.codecool.web.model.User;
 import com.codecool.web.service.FlightService;
 import com.codecool.web.service.RouteService;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/protected/orders")
@@ -38,8 +40,12 @@ public class OrderServlet extends AbstractServlet {
             User user = (User) request.getSession().getAttribute("user");
 
             List<Flight> flightOrders = flightService.findAllOrders(user.getId());
+            List<Route> routeOrders = routeService.findAllOrders(user.getId());
+            List<Object> allOrders = new ArrayList<>();
+            allOrders.addAll(flightOrders);
+            allOrders.addAll(routeOrders);
 
-            sendMessage(response, HttpServletResponse.SC_OK, flightOrders);
+            sendMessage(response, HttpServletResponse.SC_OK, allOrders);
         } catch (SQLException exc) {
             handleSqlError(response, exc);
         }

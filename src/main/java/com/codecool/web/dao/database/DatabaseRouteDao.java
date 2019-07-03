@@ -327,7 +327,7 @@ public final class DatabaseRouteDao extends AbstractDao implements RouteDao {
     @Override
     public List<Route> findAllOrders(int userId) throws SQLException {
         List<Route> routes = new ArrayList<>();
-        String sql = "SELECT * FROM users_routes JOIN routes ON users_routes.route_id = routes.route_id WHERE user_routes.user_id = ?";
+        String sql = "SELECT * FROM users_routes JOIN routes ON users_routes.route_id = routes.route_id WHERE users_routes.user_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             try (ResultSet resultSet = statement.executeQuery()) {
