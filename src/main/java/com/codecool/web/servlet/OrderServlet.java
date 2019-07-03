@@ -51,4 +51,29 @@ public class OrderServlet extends AbstractServlet {
         }
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try (Connection connection = getConnection(request.getServletContext())) {
+            FlightDao flightDao = new DatabaseFlightDao(connection);
+            FlightService flightService = new SimpleFlightService(flightDao);
+
+            RouteDao routeDao = new DatabaseRouteDao(connection);
+            RouteService routeService = new SimpleRouteService(routeDao);
+
+            int flightId = Integer.parseInt(request.getParameter("flight-id"));
+            int routeId = Integer.parseInt(request.getParameter("route-id"));
+
+            User user = (User) request.getSession().getAttribute("user");
+
+            if (flightId == 0) {
+                routeService.orderRoute(user.getId(), routeId);
+            } else {
+                flightService.orderFlight(user.getId(), flightId);
+            }
+
+            sendMessage(response, HttpServletResponse.SC_OK, "Order successfully completed");
+        } catch (SQLException exc) {
+            handleSqlError(response, exc);
+        }
+    }
 }
