@@ -150,6 +150,17 @@ function createRoutesTableBodyNotAdmin(routes) {
     priceTdEl.classList.add('default-cell');
     priceTdEl.textContent = route.price;
 
+    const buttonOrderEl = document.createElement('p');
+    buttonOrderEl.textContent = "Order";
+    buttonOrderEl.setAttribute('id', 'id-order-route-button-' + route.id);
+
+    buttonOrderEl.dataset.routeOrderId = route.id;
+    buttonOrderEl.addEventListener('click', onRouteOrderButtonClicked);
+
+    const buttonOneTdEl = document.createElement('td');
+    buttonOneTdEl.appendChild(buttonOrderEl);
+    buttonOneTdEl.setAttribute('id', 'route-order-button-' + route.id);
+
     const trEl = document.createElement('tr');
     trEl.setAttribute('id', 'row-route-id-' + route.id);
     trEl.appendChild(originTdEl);
@@ -158,6 +169,7 @@ function createRoutesTableBodyNotAdmin(routes) {
     trEl.appendChild(startTdEl);
     trEl.appendChild(endTdEl);
     trEl.appendChild(priceTdEl);
+    trEl.appendChild(buttonOneTdEl);
 
     tbodyEl.appendChild(trEl);
   }
@@ -440,6 +452,30 @@ function onRouteSaveButtonClicked() {
 }
 
 function onRouteEditSubmitResponse() {
+    if (this.status === OK) {
+        const message = JSON.parse(this.responseText);
+        alert(message.message);
+        onRoutesClicked();
+    } else {
+        onOtherResponse(myRoutesDivEl, this);
+    }
+}
+
+function onRouteOrderButtonClicked() {
+    const routeId = this.dataset.routeOrderId;
+
+    const params = new URLSearchParams();
+    params.append('route-id', routeId);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onRouteOrderResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'protected/orders');
+
+    xhr.send(params);
+}
+
+function onRouteOrderResponse() {
     if (this.status === OK) {
         const message = JSON.parse(this.responseText);
         alert(message.message);

@@ -60,15 +60,14 @@ public class OrderServlet extends AbstractServlet {
             RouteDao routeDao = new DatabaseRouteDao(connection);
             RouteService routeService = new SimpleRouteService(routeDao);
 
-            int flightId = Integer.parseInt(request.getParameter("flight-id"));
-            int routeId = Integer.parseInt(request.getParameter("route-id"));
-
             User user = (User) request.getSession().getAttribute("user");
 
-            if (flightId == 0) {
-                routeService.orderRoute(user.getId(), routeId);
-            } else {
+            if (request.getParameter("flight-id") != null) {
+                int flightId = Integer.parseInt(request.getParameter("flight-id"));
                 flightService.orderFlight(user.getId(), flightId);
+            } else {
+                int routeId = Integer.parseInt(request.getParameter("route-id"));
+                routeService.orderRoute(user.getId(), routeId);
             }
 
             sendMessage(response, HttpServletResponse.SC_OK, "Order successfully completed");
