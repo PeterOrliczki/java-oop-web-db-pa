@@ -4,14 +4,38 @@ function onProfileClicked() {
 
 function onProfileLoad(user) {
     if (user.role === 'ADMIN') {
-      showMenu();
+        showContentById('link-activity');
+        showContentById('link-profile');
+        showContentById('link-users');
+        showContentById('link-flights');
+        showContentById('link-routes');
+        showContentById('link-planes');
+        showContentById('link-taxis');
+        showContentById('link-logout');
+        hideContentById('link-orders');
+        showMenu();
     } else if (user.role === 'REGISTERED') {
-      const activityLiEl = document.getElementById('link-activity');
-      activityLiEl.style.display = 'none';
-      showMenu();
+        showContentById('link-profile');
+        showContentById('link-flights');
+        showContentById('link-routes');
+        showContentById('link-orders');
+        showContentById('link-logout');
+        hideContentById('link-activity');
+        hideContentById('link-users');
+        hideContentById('link-planes');
+        hideContentById('link-taxis');
+        showMenu();
     } else if (user.role === 'UNREGISTERED') {
-      hideMenu();
-      onFlightsClicked();
+        showContentById('link-flights');
+        showContentById('link-routes');
+        hideContentById('link-activity');
+        hideContentById('link-profile');
+        hideContentById('link-users');
+        hideContentById('link-planes');
+        hideContentById('link-taxis');
+        hideContentById('link-orders');
+        hideContentById('link-logout');
+        onFlightsClicked();
     }
     showProfileContent(user);
     if (user.role !== 'UNREGISTERED') {
