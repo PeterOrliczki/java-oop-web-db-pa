@@ -17,29 +17,48 @@ function onRoutesLoad() {
 }
 
 function createRoutesDisplay(routes) {
-  const routeButtonEl = createNewRouteButton();
-  routeButtonEl.addEventListener('click', addNewRoute);
-  if (routes.length === 0) {
-    removeAllChildren(myRoutesDivEl);
-    const pEl = document.createElement('p');
-    pEl.setAttribute('id', 'route-info');
-    pEl.textContent = 'The route log is empty';
-    myRoutesDivEl.appendChild(pEl);
-    myRoutesDivEl.appendChild(routeButtonEl);
+  if (getCurrentUser().role === 'ADMIN') {
+    const routeButtonEl = createNewRouteButton();
+    routeButtonEl.addEventListener('click', addNewRoute);
+    if (routes.length === 0) {
+      removeAllChildren(myRoutesDivEl);
+      const pEl = document.createElement('p');
+      pEl.setAttribute('id', 'route-info');
+      pEl.textContent = 'The route log is empty';
+      myRoutesDivEl.appendChild(pEl);
+      myRoutesDivEl.appendChild(routeButtonEl);
+    } else {
+      removeAllChildren(myRoutesDivEl);
+      const tableEl = document.createElement('table');
+      tableEl.setAttribute('id', 'edit-route-table');
+      const theadEl = createRoutesTableHeaderAdmin();
+      const tbodyEl = createRoutesTableBodyAdmin(routes);
+      tableEl.appendChild(theadEl);
+      tableEl.appendChild(tbodyEl);
+      myRoutesDivEl.appendChild(tableEl);
+      myRoutesDivEl.appendChild(routeButtonEl);
+    }
   } else {
-    removeAllChildren(myRoutesDivEl);
-    const tableEl = document.createElement('table');
-    tableEl.setAttribute('id', 'edit-route-table');
-    const theadEl = createRoutesTableHeader();
-    const tbodyEl = createRoutesTableBody(routes);
-    tableEl.appendChild(theadEl);
-    tableEl.appendChild(tbodyEl);
-    myRoutesDivEl.appendChild(tableEl);
-    myRoutesDivEl.appendChild(routeButtonEl);
+    if (routes.length === 0) {
+      removeAllChildren(myRoutesDivEl);
+      const pEl = document.createElement('p');
+      pEl.setAttribute('id', 'route-info');
+      pEl.textContent = 'The route log is empty';
+      myRoutesDivEl.appendChild(pEl);
+    } else {
+      removeAllChildren(myRoutesDivEl);
+      const tableEl = document.createElement('table');
+      tableEl.setAttribute('id', 'edit-route-table');
+      const theadEl = createRoutesTableHeaderNotAdmin();
+      const tbodyEl = createRoutesTableBodyNotAdmin(routes);
+      tableEl.appendChild(theadEl);
+      tableEl.appendChild(tbodyEl);
+      myRoutesDivEl.appendChild(tableEl);
+    }
   }
 }
 
-function createRoutesTableBody(routes) {
+function createRoutesTableBodyAdmin(routes) {
   const tbodyEl = document.createElement('tbody');
 
   for (let i = 0; i < routes.length; i++) {
@@ -101,7 +120,52 @@ function createRoutesTableBody(routes) {
   return tbodyEl;
 }
 
-function createRoutesTableHeader() {
+function createRoutesTableBodyNotAdmin(routes) {
+  const tbodyEl = document.createElement('tbody');
+
+  for (let i = 0; i < routes.length; i++) {
+    const route = routes[i];
+
+    const originTdEl = document.createElement('td');
+    originTdEl.classList.add('default-cell');
+    originTdEl.textContent = route.origin;
+
+    const destinationTdEl = document.createElement('td');
+    destinationTdEl.classList.add('default-cell');
+    destinationTdEl.textContent = route.destination;
+
+    const dateTdEl = document.createElement('td');
+    dateTdEl.classList.add('default-cell');
+    dateTdEl.textContent = route.date;
+
+    const startTdEl = document.createElement('td');
+    startTdEl.classList.add('default-cell');
+    startTdEl.textContent = route.start;
+
+    const endTdEl = document.createElement('td');
+    endTdEl.classList.add('default-cell');
+    endTdEl.textContent = route.end;
+
+    const priceTdEl = document.createElement('td');
+    priceTdEl.classList.add('default-cell');
+    priceTdEl.textContent = route.price;
+
+    const trEl = document.createElement('tr');
+    trEl.setAttribute('id', 'row-route-id-' + route.id);
+    trEl.appendChild(originTdEl);
+    trEl.appendChild(destinationTdEl);
+    trEl.appendChild(dateTdEl);
+    trEl.appendChild(startTdEl);
+    trEl.appendChild(endTdEl);
+    trEl.appendChild(priceTdEl);
+
+    tbodyEl.appendChild(trEl);
+  }
+
+  return tbodyEl;
+}
+
+function createRoutesTableHeaderAdmin() {
     const taxiIdThEl = document.createElement('th');
     taxiIdThEl.classList.add('default-th');``
     taxiIdThEl.textContent = 'Taxi ID';
@@ -133,6 +197,45 @@ function createRoutesTableHeader() {
     const trEl = document.createElement('tr');
 
     trEl.appendChild(taxiIdThEl);
+    trEl.appendChild(originThEl);
+    trEl.appendChild(destinationThEl);
+    trEl.appendChild(dateThEl);
+    trEl.appendChild(startThEl);
+    trEl.appendChild(endThEl);
+    trEl.appendChild(priceThEl);
+
+    const theadEl = document.createElement('thead');
+    theadEl.appendChild(trEl);
+    return theadEl;
+}
+
+function createRoutesTableHeaderNotAdmin() {
+    const originThEl = document.createElement('th');
+    originThEl.classList.add('default-th');
+    originThEl.textContent = 'Origin';
+
+    const destinationThEl = document.createElement('th');
+    destinationThEl.classList.add('default-th');
+    destinationThEl.textContent = 'Destination';
+
+    const dateThEl = document.createElement('th');
+    dateThEl.classList.add('default-th');
+    dateThEl.textContent = 'Date';
+
+    const startThEl = document.createElement('th');
+    startThEl.classList.add('default-th');
+    startThEl.textContent = 'Start';
+
+    const endThEl = document.createElement('th');
+    endThEl.classList.add('default-th');
+    endThEl.textContent = 'End';
+
+    const priceThEl = document.createElement('th');
+    priceThEl.classList.add('default-th');
+    priceThEl.textContent = 'Price';
+
+    const trEl = document.createElement('tr');
+
     trEl.appendChild(originThEl);
     trEl.appendChild(destinationThEl);
     trEl.appendChild(dateThEl);
