@@ -170,7 +170,9 @@ create trigger users_routes_audit_delete
     for each row EXECUTE procedure process_audit();
 
 
-INSERT INTO users(user_name, user_email, user_password, user_role, user_balance) VALUES ('admin', 'admin', '1000:409fe2cfb15529fcbcc703c6ec160803:b06f766b8e27629b174f389e378e7e8b81b108d05a48e54e73efd92ca0398266c9bf9aef05191aff03595804636159ce029795404791b4806069c2a554f2c650', 'ADMIN', 0);
+INSERT INTO users(user_name, user_email, user_password, user_role, user_balance) VALUES ('a', 'a', '1000:409fe2cfb15529fcbcc703c6ec160803:b06f766b8e27629b174f389e378e7e8b81b108d05a48e54e73efd92ca0398266c9bf9aef05191aff03595804636159ce029795404791b4806069c2a554f2c650', 'ADMIN', 0);
+
+INSERT INTO users(user_name, user_email, user_password, user_role, user_balance) VALUES ('r', 'r', '1000:26301cf43818793da6ec5c1ea6bd7d57:84a133c42d292d991d1bc707b91c39fc446c23ff657aa533e9d22dd51509e112035e6c717ca7f4d65422aea9492ec53eecb7762f6f7eea0c3971cedd649e8bb6', 'REGISTERED', 1000);
 
 INSERT INTO planes(plane_name, plane_capacity) VALUES ('Boeing 737', 162);
 
