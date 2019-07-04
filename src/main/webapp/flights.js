@@ -47,7 +47,9 @@ function createFlightsDisplay(flights) {
         pEl.setAttribute('id', 'flight-info');
         pEl.textContent = 'The flight log is empty';
         myFlightsDivEl.appendChild(pEl);
-        myFlightsDivEl.appendChild(flightButtonEl);
+        if (getCurrentUser().role === 'REGISTERED') {
+            myFlightsDivEl.appendChild(flightButtonEl);
+        }
       } else {
         removeAllChildren(myFlightsDivEl);
         const tableEl = document.createElement('table');
@@ -57,7 +59,9 @@ function createFlightsDisplay(flights) {
         tableEl.appendChild(theadEl);
         tableEl.appendChild(tbodyEl);
         myFlightsDivEl.appendChild(tableEl);
-        myFlightsDivEl.appendChild(flightButtonEl);
+        if (getCurrentUser().role === 'REGISTERED') {
+            myFlightsDivEl.appendChild(flightButtonEl);
+        }
     }
   }
 }
@@ -185,7 +189,9 @@ function createFlightsTableBodyNotAdmin(flights) {
     trEl.appendChild(endTdEl);
     trEl.appendChild(classTdEl);
     trEl.appendChild(priceTdEl);
-    trEl.appendChild(buttonOneTdEl);
+    if (getCurrentUser.role === 'REGISTERED') {
+        trEl.appendChild(buttonOneTdEl);
+    }
 
     tbodyEl.appendChild(trEl);
   }
