@@ -159,6 +159,17 @@ function createFlightsTableBodyNotAdmin(flights) {
     priceTdEl.classList.add('default-cell');
     priceTdEl.textContent = flight.price;
 
+    const buttonOrderEl = document.createElement('p');
+    buttonOrderEl.textContent = "Order";
+    buttonOrderEl.setAttribute('id', 'id-order-flight-button-' + flight.id);
+
+    buttonOrderEl.dataset.flightOrderId = flight.id;
+    buttonOrderEl.addEventListener('click', onFlightOrderButtonClicked);
+
+    const buttonOneTdEl = document.createElement('td');
+    buttonOneTdEl.appendChild(buttonOrderEl);
+    buttonOneTdEl.setAttribute('id', 'flight-order-button-' + flight.id);
+
     const trEl = document.createElement('tr');
     trEl.setAttribute('id', 'row-flight-id-' + flight.id);
     trEl.appendChild(originTdEl);
@@ -168,6 +179,7 @@ function createFlightsTableBodyNotAdmin(flights) {
     trEl.appendChild(endTdEl);
     trEl.appendChild(classTdEl);
     trEl.appendChild(priceTdEl);
+    trEl.appendChild(buttonOneTdEl);
 
     tbodyEl.appendChild(trEl);
   }
@@ -467,6 +479,30 @@ function onFlightSaveButtonClicked() {
     xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
 
     xhr.send(json);
+}
+
+function onFlightOrderButtonClicked() {
+    const flightId = this.dataset.flightOrderId;
+
+    const params = new URLSearchParams();
+    params.append('flight-id', flightId);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onFlightOrderResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'protected/orders');
+
+    xhr.send(params);
+}
+
+function onFlightOrderResponse() {
+    if (this.status === OK) {
+        const message = JSON.parse(this.responseText);
+        alert(message.message);
+        onFlightsClicked();
+    } else {
+        onOtherResponse(myFlightsDivEl, this);
+    }
 }
 
 function onFlightEditSubmitResponse() {

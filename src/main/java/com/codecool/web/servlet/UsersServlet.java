@@ -50,7 +50,7 @@ public final class UsersServlet extends AbstractServlet {
             }
             userService.deleteById(id);
 
-            sendMessage(response, HttpServletResponse.SC_OK, "Task succesfully deleted");
+            sendMessage(response, HttpServletResponse.SC_OK, "User succesfully deleted");
         } catch (SQLException exc) {
             handleSqlError(response, exc);
         }

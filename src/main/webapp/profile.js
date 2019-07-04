@@ -78,7 +78,7 @@ function onSingleProfileLoad() {
         const user = JSON.parse(this.responseText);
         showProfileData(user);
     } else {
-        onOtherResponse(myTasksDivEl, this);
+        onOtherResponse(profileContentDivEl, this);
     }
 }
 
