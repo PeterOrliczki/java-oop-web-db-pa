@@ -35,6 +35,25 @@ public final class UsersServlet extends AbstractServlet {
         }
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try (Connection connection = getConnection(request.getServletContext())) {
+            UserDao userDao = new DatabaseUserDao(connection);
+            UserService userService = new SimpleUserService(userDao);
+
+            User user = (User) request.getSession().getAttribute("user");
+
+            int userDeposit = Integer.parseInt(request.getParameter("user-deposit"));
+
+            userService.addToBalanceById(user.getId(), userDeposit);
+
+            sendMessage(response, HttpServletResponse.SC_OK, "Deposit successfully completed");
+        } catch (SQLException exc) {
+            handleSqlError(response, exc);
+        }
+    }
+
+    @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try (Connection connection = getConnection(request.getServletContext())) {
             UserDao userDao = new DatabaseUserDao(connection);

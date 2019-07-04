@@ -39,12 +39,15 @@ function createFlightsDisplay(flights) {
         myFlightsDivEl.appendChild(flightButtonEl);
       }
     } else {
+      const flightButtonEl = createNewDepositButtonFlight();
+      flightButtonEl.addEventListener('click', addToWalletFlight);
       if (flights.length === 0) {
         removeAllChildren(myFlightsDivEl);
         const pEl = document.createElement('p');
         pEl.setAttribute('id', 'flight-info');
         pEl.textContent = 'The flight log is empty';
         myFlightsDivEl.appendChild(pEl);
+        myFlightsDivEl.appendChild(flightButtonEl);
       } else {
         removeAllChildren(myFlightsDivEl);
         const tableEl = document.createElement('table');
@@ -54,6 +57,7 @@ function createFlightsDisplay(flights) {
         tableEl.appendChild(theadEl);
         tableEl.appendChild(tbodyEl);
         myFlightsDivEl.appendChild(tableEl);
+        myFlightsDivEl.appendChild(flightButtonEl);
     }
   }
 }
@@ -280,6 +284,80 @@ function createFlightsTableHeaderNotAdmin() {
     const theadEl = document.createElement('thead');
     theadEl.appendChild(trEl);
     return theadEl;
+}
+
+function createNewDepositButtonFlight() {
+    const buttonEl = document.createElement('button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Add balance to wallet';
+    return buttonEl;
+}
+
+function addToWalletFlight() {
+    removeAllChildren(myFlightsDivEl);
+    createNewDepositFormFlight();
+}
+
+function createNewDepositFormFlight() {
+    const formEl = document.createElement('form');
+    formEl.setAttribute('id','new-deposit-form');
+    formEl.classList.add('menu-form');
+    formEl.onSubmit = 'return false;';
+
+    const inputNaEl = document.createElement("input");
+    inputNaEl.setAttribute("type","text");
+    inputNaEl.classList.add("text-input");
+    inputNaEl.placeholder = "Amount";
+    inputNaEl.setAttribute("name","wallet-amount");
+
+    const brEl = document.createElement("br");
+
+    const sEl = createNewSubmitDepositButtonFlight();
+    sEl.addEventListener('click', onSubmitNewDepositFlight);
+
+    formEl.appendChild(inputNaEl);
+    formEl.appendChild(brEl);
+    formEl.appendChild(sEl);
+
+    myFlightsDivEl.appendChild(formEl);
+}
+
+function createNewSubmitDepositButtonFlight() {
+    const buttonEl = document.createElement('button');
+    buttonEl.setAttribute('id', 'new-deposit-button');
+    buttonEl.setAttribute('type', 'button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Add balance to wallet';
+
+    return buttonEl;
+}
+
+function onSubmitNewDepositFlight() {
+    const loginFormEl = document.forms['new-deposit-form'];
+
+    const nameInputEl = loginFormEl.querySelector('input[name="wallet-amount"]');
+
+    removeAllChildren(myFlightsDivEl);
+    const name = nameInputEl.value;
+
+    const params = new URLSearchParams();
+    params.append('user-deposit', name);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onDepositSubmissionResponseFlight);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'protected/users');
+    xhr.send(params);
+}
+
+function onDepositSubmissionResponseFlight() {
+    if (this.status === OK) {
+        const deposit = JSON.parse(this.responseText);
+        alert(deposit.message);
+        onFlightsClicked();
+    } else {
+        onOtherResponse(myFlightsDivEl, this);
+    }
 }
 
 function createNewFlightButton() {

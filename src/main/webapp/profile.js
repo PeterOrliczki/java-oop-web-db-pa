@@ -87,36 +87,43 @@ function showProfileData(user) {
 
     const tableEl = document.createElement('table');
     tableEl.setAttribute('id', 'edit-profile-table');
-    const theadEl = createProfileTableHeader();
-    const tbodyEl = createProfileTableBody(user);
-    tableEl.appendChild(theadEl);
-    tableEl.appendChild(tbodyEl);
-    profileContentDivEl.appendChild(tableEl);
-
+    if (user.role === 'ADMIN') {
+        const theadEl = createProfileTableHeaderAdmin();
+        const tbodyEl = createProfileTableBodyAdmin(user);
+        tableEl.appendChild(theadEl);
+        tableEl.appendChild(tbodyEl);
+        profileContentDivEl.appendChild(tableEl);
+    } else {
+        const theadEl = createProfileTableHeaderNotAdmin();
+        const tbodyEl = createProfileTableBodyNotAdmin(user);
+        tableEl.appendChild(theadEl);
+        tableEl.appendChild(tbodyEl);
+        profileContentDivEl.appendChild(tableEl);
+    }
 }
 
-function createProfileTableHeader() {
-    const nameTdEl = document.createElement('th');
-    nameTdEl.textContent = 'Name';
+function createProfileTableHeaderAdmin() {
+    const nameThEl = document.createElement('th');
+    nameThEl.textContent = 'Name';
 
-    const emailTdEl = document.createElement('th');
-    emailTdEl.textContent = 'Email';
+    const emailThEl = document.createElement('th');
+    emailThEl.textContent = 'Email';
 
-    const passwordTdEl = document.createElement('th');
-    passwordTdEl.textContent = 'Password';
+    const passwordThEl = document.createElement('th');
+    passwordThEl.textContent = 'Password';
 
-    const roleTdEl = document.createElement('th');
-    roleTdEl.textContent = 'Role';
+    const roleThEl = document.createElement('th');
+    roleThEl.textContent = 'Role';
 
-    const buttonOneTdEl = document.createElement('th');
-    buttonOneTdEl.textContent = 'Edit';
+    const buttonOneThEl = document.createElement('th');
+    buttonOneThEl.textContent = 'Edit';
 
     const trEl = document.createElement('tr');
-    trEl.appendChild(nameTdEl);
-    trEl.appendChild(emailTdEl);
-    trEl.appendChild(passwordTdEl);
-    trEl.appendChild(roleTdEl);
-    trEl.appendChild(buttonOneTdEl);
+    trEl.appendChild(nameThEl);
+    trEl.appendChild(emailThEl);
+    trEl.appendChild(passwordThEl);
+    trEl.appendChild(roleThEl);
+    trEl.appendChild(buttonOneThEl);
 
     const theadEl = document.createElement('thead');
     theadEl.appendChild(trEl);
@@ -124,7 +131,36 @@ function createProfileTableHeader() {
     return theadEl;
 }
 
-function createProfileTableBody(user) {
+function createProfileTableHeaderNotAdmin() {
+    const nameThEl = document.createElement('th');
+    nameThEl.textContent = 'Name';
+
+    const emailThEl = document.createElement('th');
+    emailThEl.textContent = 'Email';
+
+    const passwordThEl = document.createElement('th');
+    passwordThEl.textContent = 'Password';
+
+    const balanceThEl = document.createElement('th');
+    balanceThEl.textContent = 'Balance';
+
+    const buttonOneThEl = document.createElement('th');
+    buttonOneThEl.textContent = 'Edit';
+
+    const trEl = document.createElement('tr');
+    trEl.appendChild(nameThEl);
+    trEl.appendChild(emailThEl);
+    trEl.appendChild(passwordThEl);
+    trEl.appendChild(balanceThEl);
+    trEl.appendChild(buttonOneThEl);
+
+    const theadEl = document.createElement('thead');
+    theadEl.appendChild(trEl);
+
+    return theadEl;
+}
+
+function createProfileTableBodyAdmin(user) {
     const tbodyEl = document.createElement('tbody');
 
     const nameTdEl = document.createElement('td');
@@ -160,6 +196,50 @@ function createProfileTableBody(user) {
     trEl.appendChild(emailTdEl);
     trEl.appendChild(passwordTdEl);
     trEl.appendChild(roleTdEl);
+    trEl.appendChild(buttonOneTdEl);
+
+    tbodyEl.appendChild(trEl);
+
+
+    return tbodyEl;
+}
+
+function createProfileTableBodyNotAdmin(user) {
+    const tbodyEl = document.createElement('tbody');
+
+    const nameTdEl = document.createElement('td');
+    nameTdEl.textContent = user.name;
+    nameTdEl.setAttribute('id', user.id);
+
+    const emailTdEl = document.createElement('td');
+    emailTdEl.textContent = user.email;
+    emailTdEl.setAttribute('id', user.id);
+
+    const passwordTdEl = document.createElement('td');
+    passwordTdEl.textContent = '*****';
+    passwordTdEl.setAttribute('id', user.id);
+
+    const balanceTdEl = document.createElement('td');
+    balanceTdEl.textContent = user.balance;
+    balanceTdEl.setAttribute('id', user.balance);
+
+    const buttonEditEl = document.createElement('p');
+    buttonEditEl.textContent = "Edit";
+    buttonEditEl.setAttribute('id', 'id-edit-button-' + user.id);
+
+    buttonEditEl.dataset.userEditId = user.id;
+    buttonEditEl.addEventListener('click', onProfileEditButtonClicked);
+
+    const buttonOneTdEl = document.createElement('td');
+    buttonOneTdEl.appendChild(buttonEditEl);
+    buttonOneTdEl.setAttribute('id', 'user-edit-button-' + user.id);
+
+    const trEl = document.createElement('tr');
+    trEl.setAttribute('id', 'row-user-id-' + user.id);
+    trEl.appendChild(nameTdEl);
+    trEl.appendChild(emailTdEl);
+    trEl.appendChild(passwordTdEl);
+    trEl.appendChild(balanceTdEl);
     trEl.appendChild(buttonOneTdEl);
 
     tbodyEl.appendChild(trEl);

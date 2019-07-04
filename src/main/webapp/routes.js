@@ -39,12 +39,15 @@ function createRoutesDisplay(routes) {
       myRoutesDivEl.appendChild(routeButtonEl);
     }
   } else {
+      const flightButtonEl = createNewDepositButtonRoute();
+      flightButtonEl.addEventListener('click', addToWalletRoute);
     if (routes.length === 0) {
       removeAllChildren(myRoutesDivEl);
       const pEl = document.createElement('p');
       pEl.setAttribute('id', 'route-info');
       pEl.textContent = 'The route log is empty';
       myRoutesDivEl.appendChild(pEl);
+      myRoutesDivEl.appendChild(flightButtonEl);
     } else {
       removeAllChildren(myRoutesDivEl);
       const tableEl = document.createElement('table');
@@ -54,6 +57,7 @@ function createRoutesDisplay(routes) {
       tableEl.appendChild(theadEl);
       tableEl.appendChild(tbodyEl);
       myRoutesDivEl.appendChild(tableEl);
+      myRoutesDivEl.appendChild(flightButtonEl);
     }
   }
 }
@@ -261,6 +265,81 @@ function createRoutesTableHeaderNotAdmin() {
     theadEl.appendChild(trEl);
     return theadEl;
 }
+
+function createNewDepositButtonRoute() {
+    const buttonEl = document.createElement('button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Add balance to wallet';
+    return buttonEl;
+}
+
+function addToWalletRoute() {
+    removeAllChildren(myRoutesDivEl);
+    createNewDepositFormRoute();
+}
+
+function createNewDepositFormRoute() {
+    const formEl = document.createElement('form');
+    formEl.setAttribute('id','new-deposit-form');
+    formEl.classList.add('menu-form');
+    formEl.onSubmit = 'return false;';
+
+    const inputNaEl = document.createElement("input");
+    inputNaEl.setAttribute("type","text");
+    inputNaEl.classList.add("text-input");
+    inputNaEl.placeholder = "Amount";
+    inputNaEl.setAttribute("name","wallet-amount");
+
+    const brEl = document.createElement("br");
+
+    const sEl = createNewSubmitDepositButtonRoute();
+    sEl.addEventListener('click', onSubmitNewDepositRoute);
+
+    formEl.appendChild(inputNaEl);
+    formEl.appendChild(brEl);
+    formEl.appendChild(sEl);
+
+    myRoutesDivEl.appendChild(formEl);
+}
+
+function createNewSubmitDepositButtonRoute() {
+    const buttonEl = document.createElement('button');
+    buttonEl.setAttribute('id', 'new-deposit-button');
+    buttonEl.setAttribute('type', 'button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Add balance to wallet';
+
+    return buttonEl;
+}
+
+function onSubmitNewDepositRoute() {
+    const loginFormEl = document.forms['new-deposit-form'];
+
+    const nameInputEl = loginFormEl.querySelector('input[name="wallet-amount"]');
+
+    removeAllChildren(myRoutesDivEl);
+    const name = nameInputEl.value;
+
+    const params = new URLSearchParams();
+    params.append('user-deposit', name);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onDepositSubmissionResponseRoute);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'protected/users');
+    xhr.send(params);
+}
+
+function onDepositSubmissionResponseRoute() {
+    if (this.status === OK) {
+        const deposit = JSON.parse(this.responseText);
+        alert(deposit.message);
+        onRoutesClicked();
+    } else {
+        onOtherResponse(myRoutesDivEl, this);
+    }
+}
+
 
 function createNewRouteButton() {
     const buttonEl = document.createElement('button');
