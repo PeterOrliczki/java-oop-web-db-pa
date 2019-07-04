@@ -105,6 +105,41 @@ create or replace function process_audit() RETURNS trigger AS '
     END;
 ' LANGUAGE plpgsql;
 
+create or replace function check_flight_capacity() RETURNS trigger AS '
+    BEGIN
+	   DECLARE
+                capacity integer;
+            BEGIN
+				select planes.plane_capacity into capacity from flights join planes on flights.plane_id =  planes.plane_id where flights.flight_id = new.flight_id;
+				IF capacity <= 0 THEN
+					RAISE EXCEPTION ''Not enough seats'';
+				END IF;
+			END;
+        RETURN NEW;
+    END;
+' LANGUAGE plpgsql;
+
+create or replace function check_route_capacity() RETURNS trigger AS '
+    BEGIN
+	   DECLARE
+                capacity integer;
+            BEGIN
+				select taxis.taxi_capacity into capacity from routes join taxis on routes.taxi_id =  taxis.taxi_id where routes.route_id = new.route_id;
+				IF capacity <= 0 THEN
+					RAISE EXCEPTION ''Not enough seats'';
+				END IF;
+			END;
+        RETURN NEW;
+    END;
+' LANGUAGE plpgsql;
+
+create trigger flight_capacity_check
+    after insert on users_flights
+    for each row EXECUTE procedure check_flight_capacity();
+create trigger route_capacity_check
+    after insert on users_routes
+    for each row EXECUTE procedure check_route_capacity();
+
 create trigger users_audit_insert
     after insert on users
     for each row EXECUTE procedure process_audit();
