@@ -166,6 +166,8 @@ function createFlightsTableBodyNotAdmin(flights) {
     buttonOrderEl.dataset.flightOrderId = flight.id;
     buttonOrderEl.addEventListener('click', onFlightOrderButtonClicked);
 
+    buttonOrderEl.dataset.flightPrice = flight.price;
+
     const buttonOneTdEl = document.createElement('td');
     buttonOneTdEl.appendChild(buttonOrderEl);
     buttonOneTdEl.setAttribute('id', 'flight-order-button-' + flight.id);
@@ -483,9 +485,11 @@ function onFlightSaveButtonClicked() {
 
 function onFlightOrderButtonClicked() {
     const flightId = this.dataset.flightOrderId;
+    const flightPrice = this.dataset.flightPrice;
 
     const params = new URLSearchParams();
     params.append('flight-id', flightId);
+    params.append('flight-price', flightPrice);
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onFlightOrderResponse);

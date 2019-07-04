@@ -157,6 +157,8 @@ function createRoutesTableBodyNotAdmin(routes) {
     buttonOrderEl.dataset.routeOrderId = route.id;
     buttonOrderEl.addEventListener('click', onRouteOrderButtonClicked);
 
+    buttonOrderEl.dataset.routePrice = route.price;
+
     const buttonOneTdEl = document.createElement('td');
     buttonOneTdEl.appendChild(buttonOrderEl);
     buttonOneTdEl.setAttribute('id', 'route-order-button-' + route.id);
@@ -463,9 +465,11 @@ function onRouteEditSubmitResponse() {
 
 function onRouteOrderButtonClicked() {
     const routeId = this.dataset.routeOrderId;
+    const routePrice = this.dataset.routePrice;
 
     const params = new URLSearchParams();
     params.append('route-id', routeId);
+    params.append('route-price', routePrice);
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onRouteOrderResponse);
