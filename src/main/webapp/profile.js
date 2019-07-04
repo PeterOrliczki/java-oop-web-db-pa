@@ -4,37 +4,37 @@ function onProfileClicked() {
 
 function onProfileLoad(user) {
     if (user.role === 'ADMIN') {
-        showContentById('link-activity');
-        showContentById('link-profile');
-        showContentById('link-users');
-        showContentById('link-flights');
-        showContentById('link-routes');
-        showContentById('link-planes');
-        showContentById('link-taxis');
-        showContentById('link-logout');
-        hideContentById('link-orders');
+        showContentById('menu-li-activity');
+        showContentById('menu-li-profile');
+        showContentById('menu-li-users');
+        showContentById('menu-li-flights');
+        showContentById('menu-li-routes');
+        showContentById('menu-li-planes');
+        showContentById('menu-li-taxis');
+        showContentById('menu-li-logout');
+        hideContentById('menu-li-orders');
         showMenu();
     } else if (user.role === 'REGISTERED') {
-        showContentById('link-profile');
-        showContentById('link-flights');
-        showContentById('link-routes');
-        showContentById('link-orders');
-        showContentById('link-logout');
-        hideContentById('link-activity');
-        hideContentById('link-users');
-        hideContentById('link-planes');
-        hideContentById('link-taxis');
+        showContentById('menu-li-profile');
+        showContentById('menu-li-flights');
+        showContentById('menu-li-routes');
+        showContentById('menu-li-orders');
+        showContentById('menu-li-logout');
+        hideContentById('menu-li-activity');
+        hideContentById('menu-li-users');
+        hideContentById('menu-li-planes');
+        hideContentById('menu-li-taxis');
         showMenu();
     } else if (user.role === 'UNREGISTERED') {
-        showContentById('link-flights');
-        showContentById('link-routes');
-        hideContentById('link-activity');
-        hideContentById('link-profile');
-        hideContentById('link-users');
-        hideContentById('link-planes');
-        hideContentById('link-taxis');
-        hideContentById('link-orders');
-        hideContentById('link-logout');
+        showContentById('menu-li-flights');
+        showContentById('menu-li-routes');
+        hideContentById('menu-li-activity');
+        hideContentById('menu-li-profile');
+        hideContentById('menu-li-users');
+        hideContentById('menu-li-planes');
+        hideContentById('menu-li-taxis');
+        hideContentById('menu-li-orders');
+        hideContentById('menu-li-logout');
         onFlightsClicked();
     }
     showProfileContent(user);
