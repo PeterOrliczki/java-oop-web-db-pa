@@ -30,7 +30,6 @@ create TABLE planes(
 create TABLE taxis(
 	taxi_id SERIAL UNIQUE PRIMARY KEY,
 	taxi_name varchar(100) NOT NULL,
-	taxi_license_plate varchar(100) NOT NULL,
     taxi_capacity integer NOT NULL
 );
 
@@ -180,7 +179,7 @@ INSERT INTO flights(plane_id, flight_origin, flight_destination, flight_date, fl
 INSERT INTO users_flights(user_id, flight_id) VALUES
         (1, 1);
 
-INSERT INTO taxis(taxi_name, taxi_license_plate, taxi_capacity) VALUES ('Skoda Octavia', 'abc-123', 3);
+INSERT INTO taxis(taxi_name, taxi_capacity) VALUES ('Skoda Octavia', 3);
 
 INSERT INTO routes(taxi_id, route_origin, route_destination, route_date, route_start, route_end, route_price) VALUES (1, 'Hungary 1111 A st. 1.', 'Hungary 2222 B st. 2.', '2001-09-28', 2, 3, 30);
 

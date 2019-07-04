@@ -55,20 +55,6 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
     }
 
     @Override
-    public Taxi findByLicensePlate(String licensePlate) throws SQLException {
-        String sql = "SELECT * FROM taxis WHERE taxi_license_plate=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, licensePlate);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return fetchTaxi(resultSet);
-                }
-            }
-        }
-        return null;
-    }
-
-    @Override
     public boolean findIfTaxiExists(int id) throws SQLException {
         List<Taxi> taxis = new ArrayList<>();
         String sql = "SELECT * FROM taxis WHERE taxi_id=?";
@@ -99,18 +85,17 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
     }
 
     @Override
-    public Taxi addTaxi(String name, String licensePlate, int capacity) throws SQLException {
+    public Taxi addTaxi(String name, int capacity) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
-        String sql = "INSERT INTO taxis(taxi_name, taxi_license_plate, taxi_capacity) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO taxis(taxi_name, taxi_capacity) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name);
-            statement.setString(2, licensePlate);
-            statement.setInt(3, capacity);
+            statement.setInt(2, capacity);
             executeInsert(statement);
             int id = fetchGeneratedId(statement);
             connection.commit();
-            return new Taxi(id, name, licensePlate, capacity);
+            return new Taxi(id, name, capacity);
         } catch (SQLException ex) {
             connection.rollback();
             throw ex;
@@ -126,24 +111,6 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
         String sql = "UPDATE taxis SET taxi_name=? WHERE taxi_id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name);
-            statement.setInt(2, id);
-            executeInsert(statement);
-            connection.commit();
-        } catch (SQLException ex) {
-            connection.rollback();
-            throw ex;
-        } finally {
-            connection.setAutoCommit(autoCommit);
-        }
-    }
-
-    @Override
-    public void updateLicensePlateById(int id, String licensePlate) throws SQLException {
-        boolean autoCommit = connection.getAutoCommit();
-        connection.setAutoCommit(false);
-        String sql = "UPDATE taxis SET taxi_license_plate=? WHERE taxi_id=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, licensePlate);
             statement.setInt(2, id);
             executeInsert(statement);
             connection.commit();
@@ -193,8 +160,7 @@ public final class DatabaseTaxiDao extends AbstractDao implements TaxiDao {
     private Taxi fetchTaxi(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("taxi_id");
         String name = resultSet.getString("taxi_name");
-        String licensePlate = resultSet.getString("taxi_license_plate");
         int capacity = resultSet.getInt("taxi_capacity");
-        return new Taxi(id, name, licensePlate, capacity);
+        return new Taxi(id, name, capacity);
     }
 }

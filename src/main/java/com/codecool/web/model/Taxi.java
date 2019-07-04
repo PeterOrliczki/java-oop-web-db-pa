@@ -5,13 +5,11 @@ import java.util.Objects;
 public final class Taxi extends AbstractModel {
 
     private String name;
-    private String licensePlate;
     private int capacity;
 
-    public Taxi(int id, String name, String licensePlate, int capacity) {
+    public Taxi(int id, String name, int capacity) {
         super(id);
         this.name = name;
-        this.licensePlate = licensePlate;
         this.capacity = capacity;
     }
 
@@ -20,10 +18,6 @@ public final class Taxi extends AbstractModel {
 
     public String getName() {
         return name;
-    }
-
-    public String getLicensePlate() {
-        return licensePlate;
     }
 
     public int getCapacity() {
@@ -37,12 +31,11 @@ public final class Taxi extends AbstractModel {
         if (!super.equals(o)) return false;
         Taxi taxi = (Taxi) o;
         return capacity == taxi.capacity &&
-            Objects.equals(name, taxi.name) &&
-            Objects.equals(licensePlate, taxi.licensePlate);
+            Objects.equals(name, taxi.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, licensePlate, capacity);
+        return Objects.hash(super.hashCode(), name, capacity);
     }
 }

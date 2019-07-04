@@ -45,7 +45,6 @@ public class TaxisServlet extends AbstractServlet {
             Taxi taxi = om.readValue(req.getInputStream(), Taxi.class);
 
             taxiService.updateNameById(taxi.getId(), taxi.getName());
-            taxiService.updateLicensePlateById(taxi.getId(), taxi.getLicensePlate());
             taxiService.updateCapacityById(taxi.getId(), taxi.getCapacity());
 
             sendMessage(resp, HttpServletResponse.SC_OK, "Your data has been updated.");
@@ -61,10 +60,9 @@ public class TaxisServlet extends AbstractServlet {
             TaxiService taxiService = new SimpleTaxiService(taxiDao);
 
             String taxiName = request.getParameter("taxi-name");
-            String taxiLicensePlate = request.getParameter("taxi-license-plate");
             int taxiCapacity = Integer.parseInt(request.getParameter("taxi-capacity"));
 
-            taxiService.addTaxi(taxiName, taxiLicensePlate, taxiCapacity);
+            taxiService.addTaxi(taxiName, taxiCapacity);
 
             sendMessage(response, HttpServletResponse.SC_OK, "Taxi successfully added");
         } catch (SQLException exc) {

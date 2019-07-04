@@ -31,11 +31,6 @@ public final class SimpleTaxiService implements TaxiService {
     }
 
     @Override
-    public Taxi findByLicensePlate(String licensePlate) throws SQLException {
-        return taxiDao.findByLicensePlate(licensePlate);
-    }
-
-    @Override
     public boolean findIfTaxiExists(int id) throws SQLException {
         return taxiDao.findIfTaxiExists(id);
     }
@@ -46,18 +41,13 @@ public final class SimpleTaxiService implements TaxiService {
     }
 
     @Override
-    public Taxi addTaxi(String name, String licensePlate, int capacity) throws SQLException {
-        return taxiDao.addTaxi(name, licensePlate, capacity);
+    public Taxi addTaxi(String name, int capacity) throws SQLException {
+        return taxiDao.addTaxi(name, capacity);
     }
 
     @Override
     public void updateNameById(int id, String name) throws SQLException {
         taxiDao.updateNameById(id, name);
-    }
-
-    @Override
-    public void updateLicensePlateById(int id, String licensePlate) throws SQLException {
-        taxiDao.updateLicensePlateById(id, licensePlate);
     }
 
     @Override
