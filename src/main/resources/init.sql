@@ -121,6 +121,23 @@ create or replace function flight_capacity() RETURNS trigger AS '
     END;
 ' LANGUAGE plpgsql;
 
+create or replace function route_capacity() RETURNS trigger AS '
+    BEGIN
+	   DECLARE
+                capacity integer;
+                id integer;
+            BEGIN
+				select taxis.taxi_capacity, taxis.taxi_id into capacity, id from routes join taxis on routes.taxi_id =  taxis.taxi_id where routes.route_id = new.route_id;
+				IF capacity <= 0 THEN
+					RAISE EXCEPTION ''Not enough seats'';
+				ELSE
+				    UPDATE taxis SET taxi_capacity=taxi_capacity-1 WHERE taxis.taxi_id = id;
+				END IF;
+			END;
+        RETURN NEW;
+    END;
+' LANGUAGE plpgsql;
+
 create or replace function flight_balance() RETURNS trigger AS '
     BEGIN
 	   DECLARE
@@ -139,13 +156,39 @@ create or replace function flight_balance() RETURNS trigger AS '
     END;
 ' LANGUAGE plpgsql;
 
-create trigger flight_balance
-    after insert on users_flights
-    for each row EXECUTE procedure flight_balance();
+create or replace function route_balance() RETURNS trigger AS '
+    BEGIN
+	   DECLARE
+                balance integer;
+				price integer;
+            BEGIN
+				select user_balance into balance from users join users_routes on users.user_id = users_routes.user_id where users.user_id = new.user_id;
+				select route_price into price from users_routes join routes on users_routes.route_id = routes.route_id where routes.route_id = new.route_id;
+				IF balance < price THEN
+					RAISE EXCEPTION ''Not enough founds'';
+				ELSE
+					UPDATE users SET user_balance=user_balance-price WHERE user_id = NEW.user_id;
+				END IF;
+			END;
+        RETURN NEW;
+    END;
+' LANGUAGE plpgsql;
 
 create trigger flight_capacity
     after insert on users_flights
     for each row EXECUTE procedure flight_capacity();
+
+create trigger route_capacity
+    after insert on users_routes
+    for each row EXECUTE procedure route_capacity();
+
+create trigger flight_balance
+    after insert on users_flights
+    for each row EXECUTE procedure flight_balance();
+
+create trigger route_balance
+    after insert on users_routes
+    for each row EXECUTE procedure route_balance();
 
 create trigger users_audit
     after insert or update on users
