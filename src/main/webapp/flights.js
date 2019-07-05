@@ -189,7 +189,7 @@ function createFlightsTableBodyNotAdmin(flights) {
     trEl.appendChild(endTdEl);
     trEl.appendChild(classTdEl);
     trEl.appendChild(priceTdEl);
-    if (getCurrentUser.role === 'REGISTERED') {
+    if (getCurrentUser().role === 'REGISTERED') {
         trEl.appendChild(buttonOneTdEl);
     }
 
@@ -569,11 +569,9 @@ function onFlightSaveButtonClicked() {
 
 function onFlightOrderButtonClicked() {
     const flightId = this.dataset.flightOrderId;
-    const flightPrice = this.dataset.flightPrice;
 
     const params = new URLSearchParams();
     params.append('flight-id', flightId);
-    params.append('flight-price', flightPrice);
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onFlightOrderResponse);

@@ -544,11 +544,9 @@ function onRouteEditSubmitResponse() {
 
 function onRouteOrderButtonClicked() {
     const routeId = this.dataset.routeOrderId;
-    const routePrice = this.dataset.routePrice;
 
     const params = new URLSearchParams();
     params.append('route-id', routeId);
-    params.append('route-price', routePrice);
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onRouteOrderResponse);
