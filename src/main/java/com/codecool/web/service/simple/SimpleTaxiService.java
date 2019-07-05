@@ -21,23 +21,8 @@ public final class SimpleTaxiService implements TaxiService {
     }
 
     @Override
-    public Taxi findById(int id) throws SQLException {
-        return taxiDao.findById(id);
-    }
-
-    @Override
-    public Taxi findByName(String name) throws SQLException {
-        return taxiDao.findByName(name);
-    }
-
-    @Override
     public boolean findIfTaxiExists(int id) throws SQLException {
         return taxiDao.findIfTaxiExists(id);
-    }
-
-    @Override
-    public boolean findIfTaxiExistsByName(String name) throws SQLException {
-        return taxiDao.findIfTaxiExistsByName(name);
     }
 
     @Override
@@ -53,10 +38,5 @@ public final class SimpleTaxiService implements TaxiService {
     @Override
     public void updateCapacityById(int id, int capacity) throws SQLException {
         taxiDao.updateCapacityById(id, capacity);
-    }
-
-    @Override
-    public void deleteById(int id) throws SQLException {
-        taxiDao.deleteById(id);
     }
 }

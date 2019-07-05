@@ -31,21 +31,6 @@ public final class SimpleUserService implements UserService {
     }
 
     @Override
-    public User findByName(String name) throws SQLException {
-        return userDao.findByName(name);
-    }
-
-    @Override
-    public User findByEmail(String email) throws SQLException {
-        return userDao.findByEmail(email);
-    }
-
-    @Override
-    public User findByRole(Role role) throws SQLException {
-        return userDao.findByRole(role);
-    }
-
-    @Override
     public boolean findIfUserExists(String email) throws SQLException {
         return userDao.findIfUserExists(email);
     }
@@ -93,11 +78,6 @@ public final class SimpleUserService implements UserService {
     @Override
     public void deleteFromUsersRoutesById(int id) throws SQLException {
         userDao.deleteFromUsersRoutesById(id);
-    }
-
-    @Override
-    public void subtractFromBalanceById(int id, int price) throws SQLException {
-        userDao.subtractFromBalanceById(id, price);
     }
 
     @Override

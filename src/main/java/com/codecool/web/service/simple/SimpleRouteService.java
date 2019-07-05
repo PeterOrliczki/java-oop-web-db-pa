@@ -21,46 +21,6 @@ public final class SimpleRouteService implements RouteService {
     }
 
     @Override
-    public Route findById(int id) throws SQLException {
-        return routeDao.findById(id);
-    }
-
-    @Override
-    public Route findByTaxiId(int id) throws SQLException {
-        return routeDao.findByTaxiId(id);
-    }
-
-    @Override
-    public Route findByOrigin(String origin) throws SQLException {
-        return routeDao.findByOrigin(origin);
-    }
-
-    @Override
-    public Route findByDestination(String destination) throws SQLException {
-        return routeDao.findByDestination(destination);
-    }
-
-    @Override
-    public Route findByDate(String date) throws SQLException {
-        return routeDao.findByDate(date);
-    }
-
-    @Override
-    public Route findByStart(int start) throws SQLException {
-        return routeDao.findByStart(start);
-    }
-
-    @Override
-    public Route findByEnd(int end) throws SQLException {
-        return routeDao.findByEnd(end);
-    }
-
-    @Override
-    public Route findByPrice(int price) throws SQLException {
-        return routeDao.findByPrice(price);
-    }
-
-    @Override
     public Route addRoute(int taxiId, String origin, String destination, String date, int start, int end, int price) throws SQLException {
         return routeDao.addRoute(taxiId, origin, destination, date, start, end, price);
     }
@@ -98,11 +58,6 @@ public final class SimpleRouteService implements RouteService {
     @Override
     public void updatePriceById(int id, int price) throws SQLException {
         routeDao.updatePriceById(id, price);
-    }
-
-    @Override
-    public void deleteById(int id) throws SQLException {
-        routeDao.deleteById(id);
     }
 
     @Override

@@ -13,12 +13,6 @@ public interface UserService {
 
     User findById(int id) throws SQLException;
 
-    User findByName(String name) throws SQLException;
-
-    User findByEmail(String email) throws SQLException;
-
-    User findByRole(Role role) throws SQLException;
-
     boolean findIfUserExists(String email) throws SQLException;
 
     boolean findIfUserIdExistsInUsersFlights(int id) throws SQLException;
@@ -38,8 +32,6 @@ public interface UserService {
     void deleteFromUsersFlightsById(int id) throws SQLException;
 
     void deleteFromUsersRoutesById(int id) throws SQLException;
-
-    void subtractFromBalanceById(int id, int price) throws SQLException;
 
     void addToBalanceById(int id, int deposit) throws SQLException;
 

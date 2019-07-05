@@ -42,38 +42,10 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
     }
 
     @Override
-    public User findByName(String name) throws SQLException {
-        String sql = "SELECT * FROM users WHERE user_name=? ORDER BY user_name";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, name);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return fetchUser(resultSet);
-                }
-            }
-        }
-        return null;
-    }
-
-    @Override
     public User findByEmail(String email) throws SQLException {
         String sql = "SELECT * FROM users WHERE user_email=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return fetchUser(resultSet);
-                }
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public User findByRole(Role role) throws SQLException {
-        String sql = "SELECT * FROM users WHERE user_role=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, String.valueOf(role));
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return fetchUser(resultSet);
@@ -244,24 +216,6 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            connection.commit();
-        } catch (SQLException ex) {
-            connection.rollback();
-            throw ex;
-        } finally {
-            connection.setAutoCommit(autoCommit);
-        }
-    }
-
-    @Override
-    public void subtractFromBalanceById(int id, int price) throws SQLException {
-        boolean autoCommit = connection.getAutoCommit();
-        connection.setAutoCommit(false);
-        String sql = "UPDATE users SET user_balance=user_balance-? WHERE user_id=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, price);
-            statement.setInt(2, id);
-            executeInsert(statement);
             connection.commit();
         } catch (SQLException ex) {
             connection.rollback();

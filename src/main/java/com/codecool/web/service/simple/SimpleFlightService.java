@@ -21,51 +21,6 @@ public final class SimpleFlightService implements FlightService {
     }
 
     @Override
-    public Flight findById(int id) throws SQLException {
-        return flightDao.findById(id);
-    }
-
-    @Override
-    public Flight findByPlaneId(int id) throws SQLException {
-        return flightDao.findByPlaneId(id);
-    }
-
-    @Override
-    public Flight findByOrigin(String origin) throws SQLException {
-        return flightDao.findByOrigin(origin);
-    }
-
-    @Override
-    public Flight findByDestination(String destination) throws SQLException {
-        return flightDao.findByDestination(destination);
-    }
-
-    @Override
-    public Flight findByDate(String date) throws SQLException {
-        return flightDao.findByDate(date);
-    }
-
-    @Override
-    public Flight findByStart(int start) throws SQLException {
-        return flightDao.findByStart(start);
-    }
-
-    @Override
-    public Flight findByEnd(int end) throws SQLException {
-        return flightDao.findByEnd(end);
-    }
-
-    @Override
-    public Flight findByClass(String flightClass) throws SQLException {
-        return flightDao.findByClass(flightClass);
-    }
-
-    @Override
-    public Flight findByPrice(int price) throws SQLException {
-        return flightDao.findByPrice(price);
-    }
-
-    @Override
     public Flight addFlight(int planeId, String origin, String destination, String date, int start, int end, String flightClass, int price) throws SQLException {
         return flightDao.addFlight(planeId, origin, destination, date, start, end, flightClass, price);
     }
@@ -108,11 +63,6 @@ public final class SimpleFlightService implements FlightService {
     @Override
     public void updatePriceById(int id, int price) throws SQLException {
         flightDao.updatePriceById(id, price);
-    }
-
-    @Override
-    public void deleteById(int id) throws SQLException {
-        flightDao.deleteById(id);
     }
 
     @Override

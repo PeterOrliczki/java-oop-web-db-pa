@@ -9,24 +9,6 @@ public interface FlightService {
 
     List<Flight> findAll() throws SQLException;
 
-    Flight findById(int id) throws SQLException;
-
-    Flight findByPlaneId(int id) throws SQLException;
-
-    Flight findByOrigin(String origin) throws SQLException;
-
-    Flight findByDestination(String destination) throws SQLException;
-
-    Flight findByDate(String date) throws SQLException;
-
-    Flight findByStart(int start) throws SQLException;
-
-    Flight findByEnd(int end) throws SQLException;
-
-    Flight findByClass(String flightClass) throws SQLException;
-
-    Flight findByPrice(int price) throws SQLException;
-
     Flight addFlight(int planeId, String origin, String destination, String date, int start, int end, String flightClass, int price) throws SQLException;
 
     void updatePlaneIdById(int id, int planeId) throws SQLException;
@@ -44,8 +26,6 @@ public interface FlightService {
     void updateClassById(int id, String flightClass) throws SQLException;
 
     void updatePriceById(int id, int price) throws SQLException;
-
-    void deleteById(int id) throws SQLException;
 
     void orderFlight(int userId, int flightId) throws SQLException;
 

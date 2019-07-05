@@ -27,54 +27,11 @@ public final class DatabasePlaneDao extends AbstractDao implements PlaneDao {
     }
 
     @Override
-    public Plane findById(int id) throws SQLException {
-        String sql = "SELECT * FROM planes WHERE plane_id=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return fetchPlane(resultSet);
-                }
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Plane findByName(String name) throws SQLException {
-        String sql = "SELECT * FROM planes WHERE plane_name=? ORDER BY plane_name";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, name);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return fetchPlane(resultSet);
-                }
-            }
-        }
-        return null;
-    }
-
-    @Override
     public boolean findIfPlaneExists(int id) throws SQLException {
         List<Plane> planes = new ArrayList<>();
         String sql = "SELECT * FROM planes WHERE plane_id=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean findIfPlaneExistsByName(String name) throws SQLException {
-        List<Plane> planes = new ArrayList<>();
-        String sql = "SELECT * FROM planes WHERE plane_name=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, name);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return true;
@@ -131,23 +88,6 @@ public final class DatabasePlaneDao extends AbstractDao implements PlaneDao {
             statement.setInt(1, capacity);
             statement.setInt(2, id);
             executeInsert(statement);
-            connection.commit();
-        } catch (SQLException ex) {
-            connection.rollback();
-            throw ex;
-        } finally {
-            connection.setAutoCommit(autoCommit);
-        }
-    }
-
-    @Override
-    public void deleteById(int id) throws SQLException {
-        boolean autoCommit = connection.getAutoCommit();
-        connection.setAutoCommit(false);
-        String sql = "DELETE FROM planes WHERE plane_id=?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {
             connection.rollback();
