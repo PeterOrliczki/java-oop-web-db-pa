@@ -104,73 +104,62 @@ create or replace function process_audit() RETURNS trigger AS '
     END;
 ' LANGUAGE plpgsql;
 
-create or replace function check_flight_capacity() RETURNS trigger AS '
+create or replace function flight_capacity() RETURNS trigger AS '
     BEGIN
 	   DECLARE
                 capacity integer;
+                id integer;
             BEGIN
-				select planes.plane_capacity into capacity from flights join planes on flights.plane_id =  planes.plane_id where flights.flight_id = new.flight_id;
+				select planes.plane_capacity, planes.plane_id into capacity, id from flights join planes on flights.plane_id =  planes.plane_id where flights.flight_id = new.flight_id;
 				IF capacity <= 0 THEN
 					RAISE EXCEPTION ''Not enough seats'';
+				ELSE
+				    UPDATE planes SET plane_capacity=plane_capacity-1 WHERE planes.plane_id = id;
 				END IF;
 			END;
         RETURN NEW;
     END;
 ' LANGUAGE plpgsql;
 
-create or replace function check_route_capacity() RETURNS trigger AS '
+create or replace function flight_balance() RETURNS trigger AS '
     BEGIN
 	   DECLARE
-                capacity integer;
+                balance integer;
+				price integer;
             BEGIN
-				select taxis.taxi_capacity into capacity from routes join taxis on routes.taxi_id =  taxis.taxi_id where routes.route_id = new.route_id;
-				IF capacity <= 0 THEN
-					RAISE EXCEPTION ''Not enough seats'';
+				select user_balance into balance from users join users_flights on users.user_id = users_flights.user_id where users.user_id = new.user_id;
+				select flight_price into price from users_flights join flights on users_flights.flight_id = flights.flight_id where flights.flight_id = new.flight_id;
+				IF balance < price THEN
+					RAISE EXCEPTION ''Not enough founds'';
+				ELSE
+					UPDATE users SET user_balance=user_balance-price WHERE user_id = NEW.user_id;
 				END IF;
 			END;
         RETURN NEW;
     END;
 ' LANGUAGE plpgsql;
 
-create trigger flight_capacity_check
+create trigger flight_balance
     after insert on users_flights
-    for each row EXECUTE procedure check_flight_capacity();
-create trigger route_capacity_check
-    after insert on users_routes
-    for each row EXECUTE procedure check_route_capacity();
+    for each row EXECUTE procedure flight_balance();
 
-create trigger users_audit_insert
-    after insert on users
-    for each row EXECUTE procedure process_audit();
-create trigger users_audit_update
-    after update on users
-    for each row EXECUTE procedure process_audit();
-create trigger users_audit_delete
-    after delete on users
-    for each row EXECUTE procedure process_audit();
-
-create trigger users_flights_audit_insert
+create trigger flight_capacity
     after insert on users_flights
-    for each row EXECUTE procedure process_audit();
-create trigger users_flights_audit_update
-    after update on users_flights
-    for each row EXECUTE procedure process_audit();
-create trigger users_flights_audit_delete
-    after delete on users_flights
+    for each row EXECUTE procedure flight_capacity();
+
+create trigger users_audit
+    after insert or update on users
     for each row EXECUTE procedure process_audit();
 
-create trigger users_routes_audit_insert
-    after insert on users_routes
-    for each row EXECUTE procedure process_audit();
-create trigger users_routes_audit_update
-    after update on users_routes
-    for each row EXECUTE procedure process_audit();
-create trigger users_routes_audit_delete
-    after delete on users_routes
+create trigger users_flights_audit
+    after insert or update on users_flights
     for each row EXECUTE procedure process_audit();
 
+create trigger users_routes_audit
+    after insert or update on users_routes
+    for each row EXECUTE procedure process_audit();
 
-INSERT INTO users(user_name, user_email, user_password, user_role, user_balance) VALUES ('a', 'a', '1000:409fe2cfb15529fcbcc703c6ec160803:b06f766b8e27629b174f389e378e7e8b81b108d05a48e54e73efd92ca0398266c9bf9aef05191aff03595804636159ce029795404791b4806069c2a554f2c650', 'ADMIN', 0);
+INSERT INTO users(user_name, user_email, user_password, user_role, user_balance) VALUES ('a', 'a', '1000:409fe2cfb15529fcbcc703c6ec160803:b06f766b8e27629b174f389e378e7e8b81b108d05a48e54e73efd92ca0398266c9bf9aef05191aff03595804636159ce029795404791b4806069c2a554f2c650', 'ADMIN', 1000000);
 
 INSERT INTO users(user_name, user_email, user_password, user_role, user_balance) VALUES ('r', 'r', '1000:26301cf43818793da6ec5c1ea6bd7d57:84a133c42d292d991d1bc707b91c39fc446c23ff657aa533e9d22dd51509e112035e6c717ca7f4d65422aea9492ec53eecb7762f6f7eea0c3971cedd649e8bb6', 'REGISTERED', 1000);
 
