@@ -2,7 +2,7 @@
 
 Codecool Java OOP Web DB PA is a Maven managed dynamic web-application.
 
-## `DataSource`
+# DataSource
 
 Before deploying to a webserver create a `Resource` like in your webserver's config (e.g. for Apache Tomcat in `conf/context.xml`).
 
