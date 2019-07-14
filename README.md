@@ -1,6 +1,6 @@
 # About
 
-Codecool Java OOP Web DB PA is a Maven managed dynamic web-application.
+Plane Ticket and Taxi Cab Fare Buyer is a Maven managed dynamic web-application.
 
 # DataSource
 
